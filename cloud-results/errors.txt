@@ -1,1 +1,1 @@
-Build step did not create build.log.
+mktemp: failed to create directory via template ‘/home/runner/work/Action-Build/Action-Build/kernel_workspace/out/target/product/kalama/tmp.XXXXXXXXXX’: No such file or directory
