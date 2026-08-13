@@ -1,0 +1,2 @@
+fatal: ambiguous argument 'de57127e~..HEAD': unknown revision or path not in the working tree.
+fatal: ambiguous argument 'de57127e~..HEAD': unknown revision or path not in the working tree.
