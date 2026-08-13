@@ -220,7 +220,11 @@ jobs:
           git config --global user.name "Numbersf"
           git config --global user.email "263623064@qq.com"
           mkdir kernel_workspace && cd kernel_workspace
-          git clone https://github.com/Numbersf/Action-Build.git -b ReSukiSU
+          if [[ "${{ github.ref_name }}" == "wonder-ace2-pro-cloud" ]]; then
+            git clone "https://github.com/${{ github.repository }}.git" -b "${{ github.ref_name }}" Action-Build
+          else
+            git clone https://github.com/Numbersf/Action-Build.git -b ReSukiSU
+          fi
 
       - name: Extract Manifest Info
         id: extract_info
@@ -522,7 +526,10 @@ jobs:
         if: github.ref_name == 'wonder-ace2-pro-cloud' && github.event.inputs.FILE == 'oneplus_ace2_pro_b'
         run: |
           set -euo pipefail
-          bash "$GITHUB_WORKSPACE/scripts/wonder/apply_ace2_pro_wonder.sh" "$GITHUB_WORKSPACE/kernel_workspace"
+          WONDER_SCRIPT="$GITHUB_WORKSPACE/kernel_workspace/Action-Build/scripts/wonder/apply_ace2_pro_wonder.sh"
+          test -f "$WONDER_SCRIPT"
+          ls -l "$WONDER_SCRIPT"
+          bash "$WONDER_SCRIPT" "$GITHUB_WORKSPACE/kernel_workspace"
 
       - name: Kernel Version Handling
         run: |
