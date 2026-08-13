@@ -1,5 +1,8 @@
 name: Build All OnePlus Kernels
 on:
+  push:
+    branches:
+      - wonder-ace2-pro-cloud
   workflow_dispatch:
     inputs:
       FILE:
@@ -181,7 +184,23 @@ permissions:
   contents: write
 
 jobs:
+  dispatch-wonder-build:
+    if: "github.event_name == 'push' && github.event.head_commit.message == 'ci: dispatch three-module baseline build'"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch cached three-module build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run "Build Kernel OnePlus.yml" \
+            --repo "${{ github.repository }}" \
+            --ref wonder-ace2-pro-cloud \
+            -f FILE=oneplus_ace2_pro_b \
+            -f FAST_BUILD=false \
+            -f BUILD_NOCACHE=false
+
   build:
+    if: github.event_name == 'workflow_dispatch'
     name: ${{ github.event.inputs.FAST_BUILD == 'true' && ' [FAST]' || '' }}${{ contains(github.event.inputs.FILE, '_aosp') && ' [AOSP]' || '' }}${{ github.event.inputs.KPM == 'KPM' && ' [KPM]' || github.event.inputs.KPM == 'KPN' && ' [KPN]' || '' }}${{ github.event.inputs.LSM_BBG == 'true' && ' [BBG]' || '' }}${{ github.event.inputs.SCHED_HMBIRD == 'true' && ' [HMBIRD]' || '' }}${{ github.event.inputs.DROID_SPACES == 'true' && ' [DS]' || '' }}${{ startsWith(github.event.inputs.ZRAM, '1/') && ' [ZRAM]' || '' }}${{ github.event.inputs.RE_KERNEL == 'true' && ' [REKER]' || '' }}${{ github.event.inputs.LZ4_UPDATE == 'true' && ' [LZ4UPD]' || '' }}For ${{ github.event.inputs.FILE }} ${{ github.event.inputs.SUFFIX }}
     runs-on: ubuntu-latest
     env:
@@ -1555,6 +1574,33 @@ jobs:
               echo "Verified public Kalama GKI Image: $KERNEL_IMAGE"
               echo "Verified device Module.symvers: $KERNEL_SYMVERS"
 
+              PLATFORM_OUT="$KP_ROOT/out/wlan-platform-module"
+              PLATFORM_OPTIONS="CONFIG_CNSS_OUT_OF_TREE=y CONFIG_CNSS2=m CONFIG_CNSS2_QMI=y CONFIG_CNSS_QMI_SVC=m CONFIG_CNSS_PLAT_IPC_QMI_SVC=m CONFIG_CNSS_GENL=m CONFIG_WCNSS_MEM_PRE_ALLOC=m CONFIG_CNSS_UTILS=m CONFIG_CNSS2_SSR_DRIVER_DUMP=y CONFIG_CNSS_HW_SECURE_DISABLE=y CONFIG_CNSS_HW_SECURE_SMEM=y CONFIG_CNSS2_SMMU_DB_SUPPORT=y"
+              EXT_MODULES="../vendor/qcom/opensource/wlan/platform" \
+                KERNEL_KIT="$KP_OUT/dist" \
+                OUT_DIR="$PLATFORM_OUT" \
+                KBUILD_OPTIONS="$PLATFORM_OPTIONS" \
+                ./build/build_module.sh
+              PLATFORM_MODULE_ROOT="$KP_ROOT/out/vendor/qcom/opensource/wlan/platform"
+              CNSS_MODULE="$PLATFORM_MODULE_ROOT/cnss2/cnss2.ko"
+              PLATFORM_SYMVERS="$PLATFORM_MODULE_ROOT/Module.symvers"
+              test -s "$CNSS_MODULE"
+              test -s "$PLATFORM_SYMVERS"
+              echo "Verified CNSS module: $CNSS_MODULE ($(stat -c '%s' "$CNSS_MODULE") bytes)"
+              sha256sum "$CNSS_MODULE" "$PLATFORM_SYMVERS"
+
+              WLAN_OUT="$KP_ROOT/out/kiwi-v2-module"
+              WLAN_OPTIONS="MODNAME=kiwi_v2 DEVNAME=kiwi_v2 WLAN_PROFILE=kiwi_v2 DYNAMIC_SINGLE_CHIP=kiwi_v2 BOARD_PLATFORM=kalama CONFIG_ARCH_KALAMA=y CONFIG_QCA_CLD_WLAN=m CONFIG_CNSS2=m CONFIG_CNSS_GENL=m CONFIG_CNSS_UTILS=m CONFIG_WCNSS_MEM_PRE_ALLOC=m KBUILD_EXTRA_SYMBOLS=$PLATFORM_SYMVERS"
+              EXT_MODULES="../vendor/qcom/opensource/wlan/qcacld-3.0" \
+                KERNEL_KIT="$KP_OUT/dist" \
+                OUT_DIR="$WLAN_OUT" \
+                KBUILD_OPTIONS="$WLAN_OPTIONS" \
+                ./build/build_module.sh
+              WLAN_MODULE="$KP_ROOT/out/vendor/qcom/opensource/wlan/qcacld-3.0/kiwi_v2.ko"
+              test -s "$WLAN_MODULE"
+              echo "Verified kiwi_v2 module: $WLAN_MODULE ($(stat -c '%s' "$WLAN_MODULE") bytes)"
+              sha256sum "$WLAN_MODULE"
+
               WONDER_OUT="$KP_ROOT/out/wonder-module"
               EXT_MODULES="../vendor/oplus/kernel/wifi/wonder" \
                 KERNEL_KIT="$KP_OUT/dist" \
@@ -1567,6 +1613,8 @@ jobs:
                 exit 1
               fi
               mkdir -p "$GITHUB_WORKSPACE/cloud-results/artifacts"
+              cp -a "$CNSS_MODULE" "$GITHUB_WORKSPACE/cloud-results/artifacts/cnss2.ko"
+              cp -a "$WLAN_MODULE" "$GITHUB_WORKSPACE/cloud-results/artifacts/qca_cld3_kiwi_v2.ko"
               cp -a "$WONDER_MODULE" "$GITHUB_WORKSPACE/cloud-results/artifacts/wonder.ko"
               echo "Verified Wonder module: $WONDER_MODULE ($(stat -c '%s' "$WONDER_MODULE") bytes)"
               sha256sum "$WONDER_MODULE"
@@ -1592,7 +1640,8 @@ jobs:
             echo "- Branch: ${{ github.ref_name }}"
             echo "- Input: oneplus_ace2_pro_b"
             echo "- Public Kalama GKI build: true"
-            echo "- Wonder external module gate: required"
+            echo "- CNSS + kiwi_v2 + Wonder external module gate: required"
+            echo "- Passthrough data path: not enabled in this baseline build"
             echo "- Sync step outcome: ${{ steps.sync_sources.outcome }}"
             echo "- Build step outcome: ${{ steps.wonder_build.outcome }}"
             echo "- Device-tree build and changes: none"
