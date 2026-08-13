@@ -1,7 +1,7 @@
 # Ace 2 Pro Wonder cloud build
 
-- UTC: 2026-08-13T11:03:57Z
-- Run: https://github.com/buguj23/Action-Build/actions/runs/31691823240
+- UTC: 2026-08-13T11:37:28Z
+- Run: https://github.com/buguj23/Action-Build/actions/runs/31694136351
 - Branch: wonder-ace2-pro-cloud
 - Input: oneplus_ace2_pro_b
 - Public Kalama GKI build: true
@@ -1611,5 +1611,6 @@ kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/usr/module
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/virt/lib/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/virt/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/modules.order 19966 bytes
+kernel_workspace/kernel_platform/out/wonder-module/msm-kernel/Module.symvers 715442 bytes
 
 ## Module metadata
