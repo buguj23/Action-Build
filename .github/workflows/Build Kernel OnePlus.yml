@@ -1561,12 +1561,15 @@ jobs:
                 OUT_DIR="$WONDER_OUT" \
                 KBUILD_OPTIONS="CONFIG_WONDER_SUPPORT=m CHIPSET_COMPANY=QCOM OPLUS_VND_BUILD_PLATFORM=SM8550" \
                 ./build/build_module.sh
-              WONDER_MODULE="$(find "$WONDER_OUT" -type f -name wonder.ko -print -quit)"
-              if [[ -z "$WONDER_MODULE" || ! -s "$WONDER_MODULE" ]]; then
-                echo "::error::Public build_module.sh completed without wonder.ko"
+              WONDER_MODULE="$KP_ROOT/out/vendor/oplus/kernel/wifi/wonder/wonder.ko"
+              if [[ ! -s "$WONDER_MODULE" ]]; then
+                echo "::error::Public build_module.sh completed without a nonempty module at $WONDER_MODULE"
                 exit 1
               fi
-              echo "Verified Wonder module: $WONDER_MODULE"
+              mkdir -p "$GITHUB_WORKSPACE/cloud-results/artifacts"
+              cp -a "$WONDER_MODULE" "$GITHUB_WORKSPACE/cloud-results/artifacts/wonder.ko"
+              echo "Verified Wonder module: $WONDER_MODULE ($(stat -c '%s' "$WONDER_MODULE") bytes)"
+              sha256sum "$WONDER_MODULE"
             elif [[ -f ./kernel_platform/build_with_bazel.py ]]; then
               ./kernel_platform/oplus/bazel/oplus_modules_variant.sh ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
               ./kernel_platform/build_with_bazel.py -t ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
