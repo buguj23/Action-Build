@@ -1,12 +1,12 @@
 # Ace 2 Pro Wonder cloud build
 
-- UTC: 2026-08-13T09:19:25Z
-- Run: https://github.com/buguj23/Action-Build/actions/runs/31683438848
+- UTC: 2026-08-13T09:40:10Z
+- Run: https://github.com/buguj23/Action-Build/actions/runs/31687244884
 - Branch: wonder-ace2-pro-cloud
 - Input: oneplus_ace2_pro_b
 - Full official build: true
-- Sync step outcome: success
-- Build step outcome: success
+- Sync step outcome: failure
+- Build step outcome: skipped
 - Device-tree changes: none
 - Flashable claim: none
 
