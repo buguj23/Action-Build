@@ -1,15 +1,20 @@
+  LD [M]  drivers/hwtracing/coresight/coresight-tpdm.ko
+  BTF [M] drivers/hwtracing/coresight/coresight-tpda.ko
+  LD [M]  drivers/hwtracing/coresight/coresight.ko
+  BTF [M] drivers/hwtracing/coresight/coresight-tpdm.ko
+  BTF [M] drivers/hwtracing/coresight/coresight-tmc.ko
   BTF [M] drivers/hwtracing/coresight/coresight.ko
   LD [M]  drivers/hwtracing/stm/stm_console.ko
-  BTF [M] drivers/hwtracing/stm/stm_console.ko
   LD [M]  drivers/hwtracing/stm/stm_core.ko
+  BTF [M] drivers/hwtracing/stm/stm_console.ko
   BTF [M] drivers/hwtracing/stm/stm_core.ko
   LD [M]  drivers/hwtracing/stm/stm_ftrace.ko
   LD [M]  drivers/hwtracing/stm/stm_p_basic.ko
   BTF [M] drivers/hwtracing/stm/stm_ftrace.ko
   BTF [M] drivers/hwtracing/stm/stm_p_basic.ko
   LD [M]  drivers/hwtracing/stm/stm_p_ost.ko
-  BTF [M] drivers/hwtracing/stm/stm_p_ost.ko
   LD [M]  drivers/i2c/busses/i2c-msm-geni.ko
+  BTF [M] drivers/hwtracing/stm/stm_p_ost.ko
   BTF [M] drivers/i2c/busses/i2c-msm-geni.ko
   LD [M]  drivers/i3c/master/i3c-master-msm-geni.ko
   LD [M]  drivers/iio/adc/qcom-spmi-adc5-gen3.ko
@@ -21,17 +26,17 @@
   BTF [M] drivers/iio/adc/qti-glink-adc.ko
   LD [M]  drivers/iio/buffer/industrialio-buffer-cb.ko
   LD [M]  drivers/input/misc/pm8941-pwrkey.ko
+  BTF [M] drivers/input/misc/pm8941-pwrkey.ko
   BTF [M] drivers/iio/buffer/industrialio-buffer-cb.ko
   LD [M]  drivers/input/misc/qcom-hv-haptics.ko
-  BTF [M] drivers/input/misc/pm8941-pwrkey.ko
-  BTF [M] drivers/input/misc/qcom-hv-haptics.ko
   LD [M]  drivers/input/misc/qpnp-power-on.ko
+  BTF [M] drivers/input/misc/qcom-hv-haptics.ko
   BTF [M] drivers/input/misc/qpnp-power-on.ko
   LD [M]  drivers/input/touchscreen/oplus_touchscreen_v2/Goodix/GT9916/oplus_bsp_tp_gt9916.ko
   LD [M]  drivers/input/touchscreen/oplus_touchscreen_v2/Goodix/GT9966/oplus_bsp_tp_gt9966.ko
   BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/Goodix/GT9916/oplus_bsp_tp_gt9916.ko
-  BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/Goodix/GT9966/oplus_bsp_tp_gt9966.ko
   LD [M]  drivers/input/touchscreen/oplus_touchscreen_v2/Goodix/oplus_bsp_tp_goodix_comnon.ko
+  BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/Goodix/GT9966/oplus_bsp_tp_gt9966.ko
   BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/Goodix/oplus_bsp_tp_goodix_comnon.ko
   LD [M]  drivers/input/touchscreen/oplus_touchscreen_v2/Synaptics/Syna_tcm_S3910/oplus_bsp_tp_tcm_S3910.ko
   BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/Synaptics/Syna_tcm_S3910/oplus_bsp_tp_tcm_S3910.ko
@@ -41,27 +46,27 @@
   BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/Synaptics/Syna_tcm_oncell/oplus_bsp_tp_tcm_oncell.ko
   BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/Synaptics/oplus_bsp_tp_syna_comnon.ko
   LD [M]  drivers/input/touchscreen/oplus_touchscreen_v2/oplus_bsp_tp_notify.ko
-  BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/oplus_bsp_tp_comon.ko
   BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/oplus_bsp_tp_notify.ko
+  BTF [M] drivers/input/touchscreen/oplus_touchscreen_v2/oplus_bsp_tp_comon.ko
   LD [M]  drivers/input/touchscreen/synaptics_hbp/synaptics_tcm2.ko
   LD [M]  drivers/input/touchscreen/touch_custom/oplus_bsp_tp_custom.ko
-  BTF [M] drivers/input/touchscreen/touch_custom/oplus_bsp_tp_custom.ko
   LD [M]  drivers/input/uff_fp_drivers/uff_fp_driver.ko
+  BTF [M] drivers/input/touchscreen/touch_custom/oplus_bsp_tp_custom.ko
   BTF [M] drivers/input/touchscreen/synaptics_hbp/synaptics_tcm2.ko
   BTF [M] drivers/input/uff_fp_drivers/uff_fp_driver.ko
   LD [M]  drivers/interconnect/icc-test.ko
   BTF [M] drivers/interconnect/icc-test.ko
   LD [M]  drivers/interconnect/qcom/icc-bcm-voter.ko
-  BTF [M] drivers/interconnect/qcom/icc-bcm-voter.ko
   LD [M]  drivers/interconnect/qcom/icc-debug.ko
+  BTF [M] drivers/interconnect/qcom/icc-bcm-voter.ko
   BTF [M] drivers/interconnect/qcom/icc-debug.ko
   LD [M]  drivers/interconnect/qcom/icc-rpmh.ko
   LD [M]  drivers/interconnect/qcom/qnoc-crow.ko
   BTF [M] drivers/interconnect/qcom/icc-rpmh.ko
-  BTF [M] drivers/interconnect/qcom/qnoc-crow.ko
   LD [M]  drivers/interconnect/qcom/qnoc-kalama.ko
-  BTF [M] drivers/interconnect/qcom/qnoc-kalama.ko
+  BTF [M] drivers/interconnect/qcom/qnoc-crow.ko
   LD [M]  drivers/interconnect/qcom/qnoc-qos.ko
+  BTF [M] drivers/interconnect/qcom/qnoc-kalama.ko
   BTF [M] drivers/interconnect/qcom/qnoc-qos.ko
   LD [M]  drivers/iommu/arm/arm-smmu/arm_smmu.ko
   LD [M]  drivers/iommu/iommu-logger.ko
@@ -72,49 +77,49 @@
   BTF [M] drivers/iommu/msm_dma_iommu_mapping.ko
   BTF [M] drivers/iommu/qcom_iommu_debug.ko
   LD [M]  drivers/iommu/qcom_iommu_util.ko
-  BTF [M] drivers/iommu/qcom_iommu_util.ko
   LD [M]  drivers/irqchip/msm_show_resume_irq.ko
   LD [M]  drivers/irqchip/qcom-pdc.ko
   LD [M]  drivers/leds/aw210xx/leds_aw210xx.ko
+  BTF [M] drivers/iommu/qcom_iommu_util.ko
   BTF [M] drivers/irqchip/msm_show_resume_irq.ko
   BTF [M] drivers/irqchip/qcom-pdc.ko
   BTF [M] drivers/leds/aw210xx/leds_aw210xx.ko
   LD [M]  drivers/leds/leds-qpnp-vibrator-ldo.ko
   LD [M]  drivers/leds/leds-qti-flash.ko
   LD [M]  drivers/leds/leds-qti-tri-led.ko
+  LD [M]  drivers/mailbox/msm_qmp.ko
   BTF [M] drivers/leds/leds-qpnp-vibrator-ldo.ko
   BTF [M] drivers/leds/leds-qti-flash.ko
   BTF [M] drivers/leds/leds-qti-tri-led.ko
-  LD [M]  drivers/mailbox/msm_qmp.ko
   BTF [M] drivers/mailbox/msm_qmp.ko
   LD [M]  drivers/media/platform/msm/synx/qcom_ipc_lite.ko
   LD [M]  drivers/media/platform/msm/synx/synx-driver.ko
   LD [M]  drivers/mfd/qcom-i2c-pmic.ko
+  LD [M]  drivers/mfd/qcom-spmi-pmic.ko
   BTF [M] drivers/media/platform/msm/synx/qcom_ipc_lite.ko
   BTF [M] drivers/media/platform/msm/synx/synx-driver.ko
   BTF [M] drivers/mfd/qcom-i2c-pmic.ko
-  LD [M]  drivers/mfd/qcom-spmi-pmic.ko
   BTF [M] drivers/mfd/qcom-spmi-pmic.ko
   LD [M]  drivers/misc/aw8697_haptic/aw8697.ko
   LD [M]  drivers/misc/aw8697_haptic/haptic.ko
   LD [M]  drivers/misc/aw8697_haptic/haptic_feedback.ko
-  BTF [M] drivers/misc/aw8697_haptic/aw8697.ko
-  BTF [M] drivers/misc/aw8697_haptic/haptic.ko
   LD [M]  drivers/misc/oem_qmi_client.ko
+  BTF [M] drivers/misc/aw8697_haptic/aw8697.ko
   BTF [M] drivers/misc/aw8697_haptic/haptic_feedback.ko
   BTF [M] drivers/misc/oem_qmi_client.ko
+  BTF [M] drivers/misc/aw8697_haptic/haptic.ko
   LD [M]  drivers/misc/oplus_bsp_rfcablemonitor.ko
   LD [M]  drivers/misc/oplus_gpio.ko
-  BTF [M] drivers/misc/oplus_bsp_rfcablemonitor.ko
   LD [M]  drivers/misc/oplus_procs_load/oplus_procs_load.ko
+  BTF [M] drivers/misc/oplus_bsp_rfcablemonitor.ko
   BTF [M] drivers/misc/oplus_gpio.ko
-  LD [M]  drivers/misc/qseecom_proxy.ko
   BTF [M] drivers/misc/oplus_procs_load/oplus_procs_load.ko
+  LD [M]  drivers/misc/qseecom_proxy.ko
   BTF [M] drivers/misc/qseecom_proxy.ko
   LD [M]  drivers/misc/sim_detect.ko
   LD [M]  drivers/misc/tri_state_key/digital_hall_ic/oplus_ak09970.ko
-  BTF [M] drivers/misc/sim_detect.ko
   LD [M]  drivers/misc/tri_state_key/hall_ic/oplus_bsp_mxm_down.ko
+  BTF [M] drivers/misc/sim_detect.ko
   BTF [M] drivers/misc/tri_state_key/digital_hall_ic/oplus_ak09970.ko
   LD [M]  drivers/misc/tri_state_key/hall_ic/oplus_bsp_mxm_up.ko
   BTF [M] drivers/misc/tri_state_key/hall_ic/oplus_bsp_mxm_down.ko
@@ -123,23 +128,23 @@
   LD [M]  drivers/misc/tri_state_key/ist_hall_ic/oplus_bsp_ist_up.ko
   LD [M]  drivers/misc/tri_state_key/oplus_bsp_tri_key.ko
   BTF [M] drivers/misc/tri_state_key/ist_hall_ic/oplus_bsp_ist_down.ko
-  BTF [M] drivers/misc/tri_state_key/ist_hall_ic/oplus_bsp_ist_up.ko
   LD [M]  drivers/mmc/host/cqhci.ko
+  BTF [M] drivers/misc/tri_state_key/ist_hall_ic/oplus_bsp_ist_up.ko
   BTF [M] drivers/misc/tri_state_key/oplus_bsp_tri_key.ko
   BTF [M] drivers/mmc/host/cqhci.ko
   LD [M]  drivers/mmc/host/sdhci-msm.ko
   LD [M]  drivers/nfc/oplus_nfc/oplus_nfc.ko
   LD [M]  drivers/nvme/host/nvme-core.ko
   BTF [M] drivers/mmc/host/sdhci-msm.ko
-  BTF [M] drivers/nfc/oplus_nfc/oplus_nfc.ko
   LD [M]  drivers/nvme/host/nvme.ko
+  BTF [M] drivers/nfc/oplus_nfc/oplus_nfc.ko
   BTF [M] drivers/nvme/host/nvme-core.ko
   BTF [M] drivers/nvme/host/nvme.ko
   LD [M]  drivers/nvmem/nvmem_qcom-spmi-sdam.ko
   LD [M]  drivers/nvmem/nvmem_qfprom.ko
   BTF [M] drivers/nvmem/nvmem_qcom-spmi-sdam.ko
-  BTF [M] drivers/nvmem/nvmem_qfprom.ko
   LD [M]  drivers/pci/controller/pci-msm-drv.ko
+  BTF [M] drivers/nvmem/nvmem_qfprom.ko
   LD [M]  drivers/perf/qcom_llcc_pmu.ko
   BTF [M] drivers/pci/controller/pci-msm-drv.ko
   BTF [M] drivers/perf/qcom_llcc_pmu.ko
@@ -158,23 +163,23 @@
   LD [M]  drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4.ko
   LD [M]  drivers/phy/qualcomm/phy-qcom-ufs-qrbtc-sdm845.ko
   BTF [M] drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4.ko
-  BTF [M] drivers/phy/qualcomm/phy-qcom-ufs-qrbtc-sdm845.ko
   LD [M]  drivers/phy/qualcomm/phy-qcom-ufs.ko
-  LD [M]  drivers/pinctrl/qcom/pinctrl-crow.ko
+  BTF [M] drivers/phy/qualcomm/phy-qcom-ufs-qrbtc-sdm845.ko
   BTF [M] drivers/phy/qualcomm/phy-qcom-ufs.ko
+  LD [M]  drivers/pinctrl/qcom/pinctrl-crow.ko
   BTF [M] drivers/pinctrl/qcom/pinctrl-crow.ko
   LD [M]  drivers/pinctrl/qcom/pinctrl-kalama.ko
   LD [M]  drivers/pinctrl/qcom/pinctrl-msm.ko
   BTF [M] drivers/pinctrl/qcom/pinctrl-kalama.ko
-  BTF [M] drivers/pinctrl/qcom/pinctrl-msm.ko
   LD [M]  drivers/pinctrl/qcom/pinctrl-spmi-gpio.ko
-  BTF [M] drivers/pinctrl/qcom/pinctrl-spmi-gpio.ko
+  BTF [M] drivers/pinctrl/qcom/pinctrl-msm.ko
   LD [M]  drivers/pinctrl/qcom/pinctrl-spmi-mpp.ko
+  BTF [M] drivers/pinctrl/qcom/pinctrl-spmi-gpio.ko
   BTF [M] drivers/pinctrl/qcom/pinctrl-spmi-mpp.ko
   LD [M]  drivers/platform/msm/ep_pcie/ep_pcie_drv.ko
   LD [M]  drivers/platform/msm/ipa_fmwk/ipa_fmwk.ko
-  BTF [M] drivers/platform/msm/ep_pcie/ep_pcie_drv.ko
   LD [M]  drivers/platform/msm/mhi_dev/mhi_dev_drv.ko
+  BTF [M] drivers/platform/msm/ep_pcie/ep_pcie_drv.ko
   BTF [M] drivers/platform/msm/ipa_fmwk/ipa_fmwk.ko
   LD [M]  drivers/platform/msm/mhi_dev/mhi_dev_net.ko
   BTF [M] drivers/platform/msm/mhi_dev/mhi_dev_drv.ko
@@ -191,8 +196,8 @@
   BTF [M] drivers/power/oplus/v2/ufcs/ufcs_class.ko
   LD [M]  drivers/power/reset/qcom-pon.ko
   BTF [M] drivers/power/oplus/v2/oplus_chg_v2.ko
-  LD [M]  drivers/power/reset/qcom-reboot-reason.ko
   BTF [M] drivers/power/reset/qcom-pon.ko
+  LD [M]  drivers/power/reset/qcom-reboot-reason.ko
   BTF [M] drivers/power/oplus/v1/oplus_chg.ko
   BTF [M] drivers/power/reset/qcom-reboot-reason.ko
   LD [M]  drivers/power/reset/reboot-mode.ko
@@ -217,245 +222,245 @@
   BTF [M] drivers/regulator/stub-regulator.ko
   LD [M]  drivers/remoteproc/qcom_esoc.ko
   LD [M]  drivers/remoteproc/qcom_pil_info.ko
-  BTF [M] drivers/remoteproc/qcom_pil_info.ko
   BTF [M] drivers/remoteproc/qcom_esoc.ko
+  BTF [M] drivers/remoteproc/qcom_pil_info.ko
   LD [M]  drivers/remoteproc/qcom_q6v5.ko
   BTF [M] drivers/remoteproc/qcom_q6v5.ko
   LD [M]  drivers/remoteproc/qcom_q6v5_pas.ko
   BTF [M] drivers/remoteproc/qcom_q6v5_pas.ko
   LD [M]  drivers/remoteproc/qcom_spss.ko
-  LD [M]  drivers/remoteproc/qcom_sysmon.ko
   BTF [M] drivers/remoteproc/qcom_spss.ko
+  LD [M]  drivers/remoteproc/qcom_sysmon.ko
   BTF [M] drivers/remoteproc/qcom_sysmon.ko
   LD [M]  drivers/remoteproc/rproc_qcom_common.ko
-  LD [M]  drivers/rpmsg/qcom_glink.ko
   BTF [M] drivers/remoteproc/rproc_qcom_common.ko
-  LD [M]  drivers/rpmsg/qcom_glink_smem.ko
+  LD [M]  drivers/rpmsg/qcom_glink.ko
   BTF [M] drivers/rpmsg/qcom_glink.ko
+  LD [M]  drivers/rpmsg/qcom_glink_smem.ko
   BTF [M] drivers/rpmsg/qcom_glink_smem.ko
   LD [M]  drivers/rpmsg/qcom_glink_spss.ko
-  LD [M]  drivers/rpmsg/qcom_smd.ko
-  LD [M]  drivers/rtc/rtc-pm8xxx.ko
   BTF [M] drivers/rpmsg/qcom_glink_spss.ko
-  LD [M]  drivers/scsi/sg.ko
+  LD [M]  drivers/rpmsg/qcom_smd.ko
   BTF [M] drivers/rpmsg/qcom_smd.ko
+  LD [M]  drivers/rtc/rtc-pm8xxx.ko
+  LD [M]  drivers/scsi/sg.ko
   BTF [M] drivers/rtc/rtc-pm8xxx.ko
   BTF [M] drivers/scsi/sg.ko
   LD [M]  drivers/scsi/ufs/ufs_qcom.ko
+  BTF [M] drivers/scsi/ufs/ufs_qcom.ko
   LD [M]  drivers/scsi/ufs/ufshcd-crypto-qti.ko
+  BTF [M] drivers/scsi/ufs/ufshcd-crypto-qti.ko
   LD [M]  drivers/slimbus/slim-qcom-ngd-ctrl.ko
   LD [M]  drivers/slimbus/slimbus.ko
-  BTF [M] drivers/scsi/ufs/ufs_qcom.ko
-  BTF [M] drivers/scsi/ufs/ufshcd-crypto-qti.ko
   BTF [M] drivers/slimbus/slim-qcom-ngd-ctrl.ko
   BTF [M] drivers/slimbus/slimbus.ko
   LD [M]  drivers/soc/oplus/boot/cmdline_parser/buildvariant.ko
   LD [M]  drivers/soc/oplus/boot/cmdline_parser/cdt_integrity.ko
-  LD [M]  drivers/soc/oplus/boot/cmdline_parser/oplus_ftm_mode.ko
-  LD [M]  drivers/soc/oplus/boot/cmdline_parser/oplusboot.ko
   BTF [M] drivers/soc/oplus/boot/cmdline_parser/buildvariant.ko
-  BTF [M] drivers/soc/oplus/boot/cmdline_parser/oplus_ftm_mode.ko
   BTF [M] drivers/soc/oplus/boot/cmdline_parser/cdt_integrity.ko
-  BTF [M] drivers/soc/oplus/boot/cmdline_parser/oplusboot.ko
+  LD [M]  drivers/soc/oplus/boot/cmdline_parser/oplus_ftm_mode.ko
+  BTF [M] drivers/soc/oplus/boot/cmdline_parser/oplus_ftm_mode.ko
+  LD [M]  drivers/soc/oplus/boot/cmdline_parser/oplusboot.ko
   LD [M]  drivers/soc/oplus/boot/cmdline_parser/shutdown_speed.ko
   LD [M]  drivers/soc/oplus/boot/misc/bootloader_log.ko
-  LD [M]  drivers/soc/oplus/boot/oplus_phoenix/oplus_kmsg_wb.ko
-  LD [M]  drivers/soc/oplus/boot/oplus_phoenix/oplus_phoenix.ko
+  BTF [M] drivers/soc/oplus/boot/cmdline_parser/oplusboot.ko
   BTF [M] drivers/soc/oplus/boot/cmdline_parser/shutdown_speed.ko
   BTF [M] drivers/soc/oplus/boot/misc/bootloader_log.ko
+  LD [M]  drivers/soc/oplus/boot/oplus_phoenix/oplus_kmsg_wb.ko
   BTF [M] drivers/soc/oplus/boot/oplus_phoenix/oplus_kmsg_wb.ko
-  BTF [M] drivers/soc/oplus/boot/oplus_phoenix/oplus_phoenix.ko
+  LD [M]  drivers/soc/oplus/boot/oplus_phoenix/oplus_phoenix.ko
   LD [M]  drivers/soc/oplus/boot/oplus_phoenix/phoenix_reboot_speed.ko
   LD [M]  drivers/soc/oplus/boot/oplus_project/gki/oplus_project.ko
-  LD [M]  drivers/soc/oplus/boot/project_info/boot_mode.ko
-  LD [M]  drivers/soc/oplus/device_info/device_info.ko
-  BTF [M] drivers/soc/oplus/boot/project_info/boot_mode.ko
   BTF [M] drivers/soc/oplus/boot/oplus_phoenix/phoenix_reboot_speed.ko
+  BTF [M] drivers/soc/oplus/boot/oplus_phoenix/oplus_phoenix.ko
   BTF [M] drivers/soc/oplus/boot/oplus_project/gki/oplus_project.ko
-  BTF [M] drivers/soc/oplus/device_info/device_info.ko
+  LD [M]  drivers/soc/oplus/boot/project_info/boot_mode.ko
+  BTF [M] drivers/soc/oplus/boot/project_info/boot_mode.ko
+  LD [M]  drivers/soc/oplus/device_info/device_info.ko
   LD [M]  drivers/soc/oplus/dfr/common/combkey_monitor/combkey_monitor.ko
   LD [M]  drivers/soc/oplus/dfr/common/hung_task_enhance/hung_task_enhance.ko
+  BTF [M] drivers/soc/oplus/device_info/device_info.ko
+  BTF [M] drivers/soc/oplus/dfr/common/combkey_monitor/combkey_monitor.ko
+  BTF [M] drivers/soc/oplus/dfr/common/hung_task_enhance/hung_task_enhance.ko
   LD [M]  drivers/soc/oplus/dfr/common/init_watchdog/init_watchdog.ko
   LD [M]  drivers/soc/oplus/dfr/common/keyevent_handler/keyevent_handler.ko
-  BTF [M] drivers/soc/oplus/dfr/common/hung_task_enhance/hung_task_enhance.ko
-  BTF [M] drivers/soc/oplus/dfr/common/combkey_monitor/combkey_monitor.ko
-  BTF [M] drivers/soc/oplus/dfr/common/init_watchdog/init_watchdog.ko
-  BTF [M] drivers/soc/oplus/dfr/common/keyevent_handler/keyevent_handler.ko
   LD [M]  drivers/soc/oplus/dfr/common/kp_freeze_detect/kp_freeze_detect.ko
+  BTF [M] drivers/soc/oplus/dfr/common/init_watchdog/init_watchdog.ko
   LD [M]  drivers/soc/oplus/dfr/common/last_boot_reason/last_boot_reason.ko
-  LD [M]  drivers/soc/oplus/dfr/common/oplus_bsp_dfr_ubt/oplus_bsp_dfr_ubt.ko
-  LD [M]  drivers/soc/oplus/dfr/common/oplus_fdleak/oplus_fdleak_check.ko
+  BTF [M] drivers/soc/oplus/dfr/common/keyevent_handler/keyevent_handler.ko
   BTF [M] drivers/soc/oplus/dfr/common/kp_freeze_detect/kp_freeze_detect.ko
   BTF [M] drivers/soc/oplus/dfr/common/last_boot_reason/last_boot_reason.ko
-  BTF [M] drivers/soc/oplus/dfr/common/oplus_fdleak/oplus_fdleak_check.ko
-  BTF [M] drivers/soc/oplus/dfr/common/oplus_bsp_dfr_ubt/oplus_bsp_dfr_ubt.ko
+  LD [M]  drivers/soc/oplus/dfr/common/oplus_bsp_dfr_ubt/oplus_bsp_dfr_ubt.ko
+  LD [M]  drivers/soc/oplus/dfr/common/oplus_fdleak/oplus_fdleak_check.ko
   LD [M]  drivers/soc/oplus/dfr/common/shutdown_detect/shutdown_detect.ko
-  LD [M]  drivers/soc/oplus/dfr/common/theia/oplus_theia.ko
-  LD [M]  drivers/soc/oplus/dfr/qcom/dump_reason/dump_reason.ko
-  LD [M]  drivers/soc/oplus/dfr/qcom/dump_device_info/dump_device_info.ko
+  BTF [M] drivers/soc/oplus/dfr/common/oplus_bsp_dfr_ubt/oplus_bsp_dfr_ubt.ko
+  BTF [M] drivers/soc/oplus/dfr/common/oplus_fdleak/oplus_fdleak_check.ko
   BTF [M] drivers/soc/oplus/dfr/common/shutdown_detect/shutdown_detect.ko
-  BTF [M] drivers/soc/oplus/dfr/qcom/dump_reason/dump_reason.ko
+  LD [M]  drivers/soc/oplus/dfr/common/theia/oplus_theia.ko
   BTF [M] drivers/soc/oplus/dfr/common/theia/oplus_theia.ko
-  BTF [M] drivers/soc/oplus/dfr/qcom/dump_device_info/dump_device_info.ko
+  LD [M]  drivers/soc/oplus/dfr/qcom/dump_device_info/dump_device_info.ko
+  LD [M]  drivers/soc/oplus/dfr/qcom/dump_reason/dump_reason.ko
   LD [M]  drivers/soc/oplus/dfr/qcom/oplus_ordump/ordump.ko
+  BTF [M] drivers/soc/oplus/dfr/qcom/dump_device_info/dump_device_info.ko
+  BTF [M] drivers/soc/oplus/dfr/qcom/dump_reason/dump_reason.ko
+  BTF [M] drivers/soc/oplus/dfr/qcom/oplus_ordump/ordump.ko
   LD [M]  drivers/soc/oplus/dfr/qcom/qcom_pmic_monitor/pmic_monitor.ko
   LD [M]  drivers/soc/oplus/dfr/qcom/qcom_pmicwd/oplus_pmicwd.ko
-  BTF [M] drivers/soc/oplus/dfr/qcom/oplus_ordump/ordump.ko
-  BTF [M] drivers/soc/oplus/dfr/qcom/qcom_pmicwd/oplus_pmicwd.ko
-  BTF [M] drivers/soc/oplus/dfr/qcom/qcom_pmic_monitor/pmic_monitor.ko
   LD [M]  drivers/soc/oplus/dfr/qcom/qcom_watchdog/qcom_enhance_watchdog.ko
-  BTF [M] drivers/soc/oplus/dfr/qcom/qcom_watchdog/qcom_enhance_watchdog.ko
   LD [M]  drivers/soc/oplus/dft/common/feedback/kernel_fb.ko
+  BTF [M] drivers/soc/oplus/dfr/qcom/qcom_pmic_monitor/pmic_monitor.ko
+  BTF [M] drivers/soc/oplus/dfr/qcom/qcom_pmicwd/oplus_pmicwd.ko
+  BTF [M] drivers/soc/oplus/dfr/qcom/qcom_watchdog/qcom_enhance_watchdog.ko
+  BTF [M] drivers/soc/oplus/dft/common/feedback/kernel_fb.ko
   LD [M]  drivers/soc/oplus/dft/common/olc/olc.ko
   LD [M]  drivers/soc/oplus/mdmfeature/oplus_mdmfeature.ko
-  BTF [M] drivers/soc/oplus/dft/common/feedback/kernel_fb.ko
   LD [M]  drivers/soc/oplus/mdmrst/oplus_mdmrst.ko
-  BTF [M] drivers/soc/oplus/dft/common/olc/olc.ko
-  BTF [M] drivers/soc/oplus/mdmfeature/oplus_mdmfeature.ko
-  BTF [M] drivers/soc/oplus/mdmrst/oplus_mdmrst.ko
   LD [M]  drivers/soc/oplus/midas/v1_gki/oplus_bsp_midas.ko
+  BTF [M] drivers/soc/oplus/mdmfeature/oplus_mdmfeature.ko
+  BTF [M] drivers/soc/oplus/dft/common/olc/olc.ko
+  BTF [M] drivers/soc/oplus/mdmrst/oplus_mdmrst.ko
+  BTF [M] drivers/soc/oplus/midas/v1_gki/oplus_bsp_midas.ko
   LD [M]  drivers/soc/oplus/multimedia/oplus_mm_kevent.ko
   LD [M]  drivers/soc/oplus/multimedia/oplus_mm_kevent_fb.ko
-  BTF [M] drivers/soc/oplus/midas/v1_gki/oplus_bsp_midas.ko
   LD [M]  drivers/soc/oplus/oplus_consumer_ir/oplus_bsp_ir_core.ko
-  BTF [M] drivers/soc/oplus/multimedia/oplus_mm_kevent_fb.ko
-  BTF [M] drivers/soc/oplus/multimedia/oplus_mm_kevent.ko
-  BTF [M] drivers/soc/oplus/oplus_consumer_ir/oplus_bsp_ir_core.ko
   LD [M]  drivers/soc/oplus/oplus_consumer_ir/oplus_bsp_kookong_ir_spi.ko
+  BTF [M] drivers/soc/oplus/multimedia/oplus_mm_kevent.ko
+  BTF [M] drivers/soc/oplus/multimedia/oplus_mm_kevent_fb.ko
+  BTF [M] drivers/soc/oplus/oplus_consumer_ir/oplus_bsp_ir_core.ko
+  BTF [M] drivers/soc/oplus/oplus_consumer_ir/oplus_bsp_kookong_ir_spi.ko
   LD [M]  drivers/soc/oplus/power/freeze_debug/oplus_freeze_debug.ko
   LD [M]  drivers/soc/oplus/power/subsys_sleep_monitor/oplus_subsys_sleep_monitor.ko
   LD [M]  drivers/soc/oplus/sensor/oplus_sensor.ko
-  BTF [M] drivers/soc/oplus/oplus_consumer_ir/oplus_bsp_kookong_ir_spi.ko
-  BTF [M] drivers/soc/oplus/power/freeze_debug/oplus_freeze_debug.ko
-  BTF [M] drivers/soc/oplus/power/subsys_sleep_monitor/oplus_subsys_sleep_monitor.ko
-  BTF [M] drivers/soc/oplus/sensor/oplus_sensor.ko
   LD [M]  drivers/soc/oplus/sensor/oplus_sensor_feedback/oplus_bsp_sensor_feedback.ko
+  BTF [M] drivers/soc/oplus/power/subsys_sleep_monitor/oplus_subsys_sleep_monitor.ko
+  BTF [M] drivers/soc/oplus/power/freeze_debug/oplus_freeze_debug.ko
+  BTF [M] drivers/soc/oplus/sensor/oplus_sensor.ko
+  BTF [M] drivers/soc/oplus/sensor/oplus_sensor_feedback/oplus_bsp_sensor_feedback.ko
   LD [M]  drivers/soc/oplus/sensor/oplus_ssc_interact/ssc_interact.ko
   LD [M]  drivers/soc/oplus/storage/common/oplus_uprobe/oplus_uprobe.ko
-  BTF [M] drivers/soc/oplus/sensor/oplus_sensor_feedback/oplus_bsp_sensor_feedback.ko
   BTF [M] drivers/soc/oplus/sensor/oplus_ssc_interact/ssc_interact.ko
   LD [M]  drivers/soc/oplus/storage/common/storage_log/oplus_storage_log.ko
   BTF [M] drivers/soc/oplus/storage/common/oplus_uprobe/oplus_uprobe.ko
-  BTF [M] drivers/soc/oplus/storage/common/storage_log/oplus_storage_log.ko
   LD [M]  drivers/soc/oplus/trackpoint/oplus_trackpoint_report.ko
+  BTF [M] drivers/soc/oplus/storage/common/storage_log/oplus_storage_log.ko
+  BTF [M] drivers/soc/oplus/trackpoint/oplus_trackpoint_report.ko
   LD [M]  drivers/soc/qcom/adsp_sleepmon.ko
   LD [M]  drivers/soc/qcom/altmode-glink.ko
-  BTF [M] drivers/soc/qcom/adsp_sleepmon.ko
-  BTF [M] drivers/soc/oplus/trackpoint/oplus_trackpoint_report.ko
   LD [M]  drivers/soc/qcom/boot_stats.ko
+  BTF [M] drivers/soc/qcom/adsp_sleepmon.ko
+  LD [M]  drivers/soc/qcom/cdsprm.ko
   BTF [M] drivers/soc/qcom/altmode-glink.ko
   BTF [M] drivers/soc/qcom/boot_stats.ko
-  LD [M]  drivers/soc/qcom/cdsprm.ko
-  LD [M]  drivers/soc/qcom/charger-ulog-glink.ko
   BTF [M] drivers/soc/qcom/cdsprm.ko
+  LD [M]  drivers/soc/qcom/charger-ulog-glink.ko
   LD [M]  drivers/soc/qcom/cmd-db.ko
-  BTF [M] drivers/soc/qcom/charger-ulog-glink.ko
   LD [M]  drivers/soc/qcom/core_hang_detect.ko
-  BTF [M] drivers/soc/qcom/cmd-db.ko
+  BTF [M] drivers/soc/qcom/charger-ulog-glink.ko
   BTF [M] drivers/soc/qcom/core_hang_detect.ko
   LD [M]  drivers/soc/qcom/crypto-qti-common.ko
-  LD [M]  drivers/soc/qcom/crypto-qti-hwkm.ko
-  BTF [M] drivers/soc/qcom/crypto-qti-hwkm.ko
+  BTF [M] drivers/soc/qcom/cmd-db.ko
   BTF [M] drivers/soc/qcom/crypto-qti-common.ko
+  LD [M]  drivers/soc/qcom/crypto-qti-hwkm.ko
   LD [M]  drivers/soc/qcom/dcc_v2.ko
   LD [M]  drivers/soc/qcom/dcvs/bwmon.ko
+  BTF [M] drivers/soc/qcom/crypto-qti-hwkm.ko
   BTF [M] drivers/soc/qcom/dcc_v2.ko
-  BTF [M] drivers/soc/qcom/dcvs/bwmon.ko
   LD [M]  drivers/soc/qcom/dcvs/c1dcvs_scmi.ko
-  LD [M]  drivers/soc/qcom/dcvs/cpufreq_stats_scmi.ko
+  BTF [M] drivers/soc/qcom/dcvs/bwmon.ko
   BTF [M] drivers/soc/qcom/dcvs/c1dcvs_scmi.ko
-  BTF [M] drivers/soc/qcom/dcvs/cpufreq_stats_scmi.ko
+  LD [M]  drivers/soc/qcom/dcvs/cpufreq_stats_scmi.ko
   LD [M]  drivers/soc/qcom/dcvs/dcvs_fp.ko
   LD [M]  drivers/soc/qcom/dcvs/memlat.ko
+  BTF [M] drivers/soc/qcom/dcvs/cpufreq_stats_scmi.ko
   BTF [M] drivers/soc/qcom/dcvs/dcvs_fp.ko
-  BTF [M] drivers/soc/qcom/dcvs/memlat.ko
   LD [M]  drivers/soc/qcom/dcvs/memlat_scmi.ko
-  LD [M]  drivers/soc/qcom/dcvs/pmu_scmi.ko
+  BTF [M] drivers/soc/qcom/dcvs/memlat.ko
   BTF [M] drivers/soc/qcom/dcvs/memlat_scmi.ko
-  BTF [M] drivers/soc/qcom/dcvs/pmu_scmi.ko
+  LD [M]  drivers/soc/qcom/dcvs/pmu_scmi.ko
   LD [M]  drivers/soc/qcom/dcvs/qcom-dcvs.ko
   LD [M]  drivers/soc/qcom/dcvs/qcom-pmu-lib.ko
+  BTF [M] drivers/soc/qcom/dcvs/pmu_scmi.ko
+  LD [M]  drivers/soc/qcom/debug_symbol.ko
   BTF [M] drivers/soc/qcom/dcvs/qcom-dcvs.ko
   BTF [M] drivers/soc/qcom/dcvs/qcom-pmu-lib.ko
-  LD [M]  drivers/soc/qcom/debug_symbol.ko
-  LD [M]  drivers/soc/qcom/dmesg_dumper.ko
   BTF [M] drivers/soc/qcom/debug_symbol.ko
+  LD [M]  drivers/soc/qcom/dmesg_dumper.ko
   BTF [M] drivers/soc/qcom/dmesg_dumper.ko
   LD [M]  drivers/soc/qcom/eud.ko
   LD [M]  drivers/soc/qcom/fsa4480-i2c.ko
+  LD [M]  drivers/soc/qcom/gh_tlmm_vm_mem_access.ko
   BTF [M] drivers/soc/qcom/eud.ko
   BTF [M] drivers/soc/qcom/fsa4480-i2c.ko
-  LD [M]  drivers/soc/qcom/gh_tlmm_vm_mem_access.ko
   BTF [M] drivers/soc/qcom/gh_tlmm_vm_mem_access.ko
   LD [M]  drivers/soc/qcom/glink_pkt.ko
   BTF [M] drivers/soc/qcom/glink_pkt.ko
   LD [M]  drivers/soc/qcom/glink_probe.ko
   LD [M]  drivers/soc/qcom/hung_task_enh.ko
+  LD [M]  drivers/soc/qcom/hwkm.ko
   BTF [M] drivers/soc/qcom/glink_probe.ko
   BTF [M] drivers/soc/qcom/hung_task_enh.ko
-  LD [M]  drivers/soc/qcom/hwkm.ko
   BTF [M] drivers/soc/qcom/hwkm.ko
   LD [M]  drivers/soc/qcom/llcc-qcom.ko
-  BTF [M] drivers/soc/qcom/llcc-qcom.ko
   LD [M]  drivers/soc/qcom/llcc_perfmon.ko
+  BTF [M] drivers/soc/qcom/llcc-qcom.ko
   LD [M]  drivers/soc/qcom/mdt_loader.ko
+  LD [M]  drivers/soc/qcom/mem-hooks.ko
   BTF [M] drivers/soc/qcom/llcc_perfmon.ko
   BTF [M] drivers/soc/qcom/mdt_loader.ko
-  LD [M]  drivers/soc/qcom/mem-hooks.ko
-  LD [M]  drivers/soc/qcom/mem-offline.ko
   BTF [M] drivers/soc/qcom/mem-hooks.ko
-  BTF [M] drivers/soc/qcom/mem-offline.ko
+  LD [M]  drivers/soc/qcom/mem-offline.ko
   LD [M]  drivers/soc/qcom/mem_buf/mem_buf.ko
   LD [M]  drivers/soc/qcom/mem_buf/mem_buf_dev.ko
-  BTF [M] drivers/soc/qcom/mem_buf/mem_buf.ko
-  BTF [M] drivers/soc/qcom/mem_buf/mem_buf_dev.ko
+  BTF [M] drivers/soc/qcom/mem-offline.ko
   LD [M]  drivers/soc/qcom/mem_buf/mem_buf_msgq.ko
-  LD [M]  drivers/soc/qcom/memory_dump_v2.ko
+  BTF [M] drivers/soc/qcom/mem_buf/mem_buf.ko
   BTF [M] drivers/soc/qcom/mem_buf/mem_buf_msgq.ko
-  BTF [M] drivers/soc/qcom/memory_dump_v2.ko
+  BTF [M] drivers/soc/qcom/mem_buf/mem_buf_dev.ko
+  LD [M]  drivers/soc/qcom/memory_dump_v2.ko
   LD [M]  drivers/soc/qcom/memshare/heap_mem_ext_v01.ko
   LD [M]  drivers/soc/qcom/memshare/msm_memshare.ko
+  BTF [M] drivers/soc/qcom/memory_dump_v2.ko
+  LD [M]  drivers/soc/qcom/microdump_collector.ko
   BTF [M] drivers/soc/qcom/memshare/heap_mem_ext_v01.ko
   BTF [M] drivers/soc/qcom/memshare/msm_memshare.ko
-  LD [M]  drivers/soc/qcom/microdump_collector.ko
-  LD [M]  drivers/soc/qcom/minidump.ko
   BTF [M] drivers/soc/qcom/microdump_collector.ko
-  BTF [M] drivers/soc/qcom/minidump.ko
+  LD [M]  drivers/soc/qcom/minidump.ko
   LD [M]  drivers/soc/qcom/msm_performance.ko
   LD [M]  drivers/soc/qcom/msm_show_epoch.ko
+  BTF [M] drivers/soc/qcom/minidump.ko
+  LD [M]  drivers/soc/qcom/panel_event_notifier.ko
   BTF [M] drivers/soc/qcom/msm_performance.ko
   BTF [M] drivers/soc/qcom/msm_show_epoch.ko
-  LD [M]  drivers/soc/qcom/panel_event_notifier.ko
   BTF [M] drivers/soc/qcom/panel_event_notifier.ko
   LD [M]  drivers/soc/qcom/pdr_interface.ko
-  BTF [M] drivers/soc/qcom/pdr_interface.ko
   LD [M]  drivers/soc/qcom/plh_scmi.ko
   LD [M]  drivers/soc/qcom/pmic-glink-debug.ko
+  BTF [M] drivers/soc/qcom/pdr_interface.ko
+  LD [M]  drivers/soc/qcom/pmic-pon-log.ko
   BTF [M] drivers/soc/qcom/plh_scmi.ko
   BTF [M] drivers/soc/qcom/pmic-glink-debug.ko
-  LD [M]  drivers/soc/qcom/pmic-pon-log.ko
   BTF [M] drivers/soc/qcom/pmic-pon-log.ko
   LD [M]  drivers/soc/qcom/pmic_glink.ko
   LD [M]  drivers/soc/qcom/qbt_handler.ko
   BTF [M] drivers/soc/qcom/pmic_glink.ko
-  LD [M]  drivers/soc/qcom/qcom_aoss.ko
   BTF [M] drivers/soc/qcom/qbt_handler.ko
+  LD [M]  drivers/soc/qcom/qcom_aoss.ko
   LD [M]  drivers/soc/qcom/qcom_cpu_vendor_hooks.ko
-  BTF [M] drivers/soc/qcom/qcom_aoss.ko
   BTF [M] drivers/soc/qcom/qcom_cpu_vendor_hooks.ko
+  BTF [M] drivers/soc/qcom/qcom_aoss.ko
   LD [M]  drivers/soc/qcom/qcom_cpuss_sleep_stats.ko
   LD [M]  drivers/soc/qcom/qcom_ipcc.ko
   BTF [M] drivers/soc/qcom/qcom_cpuss_sleep_stats.ko
-  LD [M]  drivers/soc/qcom/qcom_logbuf_vh.ko
   BTF [M] drivers/soc/qcom/qcom_ipcc.ko
+  LD [M]  drivers/soc/qcom/qcom_logbuf_vh.ko
   LD [M]  drivers/soc/qcom/qcom_ramdump.ko
   BTF [M] drivers/soc/qcom/qcom_logbuf_vh.ko
   BTF [M] drivers/soc/qcom/qcom_ramdump.ko
   LD [M]  drivers/soc/qcom/qcom_rimps.ko
   LD [M]  drivers/soc/qcom/qcom_rpmh.ko
   BTF [M] drivers/soc/qcom/qcom_rimps.ko
-  LD [M]  drivers/soc/qcom/qcom_va_minidump.ko
   BTF [M] drivers/soc/qcom/qcom_rpmh.ko
+  LD [M]  drivers/soc/qcom/qcom_va_minidump.ko
   LD [M]  drivers/soc/qcom/qcom_wdt_core.ko
   BTF [M] drivers/soc/qcom/qcom_va_minidump.ko
   BTF [M] drivers/soc/qcom/qcom_wdt_core.ko
@@ -468,92 +473,92 @@
   BTF [M] drivers/soc/qcom/qfprom-sys.ko
   BTF [M] drivers/soc/qcom/qmi_helpers.ko
   LD [M]  drivers/soc/qcom/qsee_ipc_irq_bridge.ko
-  LD [M]  drivers/soc/qcom/qti_battery_debug.ko
   BTF [M] drivers/soc/qcom/qsee_ipc_irq_bridge.ko
+  LD [M]  drivers/soc/qcom/qti_battery_debug.ko
   LD [M]  drivers/soc/qcom/rimps_log.ko
   BTF [M] drivers/soc/qcom/qti_battery_debug.ko
-  LD [M]  drivers/soc/qcom/rq_stats.ko
   BTF [M] drivers/soc/qcom/rimps_log.ko
+  LD [M]  drivers/soc/qcom/rq_stats.ko
   BTF [M] drivers/soc/qcom/rq_stats.ko
   LD [M]  drivers/soc/qcom/secure_buffer.ko
   LD [M]  drivers/soc/qcom/smem.ko
-  BTF [M] drivers/soc/qcom/smem.ko
   BTF [M] drivers/soc/qcom/secure_buffer.ko
   LD [M]  drivers/soc/qcom/smp2p.ko
-  LD [M]  drivers/soc/qcom/smp2p_sleepstate.ko
+  BTF [M] drivers/soc/qcom/smem.ko
   BTF [M] drivers/soc/qcom/smp2p.ko
+  LD [M]  drivers/soc/qcom/smp2p_sleepstate.ko
   BTF [M] drivers/soc/qcom/smp2p_sleepstate.ko
   LD [M]  drivers/soc/qcom/soc_sleep_stats.ko
   LD [M]  drivers/soc/qcom/socinfo.ko
-  BTF [M] drivers/soc/qcom/soc_sleep_stats.ko
-  BTF [M] drivers/soc/qcom/socinfo.ko
   LD [M]  drivers/soc/qcom/spcom.ko
+  BTF [M] drivers/soc/qcom/soc_sleep_stats.ko
   LD [M]  drivers/soc/qcom/sps/sps_drv.ko
+  BTF [M] drivers/soc/qcom/socinfo.ko
   BTF [M] drivers/soc/qcom/spcom.ko
   BTF [M] drivers/soc/qcom/sps/sps_drv.ko
   LD [M]  drivers/soc/qcom/spss_utils.ko
   LD [M]  drivers/soc/qcom/subsystem_sleep_stats.ko
-  BTF [M] drivers/soc/qcom/spss_utils.ko
   LD [M]  drivers/soc/qcom/sys_pm_vx.ko
+  BTF [M] drivers/soc/qcom/spss_utils.ko
   BTF [M] drivers/soc/qcom/subsystem_sleep_stats.ko
-  LD [M]  drivers/soc/qcom/sysmon_subsystem_stats.ko
   BTF [M] drivers/soc/qcom/sys_pm_vx.ko
+  LD [M]  drivers/soc/qcom/sysmon_subsystem_stats.ko
   BTF [M] drivers/soc/qcom/sysmon_subsystem_stats.ko
   LD [M]  drivers/soc/qcom/tmecom/tmecom-intf.ko
   LD [M]  drivers/soc/qcom/usb_bam.ko
-  BTF [M] drivers/soc/qcom/tmecom/tmecom-intf.ko
   LD [M]  drivers/soc/qcom/wcd_usbss_i2c.ko
+  BTF [M] drivers/soc/qcom/tmecom/tmecom-intf.ko
   BTF [M] drivers/soc/qcom/usb_bam.ko
   LD [M]  drivers/spi/spi-msm-geni.ko
   BTF [M] drivers/soc/qcom/wcd_usbss_i2c.ko
   BTF [M] drivers/spi/spi-msm-geni.ko
   LD [M]  drivers/spmi/spmi-pmic-arb-debug.ko
   LD [M]  drivers/spmi/spmi-pmic-arb.ko
-  BTF [M] drivers/spmi/spmi-pmic-arb-debug.ko
   LD [M]  drivers/thermal/qcom/bcl_pmic5.ko
-  LD [M]  drivers/thermal/qcom/bcl_soc.ko
   BTF [M] drivers/spmi/spmi-pmic-arb.ko
+  BTF [M] drivers/spmi/spmi-pmic-arb-debug.ko
   BTF [M] drivers/thermal/qcom/bcl_pmic5.ko
+  LD [M]  drivers/thermal/qcom/bcl_soc.ko
   BTF [M] drivers/thermal/qcom/bcl_soc.ko
   LD [M]  drivers/thermal/qcom/cpu_hotplug.ko
   LD [M]  drivers/thermal/qcom/cpu_voltage_cooling.ko
-  BTF [M] drivers/thermal/qcom/cpu_hotplug.ko
   LD [M]  drivers/thermal/qcom/ddr_cdev.ko
-  LD [M]  drivers/thermal/qcom/max31760_fan.ko
+  BTF [M] drivers/thermal/qcom/cpu_hotplug.ko
   BTF [M] drivers/thermal/qcom/cpu_voltage_cooling.ko
   BTF [M] drivers/thermal/qcom/ddr_cdev.ko
+  LD [M]  drivers/thermal/qcom/max31760_fan.ko
   BTF [M] drivers/thermal/qcom/max31760_fan.ko
   LD [M]  drivers/thermal/qcom/msm_lmh_dcvs.ko
   LD [M]  drivers/thermal/qcom/policy_engine.ko
   LD [M]  drivers/thermal/qcom/qcom-spmi-temp-alarm.ko
   BTF [M] drivers/thermal/qcom/msm_lmh_dcvs.ko
-  LD [M]  drivers/thermal/qcom/qcom_tsens.ko
   BTF [M] drivers/thermal/qcom/policy_engine.ko
   BTF [M] drivers/thermal/qcom/qcom-spmi-temp-alarm.ko
+  LD [M]  drivers/thermal/qcom/qcom_tsens.ko
   BTF [M] drivers/thermal/qcom/qcom_tsens.ko
   LD [M]  drivers/thermal/qcom/qti_cpufreq_cdev.ko
   LD [M]  drivers/thermal/qcom/qti_devfreq_cdev.ko
   LD [M]  drivers/thermal/qcom/qti_qmi_cdev.ko
   BTF [M] drivers/thermal/qcom/qti_cpufreq_cdev.ko
   BTF [M] drivers/thermal/qcom/qti_devfreq_cdev.ko
-  LD [M]  drivers/thermal/qcom/qti_qmi_sensor_v2.ko
   BTF [M] drivers/thermal/qcom/qti_qmi_cdev.ko
+  LD [M]  drivers/thermal/qcom/qti_qmi_sensor_v2.ko
   BTF [M] drivers/thermal/qcom/qti_qmi_sensor_v2.ko
   LD [M]  drivers/thermal/qcom/qti_userspace_cdev.ko
   LD [M]  drivers/thermal/qcom/sdpm_clk.ko
   LD [M]  drivers/thermal/qcom/thermal_minidump.ko
   BTF [M] drivers/thermal/qcom/qti_userspace_cdev.ko
+  BTF [M] drivers/thermal/qcom/thermal_minidump.ko
   BTF [M] drivers/thermal/qcom/sdpm_clk.ko
   LD [M]  drivers/thermal/qcom/thermal_pause.ko
-  BTF [M] drivers/thermal/qcom/thermal_minidump.ko
   BTF [M] drivers/thermal/qcom/thermal_pause.ko
   LD [M]  drivers/tty/hvc/hvc_gunyah.ko
   LD [M]  drivers/tty/serial/msm_geni_serial.ko
   LD [M]  drivers/uio/msm_sharedmem/msm_sharedmem.ko
   BTF [M] drivers/tty/hvc/hvc_gunyah.ko
-  LD [M]  drivers/usb/dwc3/dwc3-msm.ko
   BTF [M] drivers/uio/msm_sharedmem/msm_sharedmem.ko
   BTF [M] drivers/tty/serial/msm_geni_serial.ko
+  LD [M]  drivers/usb/dwc3/dwc3-msm.ko
   BTF [M] drivers/usb/dwc3/dwc3-msm.ko
   LD [M]  drivers/usb/gadget/function/f_fs_ipc_log.ko
   LD [M]  drivers/usb/gadget/function/usb_f_ccid.ko
@@ -562,52 +567,52 @@
   BTF [M] drivers/usb/gadget/function/usb_f_ccid.ko
   BTF [M] drivers/usb/gadget/function/usb_f_cdev.ko
   LD [M]  drivers/usb/gadget/function/usb_f_diag.ko
-  BTF [M] drivers/usb/gadget/function/usb_f_diag.ko
   LD [M]  drivers/usb/gadget/function/usb_f_gsi.ko
+  BTF [M] drivers/usb/gadget/function/usb_f_diag.ko
   LD [M]  drivers/usb/gadget/function/usb_f_qdss.ko
-  LD [M]  drivers/usb/misc/ehset.ko
   BTF [M] drivers/usb/gadget/function/usb_f_gsi.ko
+  LD [M]  drivers/usb/misc/ehset.ko
   BTF [M] drivers/usb/gadget/function/usb_f_qdss.ko
   BTF [M] drivers/usb/misc/ehset.ko
   LD [M]  drivers/usb/mon/usbmon.ko
   BTF [M] drivers/usb/mon/usbmon.ko
   LD [M]  drivers/usb/phy/phy-generic.ko
   LD [M]  drivers/usb/phy/phy-msm-m31-eusb2.ko
-  BTF [M] drivers/usb/phy/phy-generic.ko
-  BTF [M] drivers/usb/phy/phy-msm-m31-eusb2.ko
   LD [M]  drivers/usb/phy/phy-msm-snps-eusb2.ko
+  BTF [M] drivers/usb/phy/phy-msm-m31-eusb2.ko
+  BTF [M] drivers/usb/phy/phy-generic.ko
   BTF [M] drivers/usb/phy/phy-msm-snps-eusb2.ko
   LD [M]  drivers/usb/phy/phy-msm-ssusb-qmp.ko
   LD [M]  drivers/usb/phy/phy-qcom-emu.ko
   LD [M]  drivers/usb/redriver/nb7vpq904m.ko
   BTF [M] drivers/usb/phy/phy-msm-ssusb-qmp.ko
-  BTF [M] drivers/usb/phy/phy-qcom-emu.ko
   LD [M]  drivers/usb/redriver/redriver.ko
+  BTF [M] drivers/usb/phy/phy-qcom-emu.ko
   BTF [M] drivers/usb/redriver/nb7vpq904m.ko
   BTF [M] drivers/usb/redriver/redriver.ko
   LD [M]  drivers/usb/repeater/repeater-i2c-eusb2.ko
   LD [M]  drivers/usb/repeater/repeater-qti-pmic-eusb2.ko
-  BTF [M] drivers/usb/repeater/repeater-i2c-eusb2.ko
   LD [M]  drivers/usb/repeater/repeater.ko
+  LD [M]  drivers/usb/typec/ucsi/ucsi_glink.ko
+  BTF [M] drivers/usb/repeater/repeater-i2c-eusb2.ko
   BTF [M] drivers/usb/repeater/repeater-qti-pmic-eusb2.ko
   BTF [M] drivers/usb/repeater/repeater.ko
-  LD [M]  drivers/usb/typec/ucsi/ucsi_glink.ko
   BTF [M] drivers/usb/typec/ucsi/ucsi_glink.ko
   LD [M]  drivers/virt/gunyah/gh_ctrl.ko
   LD [M]  drivers/virt/gunyah/gh_dbl.ko
   LD [M]  drivers/virt/gunyah/gh_irq_lend.ko
   BTF [M] drivers/virt/gunyah/gh_ctrl.ko
-  BTF [M] drivers/virt/gunyah/gh_dbl.ko
   LD [M]  drivers/virt/gunyah/gh_mem_notifier.ko
+  BTF [M] drivers/virt/gunyah/gh_dbl.ko
   BTF [M] drivers/virt/gunyah/gh_irq_lend.ko
   BTF [M] drivers/virt/gunyah/gh_mem_notifier.ko
   LD [M]  drivers/virt/gunyah/gh_msgq.ko
   LD [M]  drivers/virt/gunyah/gh_rm_drv.ko
-  LD [M]  drivers/virt/gunyah/gh_virt_wdt.ko
   BTF [M] drivers/virt/gunyah/gh_msgq.ko
-  BTF [M] drivers/virt/gunyah/gh_virt_wdt.ko
+  LD [M]  drivers/virt/gunyah/gh_virt_wdt.ko
   LD [M]  drivers/virt/gunyah/gunyah.ko
   BTF [M] drivers/virt/gunyah/gh_rm_drv.ko
+  BTF [M] drivers/virt/gunyah/gh_virt_wdt.ko
   BTF [M] drivers/virt/gunyah/gunyah.ko
   LD [M]  kernel/locking/oplus_locking/oplus_lock_torture.ko
   LD [M]  kernel/locking/oplus_locking/oplus_locking_strategy.ko
@@ -616,65 +621,65 @@
   BTF [M] kernel/locking/oplus_locking/oplus_locking_strategy.ko
   BTF [M] kernel/msm_sysstats.ko
   LD [M]  kernel/oplus_cpu/cpufreq_bouncing/cpufreq_bouncing.ko
-  LD [M]  kernel/oplus_cpu/cpufreq_effiency/cpufreq_effiency.ko
   BTF [M] kernel/oplus_cpu/cpufreq_bouncing/cpufreq_bouncing.ko
+  LD [M]  kernel/oplus_cpu/cpufreq_effiency/cpufreq_effiency.ko
   BTF [M] kernel/oplus_cpu/cpufreq_effiency/cpufreq_effiency.ko
   LD [M]  kernel/oplus_cpu/cpufreq_health/cpufreq_health.ko
   LD [M]  kernel/oplus_cpu/freqqos_monitor/oplus_freqqos_monitor.ko
   BTF [M] kernel/oplus_cpu/cpufreq_health/cpufreq_health.ko
-  BTF [M] kernel/oplus_cpu/freqqos_monitor/oplus_freqqos_monitor.ko
   LD [M]  kernel/oplus_cpu/oplus_omrg/oplus_omrg.ko
-  LD [M]  kernel/oplus_cpu/oplus_overload/task_overload.ko
+  BTF [M] kernel/oplus_cpu/freqqos_monitor/oplus_freqqos_monitor.ko
   BTF [M] kernel/oplus_cpu/oplus_omrg/oplus_omrg.ko
+  LD [M]  kernel/oplus_cpu/oplus_overload/task_overload.ko
   BTF [M] kernel/oplus_cpu/oplus_overload/task_overload.ko
   LD [M]  kernel/oplus_cpu/sched/eas_opt/oplus_bsp_eas_opt.ko
   LD [M]  kernel/oplus_cpu/sched/frame_boost/oplus_bsp_frame_boost.ko
-  BTF [M] kernel/oplus_cpu/sched/eas_opt/oplus_bsp_eas_opt.ko
-  BTF [M] kernel/oplus_cpu/sched/frame_boost/oplus_bsp_frame_boost.ko
   LD [M]  kernel/oplus_cpu/sched/qos_sched/oplus_bsp_qos_sched.ko
-  LD [M]  kernel/oplus_cpu/sched/sched_assist/oplus_bsp_sched_assist.ko
+  BTF [M] kernel/oplus_cpu/sched/eas_opt/oplus_bsp_eas_opt.ko
   BTF [M] kernel/oplus_cpu/sched/qos_sched/oplus_bsp_qos_sched.ko
-  BTF [M] kernel/oplus_cpu/sched/sched_assist/oplus_bsp_sched_assist.ko
+  BTF [M] kernel/oplus_cpu/sched/frame_boost/oplus_bsp_frame_boost.ko
+  LD [M]  kernel/oplus_cpu/sched/sched_assist/oplus_bsp_sched_assist.ko
   LD [M]  kernel/oplus_cpu/sched/sched_info/oplus_schedinfo.ko
+  BTF [M] kernel/oplus_cpu/sched/sched_assist/oplus_bsp_sched_assist.ko
   LD [M]  kernel/oplus_cpu/sched/task_cpustats/oplus_bsp_task_cpustats.ko
-  BTF [M] kernel/oplus_cpu/sched/task_cpustats/oplus_bsp_task_cpustats.ko
   LD [M]  kernel/oplus_cpu/sched/task_load/oplus_bsp_task_load.ko
-  BTF [M] kernel/oplus_cpu/sched/sched_info/oplus_schedinfo.ko
+  BTF [M] kernel/oplus_cpu/sched/task_cpustats/oplus_bsp_task_cpustats.ko
   BTF [M] kernel/oplus_cpu/sched/task_load/oplus_bsp_task_load.ko
+  BTF [M] kernel/oplus_cpu/sched/sched_info/oplus_schedinfo.ko
   LD [M]  kernel/oplus_cpu/sched/task_sched/oplus_bsp_task_sched.ko
-  BTF [M] kernel/oplus_cpu/sched/task_sched/oplus_bsp_task_sched.ko
   LD [M]  kernel/oplus_cpu/thermal/horae_shell_temp.ko
-  LD [M]  kernel/oplus_cpu/thermal/oplus_ipa_thermal.ko
+  BTF [M] kernel/oplus_cpu/sched/task_sched/oplus_bsp_task_sched.ko
   BTF [M] kernel/oplus_cpu/thermal/horae_shell_temp.ko
-  BTF [M] kernel/oplus_cpu/thermal/oplus_ipa_thermal.ko
+  LD [M]  kernel/oplus_cpu/thermal/oplus_ipa_thermal.ko
   LD [M]  kernel/oplus_cpu/uad/cpufreq_uag.ko
-  BTF [M] kernel/oplus_cpu/uad/cpufreq_uag.ko
+  BTF [M] kernel/oplus_cpu/thermal/oplus_ipa_thermal.ko
   LD [M]  kernel/oplus_cpu/uad/ua_cpu_ioctl.ko
-  LD [M]  kernel/oplus_cpu/waker_identify/oplus_bsp_waker_identify.ko
+  BTF [M] kernel/oplus_cpu/uad/cpufreq_uag.ko
   BTF [M] kernel/oplus_cpu/uad/ua_cpu_ioctl.ko
+  LD [M]  kernel/oplus_cpu/waker_identify/oplus_bsp_waker_identify.ko
   LD [M]  kernel/sched/walt/sched-walt.ko
   BTF [M] kernel/oplus_cpu/waker_identify/oplus_bsp_waker_identify.ko
-  BTF [M] kernel/sched/walt/sched-walt.ko
   LD [M]  kernel/trace/qcom_ipc_logging.ko
   LD [M]  lib/kunit/kunit.ko
+  BTF [M] kernel/sched/walt/sched-walt.ko
   BTF [M] kernel/trace/qcom_ipc_logging.ko
-  LD [M]  mm/oplus_mm/async_reclaim_opt/abort_mm_opt/oplus_bsp_abort_mm_opt.ko
   BTF [M] lib/kunit/kunit.ko
+  LD [M]  mm/oplus_mm/async_reclaim_opt/abort_mm_opt/oplus_bsp_abort_mm_opt.ko
   BTF [M] mm/oplus_mm/async_reclaim_opt/abort_mm_opt/oplus_bsp_abort_mm_opt.ko
   LD [M]  mm/oplus_mm/async_reclaim_opt/kshrink_lruvecd/oplus_bsp_kshrink_lruvecd.ko
-  BTF [M] mm/oplus_mm/async_reclaim_opt/kshrink_lruvecd/oplus_bsp_kshrink_lruvecd.ko
   LD [M]  mm/oplus_mm/async_reclaim_opt/kshrink_slabd/oplus_bsp_kshrink_slabd.ko
-  LD [M]  mm/oplus_mm/async_reclaim_opt/pcppages_opt/oplus_bsp_pcppages_opt.ko
+  BTF [M] mm/oplus_mm/async_reclaim_opt/kshrink_lruvecd/oplus_bsp_kshrink_lruvecd.ko
   BTF [M] mm/oplus_mm/async_reclaim_opt/kshrink_slabd/oplus_bsp_kshrink_slabd.ko
+  LD [M]  mm/oplus_mm/async_reclaim_opt/pcppages_opt/oplus_bsp_pcppages_opt.ko
   BTF [M] mm/oplus_mm/async_reclaim_opt/pcppages_opt/oplus_bsp_pcppages_opt.ko
   LD [M]  mm/oplus_mm/dynamic_readahead/oplus_bsp_dynamic_readahead.ko
-  BTF [M] mm/oplus_mm/dynamic_readahead/oplus_bsp_dynamic_readahead.ko
   LD [M]  mm/oplus_mm/hybridswap_zram/oplus_bsp_hybridswap_zram.ko
+  BTF [M] mm/oplus_mm/dynamic_readahead/oplus_bsp_dynamic_readahead.ko
   LD [M]  mm/oplus_mm/hybridswap_zram/zstd/crypto_zstdn.ko
-  LD [M]  mm/oplus_mm/kswapd_opt/oplus_bsp_kswapd_opt.ko
   BTF [M] mm/oplus_mm/hybridswap_zram/oplus_bsp_hybridswap_zram.ko
-  BTF [M] mm/oplus_mm/hybridswap_zram/zstd/crypto_zstdn.ko
+  LD [M]  mm/oplus_mm/kswapd_opt/oplus_bsp_kswapd_opt.ko
   BTF [M] mm/oplus_mm/kswapd_opt/oplus_bsp_kswapd_opt.ko
+  BTF [M] mm/oplus_mm/hybridswap_zram/zstd/crypto_zstdn.ko
   LD [M]  mm/oplus_mm/memload_opt/look_around/oplus_bsp_look_around.ko
   BTF [M] mm/oplus_mm/memload_opt/look_around/oplus_bsp_look_around.ko
   LD [M]  mm/oplus_mm/memload_opt/mapped_protect/oplus_bsp_mapped_protect.ko
@@ -689,9 +694,9 @@
   BTF [M] mm/oplus_mm/thp_zsmalloc/oplus_bsp_zsmalloc.ko
   LD [M]  mm/oplus_mm/uxmem_opt/oplus_bsp_uxmem_opt.ko
   LD [M]  mm/oplus_mm/zram_opt/oplus_bsp_zram_opt.ko
-  BTF [M] mm/oplus_mm/zram_opt/oplus_bsp_zram_opt.ko
   BTF [M] mm/oplus_mm/uxmem_opt/oplus_bsp_uxmem_opt.ko
   LD [M]  net/mac80211/mac80211.ko
+  BTF [M] mm/oplus_mm/zram_opt/oplus_bsp_zram_opt.ko
   LD [M]  net/qrtr/qrtr-gunyah.ko
   BTF [M] net/qrtr/qrtr-gunyah.ko
   LD [M]  net/qrtr/qrtr-mhi.ko
@@ -699,9 +704,9 @@
   BTF [M] net/qrtr/qrtr-mhi.ko
   BTF [M] net/qrtr/qrtr-smd.ko
   LD [M]  net/qrtr/qrtr.ko
+  BTF [M] net/mac80211/mac80211.ko
   BTF [M] net/qrtr/qrtr.ko
   LD [M]  net/wireless/cfg80211.ko
-  BTF [M] net/mac80211/mac80211.ko
   LD [M]  sound/soc/codecs/snd-soc-hdmi-codec.ko
   BTF [M] sound/soc/codecs/snd-soc-hdmi-codec.ko
   BTF [M] net/wireless/cfg80211.ko
@@ -712,8 +717,8 @@
  Installing kernel modules into staging directory
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/arch/arm64/gunyah/gh_arm_drv.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/android/oplus_binder/oplus_binder_strategy.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/base/kernelFwUpdate/oplus_bsp_fw_update.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/base/regmap/qti-regmap-debugfs.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/base/kernelFwUpdate/oplus_bsp_fw_update.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/base/regmap/regmap-spmi.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/bus/mhi/controllers/mhi_cntrl_qcom.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/bus/mhi/devices/mhi_dev_dtr.ko
@@ -759,8 +764,8 @@
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/hwspinlock/qcom_hwspinlock.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/hwtracing/coresight/coresight-csr.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/hwtracing/coresight/coresight-cti.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/hwtracing/coresight/coresight-funnel.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/hwtracing/coresight/coresight-dummy.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/hwtracing/coresight/coresight-funnel.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/hwtracing/coresight/coresight-hwevent.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/hwtracing/coresight/coresight-remote-etm.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/hwtracing/coresight/coresight-replicator.ko
@@ -827,8 +832,8 @@
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/misc/oplus_procs_load/oplus_procs_load.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/misc/qseecom_proxy.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/misc/sim_detect.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/misc/tri_state_key/digital_hall_ic/oplus_ak09970.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/misc/tri_state_key/hall_ic/oplus_bsp_mxm_down.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/misc/tri_state_key/digital_hall_ic/oplus_ak09970.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/misc/tri_state_key/hall_ic/oplus_bsp_mxm_up.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/misc/tri_state_key/ist_hall_ic/oplus_bsp_ist_down.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/misc/tri_state_key/ist_hall_ic/oplus_bsp_ist_up.ko
@@ -843,9 +848,9 @@
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/pci/controller/pci-msm-drv.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/perf/qcom_llcc_pmu.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4-crow.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4-khaje.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4-kalama.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4-kona.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4-khaje.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4-lahaina.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4-waipio.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4.ko
@@ -895,8 +900,8 @@
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/scsi/ufs/ufshcd-crypto-qti.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/slimbus/slim-qcom-ngd-ctrl.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/slimbus/slimbus.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/boot/cmdline_parser/cdt_integrity.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/boot/cmdline_parser/buildvariant.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/boot/cmdline_parser/cdt_integrity.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/boot/cmdline_parser/oplus_ftm_mode.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/boot/cmdline_parser/oplusboot.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/boot/cmdline_parser/shutdown_speed.ko
@@ -937,8 +942,8 @@
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/sensor/oplus_sensor.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/sensor/oplus_sensor_feedback/oplus_bsp_sensor_feedback.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/sensor/oplus_ssc_interact/ssc_interact.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/storage/common/oplus_uprobe/oplus_uprobe.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/storage/common/storage_log/oplus_storage_log.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/storage/common/oplus_uprobe/oplus_uprobe.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/oplus/trackpoint/oplus_trackpoint_report.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/adsp_sleepmon.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/altmode-glink.ko
@@ -947,8 +952,8 @@
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/charger-ulog-glink.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/cmd-db.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/core_hang_detect.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/crypto-qti-hwkm.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/crypto-qti-common.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/crypto-qti-hwkm.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/dcc_v2.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/dcvs/bwmon.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/dcvs/c1dcvs_scmi.ko
@@ -1006,8 +1011,8 @@
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/qmi_helpers.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/qsee_ipc_irq_bridge.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/qti_battery_debug.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/rq_stats.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/rimps_log.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/rq_stats.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/secure_buffer.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/smem.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/drivers/soc/qcom/smp2p.ko
@@ -1086,14 +1091,14 @@
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/oplus_overload/task_overload.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/sched/eas_opt/oplus_bsp_eas_opt.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/sched/frame_boost/oplus_bsp_frame_boost.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/sched/qos_sched/oplus_bsp_qos_sched.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/sched/sched_assist/oplus_bsp_sched_assist.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/sched/qos_sched/oplus_bsp_qos_sched.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/sched/sched_info/oplus_schedinfo.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/sched/task_cpustats/oplus_bsp_task_cpustats.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/sched/task_load/oplus_bsp_task_load.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/sched/task_sched/oplus_bsp_task_sched.ko
-  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/thermal/oplus_ipa_thermal.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/thermal/horae_shell_temp.ko
+  INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/thermal/oplus_ipa_thermal.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/uad/cpufreq_uag.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/uad/ua_cpu_ioctl.ko
   INSTALL /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/kernel/kernel/oplus_cpu/waker_identify/oplus_bsp_waker_identify.ko
@@ -1176,22 +1181,17 @@ cp '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform
 cp '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/dist/zsmalloc.ko'
 ========================================================
  Running extra dist command(s):
-+ eval install_dtbs '&&' prepare_vendor_dlkm '&&' prepare_system_dlkm '&&' generate_extra_cmdline '&&' copy_dist_bins
-++ install_dtbs
-++ local INSTALL_DTBS_PATH=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dtb_staging
-++ local dtb_types=kalama-
-++ '[' 0 -eq 1 ']'
-++ rm -rf /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dtb_staging
-++ cd ./msm-kernel
-++ make 'LLVM=1 DEPMOD=depmod DTC=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/build/kernel/build-tools/path/linux-x86/dtc' O=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel KBUILD_MIXED_TREE=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/dist INSTALL_DTBS_PATH=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dtb_staging DTB_TYPES=kalama- dtbs_install
-make[1]: Entering directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel'
-make[1]: Leaving directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel'
-+++ find /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dtb_staging -type f '(' -name '*.dtb' -o -name '*.dtbo' ')'
-find: '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dtb_staging': No such file or directory
-++ cp /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist
-cp: Needs 2 arguments
++ eval make_dtbo_img '&&' generate_extra_cmdline '&&' copy_dist_bins
+++ make_dtbo_img
+++ mkdir -p /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/
+++ mkdtboimg.py create /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/dtbo.img --page_size=4096 '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/*.dtbo'
+usage: mkdtboimg.py [--id ID] [--rev REV] [--flags FLAGS] [--custom0 CUSTOM0]
+                    [--custom1 CUSTOM1] [--custom2 CUSTOM2]
+                    [--custom3 CUSTOM3]
+                    [dt_file]
+mkdtboimg.py: error: argument dt_file: can't open '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/*.dtbo': [Errno 2] No such file or directory: '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/*.dtbo'
 ++ _reject_err_trap
-++ local ec=1
+++ local ec=2
 ++ trap - ERR
 ++ local REJ_FILES
 +++ find . -name '*.rej'
