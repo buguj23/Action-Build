@@ -1664,37 +1664,52 @@ jobs:
 
       - name: Publish readable Wonder result
         if: always() && github.ref_name == 'wonder-ace2-pro-cloud'
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           publish_file() {
-            local path="$1"
-            local encoded_file json_file sha
+            local source_path="$1"
+            local destination_path="$2"
+            local encoded_file json_file sha attempt
             encoded_file="$(mktemp)"
             json_file="$(mktemp)"
-            base64 -w0 "$path" > "$encoded_file"
-            sha="$(gh api "repos/${{ github.repository }}/contents/$path?ref=${{ github.ref_name }}" --jq .sha 2>/dev/null || true)"
-            if [[ -n "$sha" ]]; then
-              jq -n --rawfile content "$encoded_file" \
-                --arg message "ci: publish Ace 2 Pro Wonder result [skip ci]" \
-                --arg branch "${{ github.ref_name }}" --arg sha "$sha" \
-                '{message:$message,branch:$branch,content:($content|rtrimstr("\n")),sha:$sha}' > "$json_file"
-            else
-              jq -n --rawfile content "$encoded_file" \
-                --arg message "ci: publish Ace 2 Pro Wonder result [skip ci]" \
-                --arg branch "${{ github.ref_name }}" \
-                '{message:$message,branch:$branch,content:($content|rtrimstr("\n"))}' > "$json_file"
-            fi
-            gh api --method PUT "repos/${{ github.repository }}/contents/$path" --input "$json_file" >/dev/null
+            base64 -w0 "$source_path" > "$encoded_file"
+
+            for attempt in 1 2 3; do
+              sha="$(gh api "repos/${{ github.repository }}/contents/$destination_path?ref=${{ github.ref_name }}" --jq .sha 2>/dev/null || true)"
+              if [[ -n "$sha" ]]; then
+                jq -n --rawfile content "$encoded_file" \
+                  --arg message "ci: publish Ace 2 Pro Wonder result [skip ci]" \
+                  --arg branch "${{ github.ref_name }}" --arg sha "$sha" \
+                  '{message:$message,branch:$branch,content:($content|rtrimstr("\n")),sha:$sha}' > "$json_file"
+              else
+                jq -n --rawfile content "$encoded_file" \
+                  --arg message "ci: publish Ace 2 Pro Wonder result [skip ci]" \
+                  --arg branch "${{ github.ref_name }}" \
+                  '{message:$message,branch:$branch,content:($content|rtrimstr("\n"))}' > "$json_file"
+              fi
+
+              if gh api --method PUT \
+                "repos/${{ github.repository }}/contents/$destination_path" \
+                --input "$json_file" >/dev/null; then
+                return 0
+              fi
+              echo "::warning::Publish attempt $attempt failed for $destination_path"
+              sleep "$attempt"
+            done
+            return 1
           }
+
+          publish_root="cloud-results/runs/${{ github.run_id }}"
           for result in \
             cloud-results/latest.md \
             cloud-results/sync-tail.txt \
             cloud-results/apply-tail.txt \
             cloud-results/build-tail.txt \
             cloud-results/errors.txt; do
-            publish_file "$result"
+            publish_file "$result" "$publish_root/$(basename "$result")"
           done
 
       - name: Make AnyKernel3
