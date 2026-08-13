@@ -219,12 +219,8 @@ jobs:
         run: |
           git config --global user.name "Numbersf"
           git config --global user.email "263623064@qq.com"
-          mkdir kernel_workspace && cd kernel_workspace
-          if [[ "${{ github.ref_name }}" == "wonder-ace2-pro-cloud" ]]; then
-            git clone "https://github.com/${{ github.repository }}.git" -b "${{ github.ref_name }}" Action-Build
-          else
-            git clone https://github.com/Numbersf/Action-Build.git -b ReSukiSU
-          fi
+          mkdir -p kernel_workspace/Action-Build
+          git archive --format=tar HEAD | tar -x -C kernel_workspace/Action-Build
 
       - name: Extract Manifest Info
         id: extract_info
