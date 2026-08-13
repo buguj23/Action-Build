@@ -217,10 +217,13 @@ jobs:
 
       - name: Configure Git
         run: |
+          set -euo pipefail
           git config --global user.name "Numbersf"
           git config --global user.email "263623064@qq.com"
-          mkdir -p kernel_workspace/Action-Build
-          git archive --format=tar HEAD | tar -x -C kernel_workspace/Action-Build
+          echo "workspace=$GITHUB_WORKSPACE"
+          test -f "$GITHUB_WORKSPACE/scripts/wonder/apply_ace2_pro_wonder.sh"
+          ls -l "$GITHUB_WORKSPACE/scripts/wonder/apply_ace2_pro_wonder.sh"
+          mkdir -p kernel_workspace
 
       - name: Extract Manifest Info
         id: extract_info
@@ -522,7 +525,7 @@ jobs:
         if: github.ref_name == 'wonder-ace2-pro-cloud' && github.event.inputs.FILE == 'oneplus_ace2_pro_b'
         run: |
           set -euo pipefail
-          WONDER_SCRIPT="$GITHUB_WORKSPACE/kernel_workspace/Action-Build/scripts/wonder/apply_ace2_pro_wonder.sh"
+          WONDER_SCRIPT="$GITHUB_WORKSPACE/scripts/wonder/apply_ace2_pro_wonder.sh"
           test -f "$WONDER_SCRIPT"
           ls -l "$WONDER_SCRIPT"
           bash "$WONDER_SCRIPT" "$GITHUB_WORKSPACE/kernel_workspace"
