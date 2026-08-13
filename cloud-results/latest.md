@@ -1,14 +1,15 @@
 # Ace 2 Pro Wonder cloud build
 
-- UTC: 2026-08-13T10:25:06Z
-- Run: https://github.com/buguj23/Action-Build/actions/runs/31689365527
+- UTC: 2026-08-13T11:03:57Z
+- Run: https://github.com/buguj23/Action-Build/actions/runs/31691823240
 - Branch: wonder-ace2-pro-cloud
 - Input: oneplus_ace2_pro_b
-- Full official build: true
+- Public Kalama GKI build: true
+- Wonder external module gate: required
 - Sync step outcome: success
 - Build step outcome: failure
-- Device-tree changes: none
-- Flashable claim: none
+- Device-tree build and changes: none
+- Boot/flashable package: none
 
 ## Source commits
 - kernel_workspace/kernel_platform/common: f73647f94c84f5eabcaa00500594e152a29a4d38
@@ -16,8 +17,10 @@
 - kernel_workspace: de57127e10013d7269e791b43b8fce6718896e70
 
 ## Located outputs
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/Image 42330624 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/Module.symvers 715442 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/Module.symvers 512223 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/arch/arm64/boot/Image 42330624 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/arch/arm64/crypto/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/arch/arm64/kernel/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/arch/arm64/kernel/probes/modules.order 0 bytes
@@ -741,6 +744,7 @@ kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/sou
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/usr/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/virt/lib/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/virt/modules.order 0 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/dist/Image 42330624 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/staging/lib/modules/5.15.180-android13-wonder-ci/modules.order 56 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/staging/system_dlkm_staging/lib/modules/5.15.180-android13-wonder-ci/modules.order 56 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/Module.symvers 715442 bytes
