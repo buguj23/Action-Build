@@ -1,0 +1,51 @@
+name: Wonder Ace2 Pro Cloud Trigger
+
+on:
+  push:
+    branches:
+      - wonder-ace2-pro-cloud
+    paths-ignore:
+      - cloud-results/**
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: wonder-ace2-pro-dispatch
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch fixed full build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run "Build Kernel OnePlus.yml" \
+            --repo "${{ github.repository }}" \
+            --ref "${{ github.ref_name }}" \
+            -f FILE=oneplus_ace2_pro_b \
+            -f SUSFS_CI=N/A \
+            -f KPM=N/A \
+            -f SUSFS_META=-1 \
+            -f DYNAMIC_REPO=Numbersf \
+            -f BUILD_TIME=-1 \
+            -f KSU_META=main/main/Numbersf/ \
+            -f LZ4_UPDATE=false \
+            -f ZRAM=0/lz4kd/8589934592 \
+            -f SUFFIX=wonder-ci \
+            -f FAST_BUILD=false \
+            -f LSM_BBG=false \
+            -f NETFILTER=false \
+            -f CCM=false \
+            -f UNICODE_BYPASS=false \
+            -f SCHED_HMBIRD=false \
+            -f DROID_SPACES=false \
+            -f RE_KERNEL=false \
+            -f SUSFS_DEV=false \
+            -f SPACE_NOCLEAN=false \
+            -f BUILD_NOCACHE=true

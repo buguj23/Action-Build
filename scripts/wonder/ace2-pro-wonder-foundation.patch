@@ -1,0 +1,306 @@
+diff --git a/kernel_platform/oplus/config/modules.ext.5.15.oplus b/kernel_platform/oplus/config/modules.ext.5.15.oplus
+index 90ccd3e2..1cbae65f 100755
+--- a/kernel_platform/oplus/config/modules.ext.5.15.oplus
++++ b/kernel_platform/oplus/config/modules.ext.5.15.oplus
+@@ -1,6 +1,7 @@
+ ../vendor/oplus/kernel/wifi/oplus_connectivity_sla
+ ../vendor/oplus/kernel/wifi/oplus_connectivity_routerboost
+ ../vendor/oplus/kernel/wifi/oplus_wificapcenter
++../vendor/oplus/kernel/wifi/wonder
+ ../vendor/oplus/kernel/hans
+ ../vendor/oplus/kernel/secureguard/gki2.0/rootguard
+ ../vendor/oplus/secure/common/bsp/drivers/oplus_secure_common
+diff --git a/kernel_platform/oplus/config/modules.ext.oplus b/kernel_platform/oplus/config/modules.ext.oplus
+index f98da792..5242f06c 100755
+--- a/kernel_platform/oplus/config/modules.ext.oplus
++++ b/kernel_platform/oplus/config/modules.ext.oplus
+@@ -11,6 +11,7 @@
+ ../vendor/oplus/kernel/wifi/oplus_connectivity_sla
+ ../vendor/oplus/kernel/wifi/oplus_connectivity_routerboost
+ ../vendor/oplus/kernel/wifi/oplus_wificapcenter
++../vendor/oplus/kernel/wifi/wonder
+ ../vendor/oplus/kernel/cpu/sched/task_load
+ ../vendor/oplus/kernel/cpu/sched/task_cpustats
+ ../vendor/oplus/kernel/cpu/detection
+diff --git a/vendor/qcom/opensource/wlan/platform/cnss2/main.c b/vendor/qcom/opensource/wlan/platform/cnss2/main.c
+index 735041c4..fbeb9925 100755
+--- a/vendor/qcom/opensource/wlan/platform/cnss2/main.c
++++ b/vendor/qcom/opensource/wlan/platform/cnss2/main.c
+@@ -4,6 +4,7 @@
+  * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
++#include <linux/component.h>
+ #include <linux/delay.h>
+ #include <linux/devcoredump.h>
+ #include <linux/elf.h>
+@@ -4860,6 +4861,8 @@ static const struct platform_device_id cnss_platform_id_table[] = {
+ 	{ .name = "mango", .driver_data = MANGO_DEVICE_ID, },
+ 	{ .name = "peach", .driver_data = PEACH_DEVICE_ID, },
+ 	{ .name = "qcaconv", .driver_data = 0, },
++	{ .name = "vendor-wlan-wonder",
++	  .driver_data = WONDER_VENDOR_DEVICE_ID, },
+ 	{ },
+ };
+ 
+@@ -4888,6 +4891,9 @@ static const struct of_device_id cnss_of_match_table[] = {
+ 	{
+ 		.compatible = "qcom,cnss-qca-converged",
+ 		.data = (void *)&cnss_platform_id_table[7]},
++	{
++		.compatible = "qcom,cnss-vendor-wlan-wonder",
++		.data = (void *)&cnss_platform_id_table[8]},
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, cnss_of_match_table);
+@@ -5362,6 +5368,105 @@ int cnss_get_curr_therm_cdev_state(struct device *dev,
+ }
+ EXPORT_SYMBOL(cnss_get_curr_therm_cdev_state);
+ 
++static int cnss_vendor_wonder_comp_bind(struct device *comp,
++					struct device *master,
++					void *master_data)
++{
++	cnss_pr_info("vendor wonder bound to master device %s\n",
++		     dev_name(master));
++	return 0;
++}
++
++static void cnss_vendor_wonder_comp_unbind(struct device *comp,
++					   struct device *master,
++					   void *master_data)
++{
++	cnss_pr_info("vendor wonder unbound from master device\n");
++}
++
++static struct platform_device *wonder_plat_dev;
++static const void *wonder_priv_data;
++static bool wonder_component_added;
++
++static const struct component_ops wonder_comp_ops = {
++	.bind = cnss_vendor_wonder_comp_bind,
++	.unbind = cnss_vendor_wonder_comp_unbind,
++};
++
++static int cnss_add_vendor_wonder_component(void)
++{
++	int ret;
++
++	if (wonder_component_added)
++		return 0;
++
++	platform_set_drvdata(wonder_plat_dev, (void *)wonder_priv_data);
++	ret = component_add(&wonder_plat_dev->dev, &wonder_comp_ops);
++	if (ret) {
++		platform_set_drvdata(wonder_plat_dev, NULL);
++		return ret;
++	}
++
++	wonder_component_added = true;
++	return 0;
++}
++
++static void cnss_del_vendor_wonder_component(void)
++{
++	if (!wonder_component_added)
++		return;
++
++	component_del(&wonder_plat_dev->dev, &wonder_comp_ops);
++	platform_set_drvdata(wonder_plat_dev, NULL);
++	wonder_component_added = false;
++}
++
++int cnss_set_vendor_wonder_priv_data(const void *priv_data)
++{
++	wonder_priv_data = priv_data;
++
++	if (!wonder_plat_dev) {
++		cnss_pr_info("vendor wonder platform device not available\n");
++		return 0;
++	}
++
++	if (wonder_priv_data)
++		return cnss_add_vendor_wonder_component();
++
++	cnss_del_vendor_wonder_component();
++	return 0;
++}
++EXPORT_SYMBOL(cnss_set_vendor_wonder_priv_data);
++
++static int cnss_vendor_wonder_dev_probe(struct platform_device *plat_dev)
++{
++	int ret;
++
++	if (wonder_plat_dev) {
++		cnss_pr_info("wlan vendor wonder device already exists\n");
++		return -EEXIST;
++	}
++
++	cnss_pr_info("wlan vendor wonder device probed\n");
++	wonder_plat_dev = plat_dev;
++	if (wonder_priv_data) {
++		ret = cnss_add_vendor_wonder_component();
++		if (ret)
++			wonder_plat_dev = NULL;
++		return ret;
++	}
++
++	return 0;
++}
++
++static void cnss_vendor_wonder_dev_remove(void)
++{
++	cnss_del_vendor_wonder_component();
++	cnss_pr_info("wlan vendor wonder device removed\n");
++	wonder_plat_dev = NULL;
++	wonder_priv_data = NULL;
++}
++
+ static int cnss_probe(struct platform_device *plat_dev)
+ {
+ 	int ret = 0;
+@@ -5369,6 +5474,17 @@ static int cnss_probe(struct platform_device *plat_dev)
+ 	const struct of_device_id *of_id;
+ 	const struct platform_device_id *device_id;
+ 
++	of_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
++	if (!of_id || !of_id->data) {
++		cnss_pr_err("Failed to find of match device!\n");
++		ret = -ENODEV;
++		goto out;
++	}
++
++	device_id = of_id->data;
++	if (device_id->driver_data == WONDER_VENDOR_DEVICE_ID)
++		return cnss_vendor_wonder_dev_probe(plat_dev);
++
+ 	if (cnss_get_plat_priv(plat_dev)) {
+ 		cnss_pr_err("Driver is already initialized!\n");
+ 		ret = -EEXIST;
+@@ -5379,15 +5495,6 @@ static int cnss_probe(struct platform_device *plat_dev)
+ 	if (ret)
+ 		goto out;
+ 
+-	of_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
+-	if (!of_id || !of_id->data) {
+-		cnss_pr_err("Failed to find of match device!\n");
+-		ret = -ENODEV;
+-		goto out;
+-	}
+-
+-	device_id = of_id->data;
+-
+ 	plat_priv = devm_kzalloc(&plat_dev->dev, sizeof(*plat_priv),
+ 				 GFP_KERNEL);
+ 	if (!plat_priv) {
+@@ -5547,7 +5654,27 @@ out:
+ 
+ static int cnss_remove(struct platform_device *plat_dev)
+ {
+-	struct cnss_plat_data *plat_priv = platform_get_drvdata(plat_dev);
++	struct cnss_plat_data *plat_priv;
++	const struct of_device_id *of_id;
++	const struct platform_device_id *device_id;
++
++	of_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
++	if (!of_id || !of_id->data) {
++		cnss_pr_err("cnss remove failed to find of match device!\n");
++		return -ENODEV;
++	}
++
++	device_id = of_id->data;
++	if (device_id->driver_data == WONDER_VENDOR_DEVICE_ID) {
++		cnss_vendor_wonder_dev_remove();
++		return 0;
++	}
++
++	plat_priv = platform_get_drvdata(plat_dev);
++	if (!plat_priv) {
++		cnss_pr_err("plat priv is null\n");
++		return -ENODEV;
++	}
+ 
+ 	plat_priv->audio_iommu_domain = NULL;
+ 	cnss_genl_exit();
+diff --git a/vendor/qcom/opensource/wlan/platform/cnss_utils/cnss_common.h b/vendor/qcom/opensource/wlan/platform/cnss_utils/cnss_common.h
+index ad3f2290..5a321f1f 100644
+--- a/vendor/qcom/opensource/wlan/platform/cnss_utils/cnss_common.h
++++ b/vendor/qcom/opensource/wlan/platform/cnss_utils/cnss_common.h
+@@ -23,3 +23,4 @@
+ #define WCN6750_DEVICE_ID	0x6750
+ #define WCN6450_DEVICE_ID	0x6450
+ #define ADRASTEA_DEVICE_ID	0xabcd
++#define WONDER_VENDOR_DEVICE_ID	0xfffe
+diff --git a/vendor/qcom/opensource/wlan/platform/inc/cnss2.h b/vendor/qcom/opensource/wlan/platform/inc/cnss2.h
+index d1f212df..e7ab65b7 100644
+--- a/vendor/qcom/opensource/wlan/platform/inc/cnss2.h
++++ b/vendor/qcom/opensource/wlan/platform/inc/cnss2.h
+@@ -458,4 +458,5 @@ extern int cnss_get_curr_therm_cdev_state(struct device *dev,
+ extern int cnss_update_time_sync_period(struct device *dev,
+ 					 uint32_t time_sync_period);
+ extern int cnss_reset_time_sync_period(struct device *dev);
++extern int cnss_set_vendor_wonder_priv_data(const void *priv_data);
+ #endif /* _NET_CNSS2_H */
+diff --git a/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/inc/pld_common.h b/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/inc/pld_common.h
+index e8c32cca..41f0f59e 100644
+--- a/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/inc/pld_common.h
++++ b/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/inc/pld_common.h
+@@ -1404,4 +1404,15 @@ void pld_audio_smmu_unmap(struct device *dev, dma_addr_t iova, size_t size)
+ {
+ }
+ #endif
++
++#ifdef DRIVER_PASSTHRU_MODE
++int pld_set_vendor_wonder_priv_data(struct device *dev,
++				    const void *priv_data);
++#else
++static inline int
++pld_set_vendor_wonder_priv_data(struct device *dev, const void *priv_data)
++{
++	return 0;
++}
++#endif
+ #endif
+diff --git a/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_common.c b/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_common.c
+index 7a52fe62..bd8d22c3 100644
+--- a/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_common.c
++++ b/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_common.c
+@@ -3542,3 +3542,13 @@ void pld_audio_smmu_unmap(struct device *dev, dma_addr_t iova, size_t size)
+ 	}
+ }
+ #endif
++
++#ifdef DRIVER_PASSTHRU_MODE
++int pld_set_vendor_wonder_priv_data(struct device *dev, const void *priv_data)
++{
++	if (pld_get_bus_type(dev) != PLD_BUS_TYPE_PCIE)
++		return -EOPNOTSUPP;
++
++	return pld_pcie_set_vendor_wonder_priv_data(priv_data);
++}
++#endif
+diff --git a/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_pcie.h b/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_pcie.h
+index ea940f5c..8c23b92b 100644
+--- a/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_pcie.h
++++ b/vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_pcie.h
+@@ -155,6 +155,20 @@ static inline int pld_pcie_wlan_pm_control(struct device *dev, bool vote)
+ }
+ #endif
+ 
++#ifndef CONFIG_PLD_PCIE_CNSS
++static inline int
++pld_pcie_set_vendor_wonder_priv_data(const void *priv_data)
++{
++	return -EINVAL;
++}
++#else
++static inline int
++pld_pcie_set_vendor_wonder_priv_data(const void *priv_data)
++{
++	return cnss_set_vendor_wonder_priv_data(priv_data);
++}
++#endif
++
+ #ifndef CONFIG_PLD_PCIE_CNSS
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 19, 0))
+ static inline void *pld_pcie_smmu_get_domain(struct device *dev)

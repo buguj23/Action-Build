@@ -176,6 +176,10 @@ on:
         required: true
         default: false
 
+permissions:
+  actions: write
+  contents: write
+
 jobs:
   build:
     name: ${{ github.event.inputs.FAST_BUILD == 'true' && ' [FAST]' || '' }}${{ contains(github.event.inputs.FILE, '_aosp') && ' [AOSP]' || '' }}${{ github.event.inputs.KPM == 'KPM' && ' [KPM]' || github.event.inputs.KPM == 'KPN' && ' [KPN]' || '' }}${{ github.event.inputs.LSM_BBG == 'true' && ' [BBG]' || '' }}${{ github.event.inputs.SCHED_HMBIRD == 'true' && ' [HMBIRD]' || '' }}${{ github.event.inputs.DROID_SPACES == 'true' && ' [DS]' || '' }}${{ startsWith(github.event.inputs.ZRAM, '1/') && ' [ZRAM]' || '' }}${{ github.event.inputs.RE_KERNEL == 'true' && ' [REKER]' || '' }}${{ github.event.inputs.LZ4_UPDATE == 'true' && ' [LZ4UPD]' || '' }}For ${{ github.event.inputs.FILE }} ${{ github.event.inputs.SUFFIX }}
@@ -189,6 +193,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Enforce Ace 2 Pro Wonder experiment scope
+        if: github.ref_name == 'wonder-ace2-pro-cloud'
+        env:
+          FILE: ${{ github.event.inputs.FILE }}
+          FAST_BUILD: ${{ github.event.inputs.FAST_BUILD }}
+        run: |
+          set -euo pipefail
+          test "$FILE" = "oneplus_ace2_pro_b"
+          test "$FAST_BUILD" = "false"
 
       - name: Maximize Build Space
         if: ${{ github.event.inputs.SPACE_NOCLEAN == 'false' }}
@@ -487,6 +501,12 @@ jobs:
             sed -i 's/check_defconfig = None,/check_defconfig = "disabled",/' kernel_platform/build/kernel/kleaf/common_kernels.bzl
             sed -i 's/if check_defconfig == None:/if False:  # check_defconfig == None:/' kernel_platform/build/kernel/kleaf/common_kernels.bzl
           fi
+
+      - name: Apply Ace 2 Pro Wonder compile experiment
+        if: github.ref_name == 'wonder-ace2-pro-cloud' && github.event.inputs.FILE == 'oneplus_ace2_pro_b'
+        run: |
+          set -euo pipefail
+          bash "$GITHUB_WORKSPACE/scripts/wonder/apply_ace2_pro_wonder.sh" "$GITHUB_WORKSPACE/kernel_workspace"
 
       - name: Kernel Version Handling
         run: |
@@ -1367,16 +1387,105 @@ jobs:
           ccache -s
 
       - name: Fallback to Build Kernel
+        id: wonder_build
         if: ${{ github.event.inputs.FAST_BUILD == 'false' || steps.fast_build.outputs.fallback == 'true' }}
         run: |
-          cd kernel_workspace
-          if [ -f ./kernel_platform/build_with_bazel.py ]; then
-            ./kernel_platform/oplus/bazel/oplus_modules_variant.sh ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
-            ./kernel_platform/build_with_bazel.py -t ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
+          mkdir -p "$GITHUB_WORKSPACE/cloud-results"
+          set -o pipefail
+          {
+            cd kernel_workspace
+            if [ -f ./kernel_platform/build_with_bazel.py ]; then
+              ./kernel_platform/oplus/bazel/oplus_modules_variant.sh ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
+              ./kernel_platform/build_with_bazel.py -t ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
+            else
+              LTO=thin SYSTEM_DLKM_RE_SIGN=0 BUILD_SYSTEM_DLKM=0 KMI_SYMBOL_LIST_STRICT_MODE=0 \
+              ./kernel_platform/oplus/build/oplus_build_kernel.sh ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
+            fi
+          } 2>&1 | tee "$GITHUB_WORKSPACE/cloud-results/build.log"
+
+      - name: Collect Wonder compile evidence
+        if: always() && github.ref_name == 'wonder-ace2-pro-cloud'
+        run: |
+          set +e
+          mkdir -p cloud-results/artifacts
+          {
+            echo "# Ace 2 Pro Wonder cloud build"
+            echo
+            echo "- UTC: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            echo "- Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo "- Branch: ${{ github.ref_name }}"
+            echo "- Input: oneplus_ace2_pro_b"
+            echo "- Full official build: true"
+            echo "- Build step outcome: ${{ steps.wonder_build.outcome }}"
+            echo "- Device-tree changes: none"
+            echo "- Flashable claim: none"
+            echo
+            echo "## Source commits"
+            for source_dir in \
+              kernel_workspace/kernel_platform/common \
+              kernel_workspace/kernel_platform/msm-kernel \
+              kernel_workspace; do
+              if git -C "$source_dir" rev-parse HEAD >/dev/null 2>&1; then
+                echo "- $source_dir: $(git -C "$source_dir" rev-parse HEAD)"
+              fi
+            done
+            echo
+            echo "## Located outputs"
+            find kernel_workspace -type f \
+              \( -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
+              -printf '%p %s bytes\n' 2>/dev/null | sort
+          } > cloud-results/latest.md
+
+          if [ -f cloud-results/build.log ]; then
+            tail -n 1200 cloud-results/build.log > cloud-results/build-tail.txt
+            grep -Ei '(^|[[:space:]])(error:|fatal:|undefined reference|undefined symbol|modpost:|no rule to make target|failed)' \
+              cloud-results/build.log | tail -n 300 > cloud-results/errors.txt || true
           else
-            LTO=thin SYSTEM_DLKM_RE_SIGN=0 BUILD_SYSTEM_DLKM=0 KMI_SYMBOL_LIST_STRICT_MODE=0 \
-            ./kernel_platform/oplus/build/oplus_build_kernel.sh ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
+            echo "Build step did not create build.log." > cloud-results/build-tail.txt
+            cp cloud-results/build-tail.txt cloud-results/errors.txt
           fi
+
+          while IFS= read -r -d '' artifact; do
+            target="cloud-results/artifacts/$artifact"
+            mkdir -p "$(dirname "$target")"
+            cp -a "$artifact" "$target"
+          done < <(
+            find kernel_workspace -type f \
+              \( -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
+              -print0 2>/dev/null
+          )
+
+          {
+            echo
+            echo "## Module metadata"
+            while IFS= read -r -d '' module; do
+              echo
+              echo "### $module"
+              modinfo "$module" 2>&1 || true
+            done < <(find kernel_workspace -type f \
+              \( -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' \) -print0 2>/dev/null)
+          } >> cloud-results/latest.md
+
+      - name: Upload Wonder compile evidence
+        if: always() && github.ref_name == 'wonder-ace2-pro-cloud'
+        uses: actions/upload-artifact@v7
+        with:
+          name: wonder-ace2-pro-evidence-${{ github.run_id }}
+          path: cloud-results/
+          if-no-files-found: warn
+
+      - name: Publish readable Wonder result
+        if: always() && github.ref_name == 'wonder-ace2-pro-cloud'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cloud-results/latest.md cloud-results/build-tail.txt cloud-results/errors.txt
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "ci: publish Ace 2 Pro Wonder build result [skip ci]"
+          git push origin "HEAD:${{ github.ref_name }}"
 
       - name: Make AnyKernel3
         run: |

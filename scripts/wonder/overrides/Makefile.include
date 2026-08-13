@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: GPL-2.0
+#
+# Wonder uses kernel exports and the vendor WLAN callback ABI. Do not carry
+# the SM8850 canoe product's Module.symvers path into the SM8550 build.
+
+KCFLAGS += -I$(ROOT_DIR)/vendor/oplus/kernel/wifi/wonder/include
