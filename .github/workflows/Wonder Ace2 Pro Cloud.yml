@@ -48,4 +48,4 @@ jobs:
             -f RE_KERNEL=false \
             -f SUSFS_DEV=false \
             -f SPACE_NOCLEAN=false \
-            -f BUILD_NOCACHE=true
+            -f BUILD_NOCACHE=false
