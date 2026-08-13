@@ -461,10 +461,13 @@ jobs:
           sudo mv ~/repo /usr/local/bin/repo
 
       - name: Initialize Repo and Sync
+        id: sync_sources
         env:
           FILE: ${{ github.event.inputs.FILE }}
         run: |
           cd kernel_workspace
+          mkdir -p "$GITHUB_WORKSPACE/cloud-results"
+          : > "$GITHUB_WORKSPACE/cloud-results/sync.log"
           mkdir -p .repo/manifests
           cp "$GITHUB_WORKSPACE/.repo/manifests_fallback/${FILE}.xml" ".repo/manifests/${FILE}.xml"
           BASE_URL="https://github.com/${MANIFEST_REPO}/${MANIFEST_REPO_NAME}.git"
@@ -475,7 +478,7 @@ jobs:
           sync_ok=false
           for attempt in 1 2 3; do
             echo "repo sync attempt $attempt/3"
-            if repo sync -c -j"$(nproc)" --no-clone-bundle --no-tags --force-sync; then
+            if repo sync -c -j4 --no-clone-bundle --no-tags --force-sync 2>&1 | tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"; then
               sync_ok=true
               break
             fi
@@ -1429,6 +1432,7 @@ jobs:
             echo "- Branch: ${{ github.ref_name }}"
             echo "- Input: oneplus_ace2_pro_b"
             echo "- Full official build: true"
+            echo "- Sync step outcome: ${{ steps.sync_sources.outcome }}"
             echo "- Build step outcome: ${{ steps.wonder_build.outcome }}"
             echo "- Device-tree changes: none"
             echo "- Flashable claim: none"
@@ -1449,6 +1453,11 @@ jobs:
               -printf '%p %s bytes\n' 2>/dev/null | sort
           } > cloud-results/latest.md
 
+          if [ -f cloud-results/sync.log ]; then
+            tail -n 1200 cloud-results/sync.log > cloud-results/sync-tail.txt
+          else
+            echo "Sync step did not create sync.log." > cloud-results/sync-tail.txt
+          fi
           if [ -f cloud-results/apply.log ]; then
             tail -n 1200 cloud-results/apply.log > cloud-results/apply-tail.txt
           else
@@ -1517,6 +1526,7 @@ jobs:
           }
           for result in \
             cloud-results/latest.md \
+            cloud-results/sync-tail.txt \
             cloud-results/apply-tail.txt \
             cloud-results/build-tail.txt \
             cloud-results/errors.txt; do
