@@ -470,6 +470,7 @@ jobs:
         env:
           FILE: ${{ github.event.inputs.FILE }}
         run: |
+          set -Eeuo pipefail
           cd kernel_workspace
           mkdir -p "$GITHUB_WORKSPACE/cloud-results"
           : > "$GITHUB_WORKSPACE/cloud-results/sync.log"
@@ -477,44 +478,122 @@ jobs:
           cp "$GITHUB_WORKSPACE/.repo/manifests_fallback/${FILE}.xml" ".repo/manifests/${FILE}.xml"
           BASE_URL="https://github.com/${MANIFEST_REPO}/${MANIFEST_REPO_NAME}.git"
 
-          echo "使用$MANIFEST_REPO/$MANIFEST_REPO_NAME($MANIFEST_BRANCH)初始化仓库..."
+          echo "Using ${MANIFEST_REPO}/${MANIFEST_REPO_NAME} (${MANIFEST_BRANCH})"
           repo init -u "$BASE_URL" -b "$MANIFEST_BRANCH" -m "${FILE}.xml" --depth=1 --no-clone-bundle --no-tags
           sed -i -e '/prebuilts\/asuite"/{/ks-kernel\.lnx\.5\.0\.r3-rel/d}' -e '/tools\/tradefederation\/prebuilts"/{/ks-kernel\.lnx\.5\.0\.r3-rel/d}' ".repo/manifests/${FILE}.xml"
+
+          # This large CodeLinaro project otherwise fetches every remote branch.
+          # Exclude it from repo sync and fetch only its declared upstream ref below.
+          CLANG_PROJECT_NAME="kernelplatform/prebuilts-master/clang/host/linux-x86"
+          CLANG_PATH="kernel_platform/prebuilts/clang/host/linux-x86"
+          CLANG_URL="https://git.codelinaro.org/clo/la/kernelplatform/prebuilts-master/clang/host/linux-x86.git"
+          CLANG_REF="refs/heads/ks-kernel.lnx.2.0.r1-rel"
+          CLANG_REMOTE_REF="refs/remotes/origin/ks-kernel.lnx.2.0.r1-rel"
+          CLANG_COMMIT="c420e3ab93e51a2f2ab4f8e8b517463c34a7e8bd"
+          MANIFEST_FILE=".repo/manifests/${FILE}.xml"
+          CLANG_MATCH_COUNT="$(grep -Fc "name=\"$CLANG_PROJECT_NAME\"" "$MANIFEST_FILE" || true)"
+          CLANG_PROJECT_LINE="$(grep -F "name=\"$CLANG_PROJECT_NAME\"" "$MANIFEST_FILE" || true)"
+          if [[ "$CLANG_MATCH_COUNT" != "1" ||
+                "$CLANG_PROJECT_LINE" != *"path=\"$CLANG_PATH\""* ||
+                "$CLANG_PROJECT_LINE" != *"revision=\"$CLANG_COMMIT\""* ||
+                "$CLANG_PROJECT_LINE" != *"upstream=\"$CLANG_REF\""* ]]; then
+            echo "::error::The fixed Clang project no longer matches the audited manifest entry"
+            exit 1
+          fi
+          mkdir -p .repo/local_manifests
+          printf '%s\n' \
+            '<?xml version="1.0" encoding="UTF-8"?>' \
+            '<manifest>' \
+            "  <remove-project name=\"$CLANG_PROJECT_NAME\"/>" \
+            '</manifest>' > .repo/local_manifests/exclude_clang.xml
+          REPO_PATHS="$(repo list -p)"
+          if grep -Fxq "$CLANG_PATH" <<< "$REPO_PATHS"; then
+            echo "::error::Clang project exclusion did not take effect"
+            exit 1
+          fi
+
           sync_ok=false
           for attempt in 1 2 3; do
             echo "repo sync attempt $attempt/3"
-            if repo sync -c -j4 --no-clone-bundle --no-tags --force-sync 2>&1 | tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"; then
+            if repo sync -c -j4 --fail-fast --no-clone-bundle --no-tags --force-sync 2>&1 |
+                tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"; then
               sync_ok=true
               break
             fi
             echo "::warning::repo sync failed on attempt $attempt"
             sleep $((attempt * 15))
           done
-          if [ "$sync_ok" != "true" ]; then
-            echo "repo sync failed after 3 attempts"
+          if [[ "$sync_ok" != "true" ]]; then
+            echo "::error::repo sync failed after 3 attempts"
             exit 1
           fi
 
+          if [[ -e "$CLANG_PATH" ]]; then
+            echo "::error::Unexpected Clang path exists before the pinned checkout"
+            exit 1
+          fi
+          mkdir -p "$(dirname "$CLANG_PATH")"
+          git init -q "$CLANG_PATH"
+          git -C "$CLANG_PATH" remote add origin "$CLANG_URL"
+          clang_sync_ok=false
+          for attempt in 1 2 3; do
+            echo "Pinned Clang fetch attempt $attempt/3"
+            if git -C "$CLANG_PATH" fetch --depth=1 --no-tags origin \
+                "+$CLANG_REF:$CLANG_REMOTE_REF" 2>&1 |
+                tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"; then
+              clang_sync_ok=true
+              break
+            fi
+            echo "::warning::Pinned Clang fetch failed on attempt $attempt"
+            sleep $((attempt * 15))
+          done
+          if [[ "$clang_sync_ok" != "true" ]]; then
+            echo "::error::Pinned Clang fetch failed after 3 attempts"
+            exit 1
+          fi
+          ACTUAL_CLANG_COMMIT="$(git -C "$CLANG_PATH" rev-parse "$CLANG_REMOTE_REF")"
+          if [[ "$ACTUAL_CLANG_COMMIT" != "$CLANG_COMMIT" ]]; then
+            echo "::error::Clang ref resolved to $ACTUAL_CLANG_COMMIT, expected $CLANG_COMMIT"
+            exit 1
+          fi
+          git -C "$CLANG_PATH" checkout --detach "$CLANG_COMMIT"
+          test "$(git -C "$CLANG_PATH" rev-parse HEAD)" = "$CLANG_COMMIT"
+
+          REQUIRED_VENDORSETUP="vendor/oplus/kernel/prebuilt/vendorsetup.sh"
+          if [[ ! -s "$REQUIRED_VENDORSETUP" ]]; then
+            echo "::error::Required source file is missing after sync: $REQUIRED_VENDORSETUP"
+            exit 1
+          fi
+          CLANG_BIN="$(find "$CLANG_PATH" -path '*/bin/clang' -perm -111 -print -quit)"
+          if [[ -z "$CLANG_BIN" || ! -x "$CLANG_BIN" ]]; then
+            echo "::error::No executable clang binary found in pinned checkout"
+            exit 1
+          fi
+          echo "Pinned Clang commit: $CLANG_COMMIT" | tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"
+          "$CLANG_BIN" --version 2>&1 | tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"
+          echo "Verified required source file: $REQUIRED_VENDORSETUP" | tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"
+
           KERNEL_REPOS=""
-          KERNEL_REPOS_PATH=$(find . -type f -name "build.config.msm.common" | head -n 1)
+          KERNEL_REPOS_PATH=$(find . -type f -name "build.config.msm.common" -print -quit)
           if [[ -n "$KERNEL_REPOS_PATH" ]]; then
             KERNEL_REPOS=$(echo "${KERNEL_REPOS_PATH#./}" | cut -d/ -f2)
-            echo "✅ 发现 build.config.msm.common: $KERNEL_REPOS_PATH"
-            echo "✅ KERNEL_REPOS=$KERNEL_REPOS"
+            echo "Found build.config.msm.common: $KERNEL_REPOS_PATH"
+            echo "KERNEL_REPOS=$KERNEL_REPOS"
             echo "KERNEL_REPOS=$KERNEL_REPOS" >> "$GITHUB_ENV"
           else
-            echo "❎ 未找到 build.config.msm.common，可能是天玑清单或纯 Kleaf 构建结构"
+            echo "::error::build.config.msm.common is missing after a successful sync"
+            exit 1
           fi
 
-          # 移除 ABI 保护
+          # Remove ABI protection.
           for dir in kernel_platform/common kernel_platform/$KERNEL_REPOS; do
-            if [ -e "$dir/BUILD.bazel" ]; then
+            if [[ -e "$dir/BUILD.bazel" ]]; then
               sed -i '/^[[:space:]]*"protected_exports_list"[[:space:]]*:[[:space:]]*"android\/abi_gki_protected_exports_aarch64",$/d' "$dir/BUILD.bazel"
             fi
             rm -f "$dir/android/abi_gki_protected_exports_"* 2>/dev/null || echo "No protected exports in $dir"
           done
 
-          # 移除构建审查
+          # Disable defconfig checks used by the original workflow.
           if grep -q 'check_defconfig' kernel_platform/common/build.config.gki; then
             sed -i 's/check_defconfig//' kernel_platform/common/build.config.gki
           fi
