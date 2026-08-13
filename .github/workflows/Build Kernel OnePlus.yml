@@ -1528,8 +1528,9 @@ jobs:
               cat >> build.config <<'WONDER_BUILD_CONFIG'
           # The experiment builds no DT/DTBO and creates no boot or flashable package.
           DT_OVERLAY_SUPPORT=0
+          BUILD_DTBO_IMG=0
           MAKE_GOALS="${MAKE_GOALS//dtbs/}"
-          for hook in install_dtbs prepare_vendor_dlkm prepare_system_dlkm; do
+          for hook in make_dtbo_img install_dtbs prepare_vendor_dlkm prepare_system_dlkm; do
             DIST_CMDS="${DIST_CMDS//$hook && /}"
             DIST_CMDS="${DIST_CMDS// && $hook/}"
             [[ "$DIST_CMDS" == "$hook" ]] && DIST_CMDS=
