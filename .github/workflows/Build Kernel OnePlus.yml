@@ -1436,6 +1436,11 @@ jobs:
               -printf '%p %s bytes\n' 2>/dev/null | sort
           } > cloud-results/latest.md
 
+          if [ -f cloud-results/apply.log ]; then
+            tail -n 1200 cloud-results/apply.log > cloud-results/apply-tail.txt
+          else
+            echo "Apply step did not create apply.log." > cloud-results/apply-tail.txt
+          fi
           if [ -f cloud-results/build.log ]; then
             tail -n 1200 cloud-results/build.log > cloud-results/build-tail.txt
             grep -Ei '(^|[[:space:]])(error:|fatal:|undefined reference|undefined symbol|modpost:|no rule to make target|failed)' \
@@ -1480,7 +1485,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cloud-results/latest.md cloud-results/build-tail.txt cloud-results/errors.txt
+          git add cloud-results/latest.md cloud-results/apply-tail.txt cloud-results/build-tail.txt cloud-results/errors.txt
           if git diff --cached --quiet; then
             exit 0
           fi

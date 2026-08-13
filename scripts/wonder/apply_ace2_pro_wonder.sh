@@ -2,6 +2,9 @@
 set -euo pipefail
 
 workspace_root="${1:-}"
+mkdir -p "${GITHUB_WORKSPACE:-.}/cloud-results"
+exec > >(tee "${GITHUB_WORKSPACE:-.}/cloud-results/apply.log") 2>&1
+trap 'status=$?; echo "apply script exit=$status" >&2; exit "$status"' EXIT
 if [[ -z "$workspace_root" || ! -d "$workspace_root/kernel_platform" ]]; then
   echo "Usage: $0 <synced-kernel-workspace>" >&2
   exit 2
@@ -18,7 +21,8 @@ assert_commit() {
   local repo_dir="$1"
   local expected="$2"
   local actual
-  actual="$(git -C "$repo_dir" rev-parse HEAD)"
+  actual="$(git -C "$repo_dir" rev-parse HEAD 2>&1 || true)"
+  echo "commit check: $repo_dir expected=$expected actual=$actual"
   if [[ "$actual" != "$expected" ]]; then
     echo "Source commit mismatch: $repo_dir" >&2
     echo "expected=$expected" >&2
@@ -31,7 +35,8 @@ assert_blob() {
   local path="$1"
   local expected="$2"
   local actual
-  actual="$(git -C "$vendor_root" rev-parse "HEAD:$path")"
+  actual="$(git -C "$vendor_root" rev-parse "HEAD:$path" 2>&1 || true)"
+  echo "blob check: $path expected=$expected actual=$actual"
   if [[ "$actual" != "$expected" ]]; then
     echo "Source blob mismatch: $path" >&2
     echo "expected=$expected" >&2
@@ -58,16 +63,20 @@ if [[ -e "$vendor_root/vendor/oplus/kernel/wifi/wonder" ]]; then
   exit 22
 fi
 
+echo "checking foundation patch"
 git -C "$vendor_root" apply --check "$script_dir/ace2-pro-wonder-foundation.patch"
+echo "applying foundation patch"
 git -C "$vendor_root" apply "$script_dir/ace2-pro-wonder-foundation.patch"
 
 donor_checkout="$(mktemp -d)"
 trap 'rm -rf "$donor_checkout"' EXIT
-git clone --quiet --filter=blob:none --no-checkout \
+echo "cloning fixed Wonder donor"
+git clone --filter=blob:none --no-checkout \
   https://github.com/OnePlusOSS/android_kernel_modules_and_devicetree_oneplus_sm8850.git \
   "$donor_checkout"
 git -C "$donor_checkout" sparse-checkout set vendor/oplus/kernel/wifi/wonder
-git -C "$donor_checkout" checkout --quiet --detach "$donor_commit"
+git -C "$donor_checkout" checkout --detach "$donor_commit"
+git -C "$donor_checkout" rev-parse HEAD
 
 mkdir -p "$vendor_root/vendor/oplus/kernel/wifi"
 cp -a "$donor_checkout/vendor/oplus/kernel/wifi/wonder" \
