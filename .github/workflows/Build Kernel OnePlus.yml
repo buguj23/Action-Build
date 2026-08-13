@@ -224,6 +224,7 @@ jobs:
           test -f "$GITHUB_WORKSPACE/scripts/wonder/apply_ace2_pro_wonder.sh"
           ls -l "$GITHUB_WORKSPACE/scripts/wonder/apply_ace2_pro_wonder.sh"
           mkdir -p kernel_workspace
+          ln -sfn "$GITHUB_WORKSPACE" kernel_workspace/Action-Build
 
       - name: Extract Manifest Info
         id: extract_info
@@ -1515,20 +1516,23 @@ jobs:
           set -euo pipefail
           publish_file() {
             local path="$1"
-            local content sha
-            content="$(base64 -w0 "$path")"
+            local encoded_file json_file sha
+            encoded_file="$(mktemp)"
+            json_file="$(mktemp)"
+            base64 -w0 "$path" > "$encoded_file"
             sha="$(gh api "repos/${{ github.repository }}/contents/$path?ref=${{ github.ref_name }}" --jq .sha 2>/dev/null || true)"
-            args=(
-              --method PUT
-              "repos/${{ github.repository }}/contents/$path"
-              -f "message=ci: publish Ace 2 Pro Wonder result [skip ci]"
-              -f "branch=${{ github.ref_name }}"
-              -f "content=$content"
-            )
             if [[ -n "$sha" ]]; then
-              args+=(-f "sha=$sha")
+              jq -n --rawfile content "$encoded_file" \
+                --arg message "ci: publish Ace 2 Pro Wonder result [skip ci]" \
+                --arg branch "${{ github.ref_name }}" --arg sha "$sha" \
+                '{message:$message,branch:$branch,content:($content|rtrimstr("\n")),sha:$sha}' > "$json_file"
+            else
+              jq -n --rawfile content "$encoded_file" \
+                --arg message "ci: publish Ace 2 Pro Wonder result [skip ci]" \
+                --arg branch "${{ github.ref_name }}" \
+                '{message:$message,branch:$branch,content:($content|rtrimstr("\n"))}' > "$json_file"
             fi
-            gh api "${args[@]}" >/dev/null
+            gh api --method PUT "repos/${{ github.repository }}/contents/$path" --input "$json_file" >/dev/null
           }
           for result in \
             cloud-results/latest.md \
