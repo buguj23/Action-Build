@@ -1,7 +1,7 @@
 # Ace 2 Pro Wonder cloud build
 
-- UTC: 2026-08-13T12:55:06Z
-- Run: https://github.com/buguj23/Action-Build/actions/runs/31700143255
+- UTC: 2026-08-13T12:56:37Z
+- Run: https://github.com/buguj23/Action-Build/actions/runs/31700143630
 - Branch: wonder-ace2-pro-cloud
 - Input: oneplus_ace2_pro_b
 - Public Kalama GKI build: true
@@ -17,10 +17,10 @@
 - kernel_workspace: de57127e10013d7269e791b43b8fce6718896e70
 
 ## Located outputs
-kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/Image 42330624 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/Image 42883584 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/Module.symvers 715442 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/Module.symvers 512223 bytes
-kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/arch/arm64/boot/Image 42330624 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/arch/arm64/boot/Image 42883584 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/arch/arm64/crypto/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/arch/arm64/kernel/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/arch/arm64/kernel/probes/modules.order 0 bytes
@@ -615,18 +615,21 @@ kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/llc/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/mac802154/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/modules.order 0 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/netfilter/ipset/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/netfilter/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/netlink/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/nfc/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/packet/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/rfkill/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/sched/modules.order 0 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/strparser/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/tipc/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/unix/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/vmw_vsock/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/wireless/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/xdp/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/net/xfrm/modules.order 0 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/security/baseband-guard/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/security/integrity/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/security/keys/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/security/modules.order 0 bytes
@@ -744,9 +747,9 @@ kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/sou
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/usr/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/virt/lib/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/common/virt/modules.order 0 bytes
-kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/dist/Image 42330624 bytes
-kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/staging/lib/modules/5.15.180-android13-wonder-ci/modules.order 56 bytes
-kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/staging/system_dlkm_staging/lib/modules/5.15.180-android13-wonder-ci/modules.order 56 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/dist/Image 42883584 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/staging/lib/modules/5.15.180-android13-2-o-g1ffd3cd306cd8f/modules.order 56 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/staging/system_dlkm_staging/lib/modules/5.15.180-android13-2-o-g1ffd3cd306cd8f/modules.order 56 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/Module.symvers 715442 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/arch/arm64/crypto/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/arch/arm64/gunyah/modules.order 32 bytes
@@ -1610,10 +1613,10 @@ kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/sound/xen/
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/usr/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/virt/lib/modules.order 0 bytes
 kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/msm-kernel/virt/modules.order 0 bytes
-kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-wonder-ci/modules.order 19966 bytes
+kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/staging/lib/modules/5.15.180-g30483bd53804-2-o-g1ffd3cd306cd8f/modules.order 19966 bytes
 kernel_workspace/kernel_platform/out/vendor/oplus/kernel/wifi/wonder/Module.symvers 0 bytes
 kernel_workspace/kernel_platform/out/vendor/oplus/kernel/wifi/wonder/modules.order 48 bytes
-kernel_workspace/kernel_platform/out/vendor/oplus/kernel/wifi/wonder/wonder.ko 3371056 bytes
+kernel_workspace/kernel_platform/out/vendor/oplus/kernel/wifi/wonder/wonder.ko 3371040 bytes
 kernel_workspace/kernel_platform/out/wonder-module/msm-kernel/Module.symvers 715442 bytes
 
 ## Module metadata
@@ -1623,10 +1626,10 @@ filename:       /home/runner/work/Action-Build/Action-Build/kernel_workspace/ker
 description:    Google Wonder Virtual mac80211 Driver
 license:        GPL
 author:         Google Android WiFi Team
-vermagic:       5.15.180-g30483bd53804-wonder-ci SMP preempt mod_unload modversions aarch64
+vermagic:       5.15.180-g30483bd53804-2-o-g1ffd3cd306cd8f SMP preempt mod_unload modversions aarch64
 name:           wonder
 depends:        mac80211,cfg80211
 alias:          of:N*T*Cgoogle,wonder-drv-v1
 alias:          of:N*T*Cgoogle,wonder-drv-v1C*
-scmversion:     gde57127e1001
+scmversion:     g1ffd3cd306cd8f
 parm:           physical_name:Interface name to use (e.g., wlan0, radiotap0, ...) (charp)
