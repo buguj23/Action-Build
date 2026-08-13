@@ -77,6 +77,12 @@ git clone --filter=blob:none --no-checkout \
 git -C "$donor_checkout" sparse-checkout set vendor/oplus/kernel/wifi/wonder
 git -C "$donor_checkout" checkout --detach "$donor_commit"
 git -C "$donor_checkout" rev-parse HEAD
+test "$(git -C "$donor_checkout" rev-parse \
+  HEAD:vendor/oplus/kernel/wifi/wonder/mac80211.c)" = \
+  "1e030ae84a00f311d5f76a58ae06782cea8c05c8"
+test "$(git -C "$donor_checkout" rev-parse \
+  HEAD:vendor/oplus/kernel/wifi/wonder/mac80211_txs.c)" = \
+  "d19633819af0a0f021e86e0b2dbdfa815f25ee87"
 
 mkdir -p "$vendor_root/vendor/oplus/kernel/wifi"
 cp -a "$donor_checkout/vendor/oplus/kernel/wifi/wonder" \
@@ -85,6 +91,13 @@ cp "$script_dir/overrides/Makefile" \
   "$vendor_root/vendor/oplus/kernel/wifi/wonder/Makefile"
 cp "$script_dir/overrides/Makefile.include" \
   "$vendor_root/vendor/oplus/kernel/wifi/wonder/Makefile.include"
+
+echo "checking Wonder Linux 5.15 compatibility patch"
+git -C "$vendor_root" apply --check \
+  "$script_dir/ace2-pro-wonder-linux-5.15.patch"
+echo "applying Wonder Linux 5.15 compatibility patch"
+git -C "$vendor_root" apply \
+  "$script_dir/ace2-pro-wonder-linux-5.15.patch"
 
 changed_paths="$(git -C "$vendor_root" status --short)"
 printf '%s\n' "$changed_paths"

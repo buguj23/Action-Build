@@ -1,0 +1,59 @@
+From: Action-build Wonder cloud port
+Subject: [PATCH] wonder: adapt mac80211 calls to Ace 2 Pro Linux 5.15
+
+The fixed SM8850 donor uses networking APIs introduced after the Ace 2 Pro
+5.15 tree. Use the equivalent fields exposed by the pinned target headers.
+
+No device-tree or physical WLAN data-path source is changed.
+
+diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wifi/wonder/mac80211.c
+--- a/vendor/oplus/kernel/wifi/wonder/mac80211.c
++++ b/vendor/oplus/kernel/wifi/wonder/mac80211.c
+@@ -132,7 +132,7 @@ drop:
+ 	/* Drop Frames */
+ 	if (vdev) {
+-		dev_core_stats_rx_dropped_inc(vdev);
++		vdev->stats.rx_dropped++;
+ 	}
+ 	kfree_skb(skb);
+ 	return RX_HANDLER_CONSUMED;
+@@ -609,7 +609,7 @@ static void wonder_tx(struct ieee80211_hw *hw,
+ 	}
+ 	return;
+ drop:
+-	dev_core_stats_tx_dropped_inc(vdev);
++	vdev->stats.tx_dropped++;
+ 	dev_kfree_skb_any(skb);
+ }
+ 
+@@ -803,7 +803,6 @@ static int wonder_set_mac(struct ieee80211_hw *hw,
+ 
+ 	eth_hw_addr_set(vdev, (void *)pdev->dev_addr);
+ 	memcpy(vif->addr, (void *)pdev->dev_addr, ETH_ALEN);
+-	ether_addr_copy(vif->bss_conf.addr, vif->addr);
+ 	wonder_info("Set physical mac address %pM to virtual interface %s\n",
+ 			 pdev->dev_addr, vdev->name);
+ 	return 0;
+diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211_txs.c b/vendor/oplus/kernel/wifi/wonder/mac80211_txs.c
+--- a/vendor/oplus/kernel/wifi/wonder/mac80211_txs.c
++++ b/vendor/oplus/kernel/wifi/wonder/mac80211_txs.c
+@@ -217,8 +217,7 @@ static int wonder_fill_tx_status(struct ieee80211_tx_status *status,
+ 	info->status.ack_signal = -30;
+ 	info->status.ampdu_len = 1;
+ 	info->status.ampdu_ack_len = 1;
+-	info->status.flags |=
+-			IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
++	info->status.is_valid_ack_signal = true;
+ 	info->status.rates[0].count = 1;
+ 	info->status.rates[0].idx = rate->idx;
+ 	info->status.rates[0].flags = rate->flags;
+@@ -275,8 +274,7 @@ static void wonder_tx_status(struct ieee80211_hw *hw,
+ 	info->status.ack_signal = -30;
+ 	info->status.ampdu_len = 1;
+ 	info->status.ampdu_ack_len = 1;
+-	info->status.flags |=
+-			IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
++	info->status.is_valid_ack_signal = true;
+ 	info->status.rates[0].count = 1;
+ 	info->status.rates[0].idx = rate->idx;
+ 	info->status.rates[0].flags = rate->flags;
