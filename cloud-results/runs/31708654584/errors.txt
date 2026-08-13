@@ -1,0 +1,2 @@
+/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/platform/cnss2/pci.c:831:9: error: implicit declaration of function 'mhi_host_notify_db_disable_trace' [-Werror,-Wimplicit-function-declaration]
+/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/platform/cnss2/pci.c:952:2: error: implicit declaration of function 'qcom_iommu_set_fault_handler_irq' [-Werror,-Wimplicit-function-declaration]
