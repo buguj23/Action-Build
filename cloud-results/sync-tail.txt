@@ -1,0 +1,1 @@
+Sync step did not create sync.log.
