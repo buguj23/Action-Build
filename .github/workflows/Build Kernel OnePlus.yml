@@ -1514,26 +1514,55 @@ jobs:
             cd kernel_workspace
             if [[ "${{ github.ref_name }}" == "wonder-ace2-pro-cloud" ]]; then
               TOPDIR="$(pwd)"
-              export ANDROID_BUILD_TOP="$TOPDIR"
-              export ANDROID_PRODUCT_OUT="$TOPDIR/out/target/product/kalama"
-              export ANDROID_KERNEL_OUT="$TOPDIR/out/ace2-pro-kernel"
-              export TARGET_BOARD_PLATFORM=kalama
-              export CHIPSET_COMPANY=QCOM
-              export OPLUS_VND_BUILD_PLATFORM=SM8550
-              export RECOMPILE_KERNEL=1
-              export DT_OVERLAY_SUPPORT=0
-              mkdir -p "$ANDROID_PRODUCT_OUT" "$ANDROID_KERNEL_OUT"
-              test -x kernel_platform/build/android/prepare_vendor.sh
-              test -s kernel_platform/oplus/config/modules.ext.5.15.oplus
+              KP_ROOT="$TOPDIR/kernel_platform"
+              KP_OUT="$KP_ROOT/out/msm-kernel-kalama-gki"
+              cd "$KP_ROOT"
+              test -x build/brunch
+              test -x build/build.sh
+              test -x build/build_module.sh
+              test -s oplus/config/modules.ext.5.15.oplus
               grep -Fxq '../vendor/oplus/kernel/wifi/wonder' \
-                kernel_platform/oplus/config/modules.ext.5.15.oplus
-              LTO=thin SYSTEM_DLKM_RE_SIGN=0 BUILD_SYSTEM_DLKM=0 \
-                KMI_SYMBOL_LIST_STRICT_MODE=0 \
-                kernel_platform/build/android/prepare_vendor.sh \
-                kalama gki "$TOPDIR/kernel_platform/out/msm-kernel-kalama-gki"
-              WONDER_MODULE="$(find "$TOPDIR" -type f -name wonder.ko -print -quit)"
+                oplus/config/modules.ext.5.15.oplus
+
+              ./build/brunch kalama gki
+              cat >> build.config <<'WONDER_BUILD_CONFIG'
+# The experiment builds no DT/DTBO and creates no boot or flashable package.
+DT_OVERLAY_SUPPORT=0
+MAKE_GOALS="${MAKE_GOALS//dtbs/}"
+for hook in install_dtbs prepare_vendor_dlkm prepare_system_dlkm; do
+  DIST_CMDS="${DIST_CMDS//$hook && /}"
+  DIST_CMDS="${DIST_CMDS// && $hook/}"
+  [[ "$DIST_CMDS" == "$hook" ]] && DIST_CMDS=
+done
+BUILD_BOOT_IMG=
+BUILD_INIT_BOOT_IMG=
+BUILD_VENDOR_DLKM=0
+PREPARE_SYSTEM_DLKM=0
+BUILD_INITRAMFS=0
+ABL_SRC=
+WONDER_BUILD_CONFIG
+              echo "Generated public Kalama GKI build.config without DT/DTBO goals:"
+              cat build.config
+
+              OUT_DIR="$KP_OUT" LTO=thin SYSTEM_DLKM_RE_SIGN=0 \
+                BUILD_SYSTEM_DLKM=0 KMI_SYMBOL_LIST_STRICT_MODE=0 \
+                ./build/build.sh
+              KERNEL_IMAGE="$KP_OUT/dist/Image"
+              KERNEL_SYMVERS="$KP_OUT/dist/Module.symvers"
+              test -s "$KERNEL_IMAGE"
+              test -s "$KERNEL_SYMVERS"
+              echo "Verified public Kalama GKI Image: $KERNEL_IMAGE"
+              echo "Verified device Module.symvers: $KERNEL_SYMVERS"
+
+              WONDER_OUT="$KP_ROOT/out/wonder-module"
+              EXT_MODULES="../vendor/oplus/kernel/wifi/wonder" \
+                KERNEL_KIT="$KP_OUT/dist" \
+                OUT_DIR="$WONDER_OUT" \
+                KBUILD_OPTIONS="CONFIG_WONDER_SUPPORT=m CHIPSET_COMPANY=QCOM OPLUS_VND_BUILD_PLATFORM=SM8550" \
+                ./build/build_module.sh
+              WONDER_MODULE="$(find "$WONDER_OUT" -type f -name wonder.ko -print -quit)"
               if [[ -z "$WONDER_MODULE" || ! -s "$WONDER_MODULE" ]]; then
-                echo "::error::Public prepare_vendor build completed without wonder.ko"
+                echo "::error::Public build_module.sh completed without wonder.ko"
                 exit 1
               fi
               echo "Verified Wonder module: $WONDER_MODULE"
@@ -1558,11 +1587,12 @@ jobs:
             echo "- Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             echo "- Branch: ${{ github.ref_name }}"
             echo "- Input: oneplus_ace2_pro_b"
-            echo "- Full official build: true"
+            echo "- Public Kalama GKI build: true"
+            echo "- Wonder external module gate: required"
             echo "- Sync step outcome: ${{ steps.sync_sources.outcome }}"
             echo "- Build step outcome: ${{ steps.wonder_build.outcome }}"
-            echo "- Device-tree changes: none"
-            echo "- Flashable claim: none"
+            echo "- Device-tree build and changes: none"
+            echo "- Boot/flashable package: none"
             echo
             echo "## Source commits"
             for source_dir in \
@@ -1576,7 +1606,7 @@ jobs:
             echo
             echo "## Located outputs"
             find kernel_workspace -type f \
-              \( -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
+              \( -name 'Image' -o -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
               -printf '%p %s bytes\n' 2>/dev/null | sort
           } > cloud-results/latest.md
 
@@ -1605,7 +1635,7 @@ jobs:
             cp -a "$artifact" "$target"
           done < <(
             find kernel_workspace -type f \
-              \( -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
+              \( -name 'Image' -o -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
               -print0 2>/dev/null
           )
 
