@@ -559,9 +559,25 @@ jobs:
           git -C "$CLANG_PATH" checkout --detach "$CLANG_COMMIT"
           test "$(git -C "$CLANG_PATH" rev-parse HEAD)" = "$CLANG_COMMIT"
 
-          REQUIRED_VENDORSETUP="vendor/oplus/kernel/prebuilt/vendorsetup.sh"
-          if [[ ! -s "$REQUIRED_VENDORSETUP" ]]; then
-            echo "::error::Required source file is missing after sync: $REQUIRED_VENDORSETUP"
+          REQUIRED_BUILD_FILES=(
+            kernel_platform/build/android/prepare_vendor.sh
+            kernel_platform/build/build.sh
+            kernel_platform/build/build_module.sh
+            kernel_platform/msm-kernel/build.config.msm.kalama
+            kernel_platform/oplus/config/modules.ext.5.15.oplus
+          )
+          for required_file in "${REQUIRED_BUILD_FILES[@]}"; do
+            if [[ ! -s "$required_file" ]]; then
+              echo "::error::Required public build file is missing after sync: $required_file"
+              exit 1
+            fi
+            echo "Verified public build file: $required_file" |
+              tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"
+          done
+          if [[ ! -x kernel_platform/build/android/prepare_vendor.sh ||
+                ! -x kernel_platform/build/build.sh ||
+                ! -x kernel_platform/build/build_module.sh ]]; then
+            echo "::error::One or more public build entry points are not executable"
             exit 1
           fi
           CLANG_BIN="$(find "$CLANG_PATH" -path '*/bin/clang' -perm -111 -print -quit)"
@@ -571,7 +587,6 @@ jobs:
           fi
           echo "Pinned Clang commit: $CLANG_COMMIT" | tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"
           "$CLANG_BIN" --version 2>&1 | tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"
-          echo "Verified required source file: $REQUIRED_VENDORSETUP" | tee -a "$GITHUB_WORKSPACE/cloud-results/sync.log"
 
           KERNEL_REPOS=""
           KERNEL_REPOS_PATH=$(find . -type f -name "build.config.msm.common" -print -quit)
@@ -1494,15 +1509,40 @@ jobs:
         if: ${{ github.event.inputs.FAST_BUILD == 'false' || steps.fast_build.outputs.fallback == 'true' }}
         run: |
           mkdir -p "$GITHUB_WORKSPACE/cloud-results"
-          set -o pipefail
+          set -Eeuo pipefail
           {
             cd kernel_workspace
-            if [ -f ./kernel_platform/build_with_bazel.py ]; then
+            if [[ "${{ github.ref_name }}" == "wonder-ace2-pro-cloud" ]]; then
+              TOPDIR="$(pwd)"
+              export ANDROID_BUILD_TOP="$TOPDIR"
+              export ANDROID_PRODUCT_OUT="$TOPDIR/out/target/product/kalama"
+              export ANDROID_KERNEL_OUT="$TOPDIR/out/ace2-pro-kernel"
+              export TARGET_BOARD_PLATFORM=kalama
+              export CHIPSET_COMPANY=QCOM
+              export OPLUS_VND_BUILD_PLATFORM=SM8550
+              export RECOMPILE_KERNEL=1
+              export DT_OVERLAY_SUPPORT=0
+              mkdir -p "$ANDROID_PRODUCT_OUT" "$ANDROID_KERNEL_OUT"
+              test -x kernel_platform/build/android/prepare_vendor.sh
+              test -s kernel_platform/oplus/config/modules.ext.5.15.oplus
+              grep -Fxq '../vendor/oplus/kernel/wifi/wonder' \
+                kernel_platform/oplus/config/modules.ext.5.15.oplus
+              LTO=thin SYSTEM_DLKM_RE_SIGN=0 BUILD_SYSTEM_DLKM=0 \
+                KMI_SYMBOL_LIST_STRICT_MODE=0 \
+                kernel_platform/build/android/prepare_vendor.sh \
+                kalama gki "$TOPDIR/kernel_platform/out/msm-kernel-kalama-gki"
+              WONDER_MODULE="$(find "$TOPDIR" -type f -name wonder.ko -print -quit)"
+              if [[ -z "$WONDER_MODULE" || ! -s "$WONDER_MODULE" ]]; then
+                echo "::error::Public prepare_vendor build completed without wonder.ko"
+                exit 1
+              fi
+              echo "Verified Wonder module: $WONDER_MODULE"
+            elif [[ -f ./kernel_platform/build_with_bazel.py ]]; then
               ./kernel_platform/oplus/bazel/oplus_modules_variant.sh ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
               ./kernel_platform/build_with_bazel.py -t ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
             else
               LTO=thin SYSTEM_DLKM_RE_SIGN=0 BUILD_SYSTEM_DLKM=0 KMI_SYMBOL_LIST_STRICT_MODE=0 \
-              ./kernel_platform/oplus/build/oplus_build_kernel.sh ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
+                ./kernel_platform/oplus/build/oplus_build_kernel.sh ${{ env.CPUD }} ${{ env.BUILD_METHOD }}
             fi
           } 2>&1 | tee "$GITHUB_WORKSPACE/cloud-results/build.log"
 
@@ -1624,6 +1664,7 @@ jobs:
           done
 
       - name: Make AnyKernel3
+        if: github.ref_name != 'wonder-ace2-pro-cloud'
         run: |
           git clone https://github.com/Numbersf/AnyKernel3 --depth=1
           rm -rf ./AnyKernel3/.git
@@ -1652,7 +1693,7 @@ jobs:
           fi
 
       - name: Apply KPX and Replace Image
-        if: ${{ github.event.inputs.KPM != 'N/A' }}
+        if: ${{ github.ref_name != 'wonder-ace2-pro-cloud' && github.event.inputs.KPM != 'N/A' }}
         run: |
           KPM_DIR="${GITHUB_WORKSPACE}/kernel_workspace/SukiSU_patch/kpm"
           # KPM_DIR="${GITHUB_WORKSPACE}/kernel_workspace/Action-Build/patches/kpm"
@@ -1672,7 +1713,7 @@ jobs:
           cp Image "${GITHUB_WORKSPACE}/AnyKernel3/Image"
 
       - name: Download Latest SUSFS Module from CI
-        if: ${{ github.event.inputs.SUSFS_CI == 'CI' && github.event.inputs.SUSFS_META != '-1' }}
+        if: ${{ github.ref_name != 'wonder-ace2-pro-cloud' && github.event.inputs.SUSFS_CI == 'CI' && github.event.inputs.SUSFS_META != '-1' }}
         continue-on-error: true
         run: |
           LATEST_RUN_ID=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
@@ -1692,13 +1733,14 @@ jobs:
           fi
 
       - name: Download Latest SUSFS Module from Release
-        if: ${{ github.event.inputs.SUSFS_CI == 'Release' && github.event.inputs.SUSFS_META != '-1' }}
+        if: ${{ github.ref_name != 'wonder-ace2-pro-cloud' && github.event.inputs.SUSFS_CI == 'Release' && github.event.inputs.SUSFS_META != '-1' }}
         continue-on-error: true
         run: |
           wget -O ksu_module_susfs_1.5.2+_Release.zip https://github.com/sidex15/ksu_module_susfs/releases/latest/download/ksu_module_susfs_1.5.2+.zip
           cp ksu_module_susfs_1.5.2+_Release.zip ./AnyKernel3/
 
       - name: Download Latest ReSukiSU APK from CI
+        if: github.ref_name != 'wonder-ace2-pro-cloud'
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -1731,18 +1773,20 @@ jobs:
           fi
 
       - name: Set zip Suffix
+        if: github.ref_name != 'wonder-ace2-pro-cloud'
         id: suffix
         run: |
           echo "value=${{ env.ZRAM_ALGO_U && format('_{0}', env.ZRAM_ALGO_U) || '' }}${{ github.event.inputs.KPM == 'KPM' && '_KPM' || github.event.inputs.KPM == 'KPN' && '_KPN' || '' }}${{ github.event.inputs.LSM_BBG == 'true' && '_BBG' || '' }}_ILH${{ github.event.inputs.SCHED_HMBIRD== 'true' && '_HMBIRD' || '' }}${{ github.event.inputs.DROID_SPACES== 'true' && '_DS' || '' }}${{ github.event.inputs.RE_KERNEL == 'true' && '_REKER' || '' }}${{ github.event.inputs.LZ4_UPDATE == 'true' && '_LZ4UPD' || '' }}" >> $GITHUB_OUTPUT
 
       - name: Upload AnyKernel3
+        if: github.ref_name != 'wonder-ace2-pro-cloud'
         uses: actions/upload-artifact@v7
         with:
           name: AnyKernel3_ReSukiSU_${{ env.KSUVER }}_${{ steps.extract_info.outputs.value }}(${{ env.CKERNEL_VERSION }})${{ steps.suffix.outputs.value }}
           path: ./AnyKernel3/*
 
       - name: Extract and Process ZRAM Module
-        if: startsWith(github.event.inputs.ZRAM, '1/')
+        if: ${{ github.ref_name != 'wonder-ace2-pro-cloud' && startsWith(github.event.inputs.ZRAM, '1/') }}
         id: zram_find
         run: |
           set -e
@@ -1795,7 +1839,7 @@ jobs:
           fi
 
       - name: Upload ZRAM Module
-        if: startsWith(github.event.inputs.ZRAM, '1/') && steps.zram_find.outputs.upload != 'false'
+        if: ${{ github.ref_name != 'wonder-ace2-pro-cloud' && startsWith(github.event.inputs.ZRAM, '1/') && steps.zram_find.outputs.upload != 'false' }}
         uses: actions/upload-artifact@v7
         with:
           name: ZRAM-Module_${{ env.KERNEL_VERSION }}_${{ steps.extract_info.outputs.value }}
