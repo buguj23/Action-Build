@@ -1,1 +1,9 @@
-Sync step did not create sync.log.
+error: Unable to fully sync the tree
+error: Downloading network changes failed.
+Failing repos (network):
+kernel_platform/prebuilts/clang/host/linux-x86
+Try re-running with "-j1 --fail-fast" to exit at the first error.
+================================================================================
+Repo command failed due to the following `SyncError` errors:
+GitCommandError: 'fetch --no-auto-gc --quiet clo-la --recurse-submodules=no --no-tags +refs/heads/*:refs/remotes/clo-la/* +refs/heads/ks-kernel.lnx.2.0.r1-rel:refs/remotes/clo-la/ks-kernel.lnx.2.0.r1-rel' on kernelplatform/prebuilts-master/clang/host/linux-x86 failed
+stdout: remote: The git server, Gitaly, is not available at this time. Please contact your administrator.
