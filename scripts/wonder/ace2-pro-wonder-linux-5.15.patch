@@ -9,7 +9,7 @@ No device-tree or physical WLAN data-path source is changed.
 diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wifi/wonder/mac80211.c
 --- a/vendor/oplus/kernel/wifi/wonder/mac80211.c
 +++ b/vendor/oplus/kernel/wifi/wonder/mac80211.c
-@@ -132,7 +132,7 @@ drop:
+@@ -132,6 +132,6 @@ drop:
  	/* Drop Frames */
  	if (vdev) {
 -		dev_core_stats_rx_dropped_inc(vdev);
