@@ -70,11 +70,17 @@ git -C "$vendor_root" apply "$script_dir/ace2-pro-wonder-foundation.patch"
 
 donor_checkout="$(mktemp -d)"
 trap 'rm -rf "$donor_checkout"' EXIT
-echo "cloning fixed Wonder donor"
+echo "cloning fixed Wonder/Wondertap donor $donor_commit"
 git clone --filter=blob:none --no-checkout \
   https://github.com/OnePlusOSS/android_kernel_modules_and_devicetree_oneplus_sm8850.git \
   "$donor_checkout"
-git -C "$donor_checkout" sparse-checkout set vendor/oplus/kernel/wifi/wonder
+git -C "$donor_checkout" sparse-checkout set \
+  vendor/oplus/kernel/wifi/wonder \
+  vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c \
+  vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h \
+  vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_wondertap.h \
+  vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/i_qdf_wondertap.h \
+  vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/wondertap.h
 git -C "$donor_checkout" checkout --detach "$donor_commit"
 git -C "$donor_checkout" rev-parse HEAD
 test "$(git -C "$donor_checkout" rev-parse \
@@ -83,6 +89,7 @@ test "$(git -C "$donor_checkout" rev-parse \
 test "$(git -C "$donor_checkout" rev-parse \
   HEAD:vendor/oplus/kernel/wifi/wonder/mac80211_txs.c)" = \
   "d19633819af0a0f021e86e0b2dbdfa815f25ee87"
+test -f "$donor_checkout/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c"
 
 mkdir -p "$vendor_root/vendor/oplus/kernel/wifi"
 cp -a "$donor_checkout/vendor/oplus/kernel/wifi/wonder" \
@@ -99,6 +106,227 @@ echo "applying Wonder Linux 5.15 compatibility patch"
 git -C "$vendor_root" apply \
   "$script_dir/ace2-pro-wonder-linux-5.15.patch"
 
+echo "=== stage-3: import Kiwi Wondertap provider sources from donor ==="
+cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c" \
+  "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c"
+cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h" \
+  "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h"
+cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_wondertap.h" \
+  "$vendor_root/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_wondertap.h"
+mkdir -p "$vendor_root/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src"
+cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/i_qdf_wondertap.h" \
+  "$vendor_root/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/i_qdf_wondertap.h"
+cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/wondertap.h" \
+  "$vendor_root/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/wondertap.h"
+
+echo "=== stage-3: enable PASSTHRU/WONDER in Ace2 Pro kiwi tree ==="
+python3 - <<'PY'
+from pathlib import Path
+import re
+root = Path(r"""$vendor_root""")
+# fix path - will be replaced
+PY
+# The above heredoc can't expand vendor_root inside single quotes properly for python path.
+# Use env var:
+export VENDOR_ROOT="$vendor_root"
+python3 <<'PY'
+from pathlib import Path
+import re, os
+root = Path(os.environ["VENDOR_ROOT"])
+
+# --- qdf_types.h ---
+p = root / "vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_types.h"
+t = p.read_text()
+if "QDF_PASSTHRU_MODE" not in t:
+    t = t.replace(
+        " * @QDF_NAN_DISC_MODE: NAN Discovery device mode\n * @QDF_MAX_NO_OF_MODE: Max place holder",
+        " * @QDF_NAN_DISC_MODE: NAN Discovery device mode\n * @QDF_PASSTHRU_MODE: Passthrough / Wonder mode\n * @QDF_MAX_NO_OF_MODE: Max place holder",
+    )
+    t = t.replace(
+        "\tQDF_NAN_DISC_MODE,\n\n\t/* Add new OP Modes to qdf_opmode_str as well */",
+        "\tQDF_NAN_DISC_MODE,\n\tQDF_PASSTHRU_MODE,\n\n\t/* Add new OP Modes to qdf_opmode_str as well */",
+    )
+    # also handle spaces-only indentation variants
+    if "QDF_PASSTHRU_MODE" not in t:
+        t = t.replace(
+            "QDF_NAN_DISC_MODE,\n\n/* Add new OP Modes to qdf_opmode_str as well */",
+            "QDF_NAN_DISC_MODE,\nQDF_PASSTHRU_MODE,\n\n/* Add new OP Modes to qdf_opmode_str as well */",
+        )
+    if "QDF_PASSTHRU_MODE" not in t:
+        raise SystemExit("failed to patch qdf_types.h for QDF_PASSTHRU_MODE")
+    p.write_text(t)
+    print("patched qdf_types.h")
+else:
+    print("qdf_types.h already has PASSTHRU")
+
+# --- qdf_types.c ---
+p = root / "vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/src/qdf_types.c"
+t = p.read_text()
+if "QDF_PASSTHRU_MODE" not in t:
+    needle = "\tcase QDF_NAN_DISC_MODE:\n\t\treturn \"NAN\";"
+    if needle not in t:
+        needle = "case QDF_NAN_DISC_MODE:\n\t\treturn \"NAN\";"
+    if "return \"NAN\";" not in t:
+        raise SystemExit("cannot find NAN case in qdf_types.c")
+    t = t.replace(
+        "case QDF_NAN_DISC_MODE:\n\t\treturn \"NAN\";",
+        "case QDF_NAN_DISC_MODE:\n\t\treturn \"NAN\";\n\tcase QDF_PASSTHRU_MODE:\n\t\treturn \"PASSTHRU\";",
+        1,
+    )
+    p.write_text(t)
+    print("patched qdf_types.c")
+else:
+    print("qdf_types.c already has PASSTHRU")
+
+# --- Kconfig ---
+p = root / "vendor/qcom/opensource/wlan/qcacld-3.0/Kconfig"
+t = p.read_text()
+if "config DRIVER_PASSTHRU_MODE" not in t:
+    if "endif # QCA_CLD_WLAN" not in t:
+        raise SystemExit("Kconfig missing endif marker")
+    block = '''
+config DRIVER_PASSTHRU_MODE
+	bool "Enable Driver Passthrough mode"
+	default n
+	help
+	  Enable QCA driver passthrough mode used by Wonder/Wondertap.
+
+config WONDER_SUPPORT
+	bool "Enable Wonder support"
+	depends on DRIVER_PASSTHRU_MODE
+	default y
+	help
+	  Build HDD Wondertap provider ops for Google Wonder Soft-MAC.
+
+'''
+    t = t.replace("endif # QCA_CLD_WLAN", block + "endif # QCA_CLD_WLAN", 1)
+    p.write_text(t)
+    print("patched Kconfig")
+else:
+    print("Kconfig already has DRIVER_PASSTHRU_MODE")
+
+# --- Kbuild ---
+p = root / "vendor/qcom/opensource/wlan/qcacld-3.0/Kbuild"
+t = p.read_text()
+if "wlan_hdd_wondertap.o" not in t:
+    marker = "$(call add-wlan-objs,hdd,$(HDD_OBJS))"
+    insert = '''ifeq ($(CONFIG_DRIVER_PASSTHRU_MODE), y)
+ifeq ($(CONFIG_WONDER_SUPPORT), y)
+HDD_OBJS += $(HDD_SRC_DIR)/wlan_hdd_wondertap.o
+endif
+endif
+
+'''
+    if marker not in t:
+        raise SystemExit("Kbuild missing add-wlan-objs hdd marker")
+    t = t.replace(marker, insert + marker, 1)
+    p.write_text(t)
+    print("patched Kbuild HDD_OBJS")
+else:
+    print("Kbuild already has wondertap.o")
+
+t = p.read_text()
+if "ccflags-$(CONFIG_DRIVER_PASSTHRU_MODE)" not in t:
+    # append near GET_DRIVER_MODE ccflags if present else end of file
+    line = "ccflags-$(CONFIG_GET_DRIVER_MODE) += -DFEATURE_GET_DRIVER_MODE"
+    add = (
+        "ccflags-$(CONFIG_WONDER_SUPPORT) += -DCONFIG_WONDER_SUPPORT\n"
+        "ccflags-$(CONFIG_DRIVER_PASSTHRU_MODE) += -DDRIVER_PASSTHRU_MODE\n"
+    )
+    if line in t:
+        t = t.replace(line, line + "\n" + add, 1)
+    else:
+        t = t + "\n" + add
+    p.write_text(t)
+    print("patched Kbuild ccflags")
+else:
+    print("Kbuild ccflags already present")
+
+# --- kiwi_v2_defconfig ---
+p = root / "vendor/qcom/opensource/wlan/qcacld-3.0/configs/kiwi_v2_defconfig"
+t = p.read_text()
+if "CONFIG_DRIVER_PASSTHRU_MODE" not in t:
+    t = t.rstrip() + "\n\n# Wonder / Wondertap provider (stage-3)\nCONFIG_DRIVER_PASSTHRU_MODE := y\nCONFIG_WONDER_SUPPORT := y\n"
+    p.write_text(t)
+    print("patched kiwi_v2_defconfig")
+else:
+    print("kiwi_v2_defconfig already has PASSTHRU")
+
+# --- driver_ops.c ---
+p = root / "vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_driver_ops.c"
+t = p.read_text()
+if "wlan_hdd_wondertap.h" not in t:
+    # insert include after a stable include
+    for key in ['#include "cdp_txrx_cmn.h"\n', '#include "wlan_ipa_ucfg_api.h"\n']:
+        if key in t:
+            t = t.replace(key, key + '#include "wlan_hdd_wondertap.h"\n', 1)
+            break
+    else:
+        raise SystemExit("cannot insert wondertap include in driver_ops.c")
+if "wlan_hdd_wondertap_register_ops" not in t:
+    needle = "\toplus_register_oplus_wfd_wlan_ops_qcom();\n#endif\n\n\thdd_soc_load_unlock(dev);"
+    repl = "\toplus_register_oplus_wfd_wlan_ops_qcom();\n#endif\n\twlan_hdd_wondertap_register_ops(dev);\n\n\thdd_soc_load_unlock(dev);"
+    if needle not in t:
+        # fallback without oplus block end exact
+        needle2 = "\thdd_soc_load_unlock(dev);\n\n\treturn 0;\n\nwlan_exit:"
+        if needle2 in t:
+            t = t.replace(needle2, "\twlan_hdd_wondertap_register_ops(dev);\n\thdd_soc_load_unlock(dev);\n\n\treturn 0;\n\nwlan_exit:", 1)
+        else:
+            raise SystemExit("cannot insert register_ops in __hdd_soc_probe")
+    else:
+        t = t.replace(needle, repl, 1)
+if "wlan_hdd_wondertap_unregister_ops" not in t:
+    needle = "#ifdef OPLUS_FEATURE_WIFI_OPLUSWFD\nopplus_wfd_set_hdd_ctx(NULL);\n#endif\n\nqdf_rtpm_sync_resume();"
+    # tabs variants
+    for n in [
+        "\toplus_wfd_set_hdd_ctx(NULL);\n#endif\n\n\tqdf_rtpm_sync_resume();",
+        "oplus_wfd_set_hdd_ctx(NULL);\n#endif\n\nqdf_rtpm_sync_resume();",
+    ]:
+        if n in t:
+            t = t.replace(n, n.replace("qdf_rtpm_sync_resume();", "wlan_hdd_wondertap_unregister_ops(dev, true);\n\tqdf_rtpm_sync_resume();"), 1)
+            break
+    else:
+        # insert after Removing driver pr_info
+        if "Removing driver" in t and "wlan_hdd_wondertap_unregister_ops" not in t:
+            t = t.replace(
+                "pr_info(\"%s: Removing driver v%s\\n\", WLAN_MODULE_NAME,\n\t\tQWLAN_VERSIONSTR);\n",
+                "pr_info(\"%s: Removing driver v%s\\n\", WLAN_MODULE_NAME,\n\t\tQWLAN_VERSIONSTR);\n\twlan_hdd_wondertap_unregister_ops(dev, true);\n",
+                1,
+            )
+p.write_text(t)
+print("patched driver_ops.c")
+
+# --- power.c ---
+p = root / "vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_power.c"
+t = p.read_text()
+if "wlan_hdd_wondertap.h" not in t:
+    t = t.replace('#include "wlan_hdd_power.h"\n', '#include "wlan_hdd_power.h"\n#include "wlan_hdd_wondertap.h"\n', 1)
+if "wlan_hdd_wondertap_unregister_ops" not in t.split("hdd_wlan_shutdown")[1][:2000] if "hdd_wlan_shutdown" in t else True:
+    # before stop_modules in shutdown
+    if "hdd_wlan_stop_modules(hdd_ctx, false);" in t and "wondertap_unregister" not in t:
+        t = t.replace(
+            "hdd_wlan_stop_modules(hdd_ctx, false);",
+            "wlan_hdd_wondertap_unregister_ops(hdd_ctx->parent_dev, true);\n\thdd_wlan_stop_modules(hdd_ctx, false);",
+            1,
+        )
+if "wlan_hdd_wondertap_register_ops" not in t:
+    # after start_modules success path in re_init - before return SUCCESS near end
+    # insert after hdd_wlan_start_modules call block is complex; insert before "WLAN host driver reinitiation completed"
+    marker = 'hdd_info("WLAN host driver reinitiation completed!");'
+    if marker in t:
+        t = t.replace(
+            marker,
+            "wlan_hdd_wondertap_register_ops(hdd_ctx->parent_dev);\n\t" + marker,
+            1,
+        )
+    else:
+        print("WARN: re_init register marker missing")
+p.write_text(t)
+print("patched power.c")
+
+print("stage-3 tree edits done")
+PY
+
 changed_paths="$(git -C "$vendor_root" status --short)"
 printf '%s\n' "$changed_paths"
 if printf '%s\n' "$changed_paths" | grep -Eiq 'devicetree|zonda|rmx3820|realme'; then
@@ -106,5 +334,13 @@ if printf '%s\n' "$changed_paths" | grep -Eiq 'devicetree|zonda|rmx3820|realme';
   exit 23
 fi
 
-echo "Ace 2 Pro Wonder compile experiment applied."
+# Sanity: wondertap sources present and configs enabled
+test -f "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c"
+grep -q 'CONFIG_DRIVER_PASSTHRU_MODE := y' \
+  "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/configs/kiwi_v2_defconfig"
+grep -q 'wlan_hdd_wondertap.o' \
+  "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/Kbuild"
+
+echo "Ace 2 Pro Wonder + Kiwi Wondertap stage-3 applied."
 echo "No device-tree file was changed."
+echo "Passthrough compile path: ENABLED in kiwi_v2_defconfig (cloud compile validation next)."

@@ -1622,7 +1622,7 @@ jobs:
             echo "- Input: oneplus_ace2_pro_b"
             echo "- Public Kalama GKI build: true"
             echo "- CNSS + kiwi_v2 + Wonder external module gate: required"
-            echo "- Passthrough data path: not enabled in this baseline build"
+            echo "- Passthrough data path: stage-3 ENABLED in kiwi_v2_defconfig (await wlan_hdd_wondertap.o gate)"
             echo "- Sync step outcome: ${{ steps.sync_sources.outcome }}"
             echo "- Build step outcome: ${{ steps.wonder_build.outcome }}"
             echo "- Device-tree build and changes: none"

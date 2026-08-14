@@ -1,20 +1,13 @@
 # Ace 2 Pro Wonder cloud experiment
 
-This branch uses `oneplus_ace2_pro_b` as the only synchronized build source.
-No RMX3820, realme GT5, zonda, or other device source is imported.
+Baseline: `oneplus_ace2_pro_b` only. No GT5/RMX3820/zonda sources.
 
-Verified fact: the user has boot-tested an Image built with
-`oneplus_ace2_pro_b`. This does not prove that Ace 2 Pro DTBO or vendor
-modules are compatible with the phone.
+## Stages
 
-Current stage:
+1. **Compile Soft-MAC Wonder + CNSS provider hooks** (done)
+2. **Evidence gate** for kiwi_v2.ko / wondertap.o ABSENT|PRESENT (done on run 31770595720)
+3. **Kiwi Wondertap provider** (this stage): import `wlan_hdd_wondertap.*` + QDF headers from fixed SM8850 donor, enable `CONFIG_DRIVER_PASSTHRU_MODE` + `CONFIG_WONDER_SUPPORT` on kiwi_v2, register ops from HDD probe/re_init.
 
-- full official GitHub Actions build, never a local compilation;
-- fixed OnePlusOSS source commits and per-file blob checks;
-- fixed SM8850 Wonder donor commit;
-- no device-tree modification;
-- no automatic flashable Wonder package;
-- compile artifacts and diagnostics only.
+A green cloud build with `wlan_hdd_wondertap.o: PRESENT` proves compile closure of the provider path only. It does not prove runtime bind, wonder0, RF passthrough correctness, or safe flash.
 
-A successful build proves source/build closure only. It does not prove the
-Wonder RF path, runtime binding, firmware compatibility, or safe installation.
+Still forbidden: Ace 2 Pro DTBO flash as foreign DT, peach bdwlan, X9U 6.12 ko, full Mosey install before kernel gates pass.
