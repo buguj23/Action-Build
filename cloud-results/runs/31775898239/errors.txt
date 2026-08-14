@@ -1,0 +1,39 @@
+# filtered errors (shallow git fatals excluded)
+14371:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:86:11: error: too many arguments to function call, expected 3, have 4
+14377:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:93:25: error: no member named 'deflink' in 'struct hdd_adapter'
+14380:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:135:7: error: no member named 'cdp_passthru_vdev_freq' in 'union cdp_config_param_t'
+14383:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:137:15: error: no member named 'deflink' in 'struct hdd_adapter'
+14386:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:138:6: error: use of undeclared identifier 'CDP_VDEV_SET_PASSTHRU_FREQ'
+14389:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:177:37: error: no member named 'deflink' in 'struct hdd_adapter'
+14392:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:200:37: error: no member named 'deflink' in 'struct hdd_adapter'
+14395:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:206:37: error: no member named 'deflink' in 'struct hdd_adapter'
+14398:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:231:16: error: no member named 'num_sessions' in 'struct hdd_adapter_create_param'
+14401:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:262:2: error: implicit declaration of function 'sme_delete_pe_session' [-Werror,-Wimplicit-function-declaration]
+14408:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:262:54: error: no member named 'deflink' in 'struct hdd_adapter'
+14411:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:273:15: error: no member named 'deflink' in 'struct hdd_adapter'
+14415:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:281:2: error: implicit declaration of function 'wma_enable_disable_imps' [-Werror,-Wimplicit-function-declaration]
+14419:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:303:35: error: too many arguments to function call, expected single argument 'adapter', have 2 arguments
+14428:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:314:20: error: no member named 'deflink' in 'struct hdd_adapter'
+14431:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:311:8: error: use of undeclared identifier 'PM_PASSTHRU_MODE'; did you mean 'QDF_PASSTHRU_MODE'?
+14438:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:319:46: error: no member named 'deflink' in 'struct hdd_adapter'
+14444:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:325:11: error: implicit declaration of function 'wlan_vdev_mgr_set_param_bssid' [-Werror,-Wimplicit-function-declaration]
+14451:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:331:11: error: implicit declaration of function 'sme_create_pe_session' [-Werror,-Wimplicit-function-declaration]
+14458:fatal error: too many errors emitted, stopping now [-ferror-limit=]
+
+# diagnostics
+diagnostic skipped: shallow history (no HEAD~1)
+14108:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14109:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14111:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14113:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14115:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14117:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14119:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14121:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14123:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14125:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14127:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14129:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14131:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14133:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14135:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
