@@ -19,12 +19,24 @@
 #include "wlan_hdd_regulatory.h"
 #include <linux/random.h>
 #include <linux/netdevice.h>
+#include <linux/module.h>
+#include <linux/rtnetlink.h>
 
 #ifndef WIFI_POWER_EVENT_WAKELOCK_DRIVER_MIN
 #define WIFI_POWER_EVENT_WAKELOCK_DRIVER_MIN 0
 #endif
 
 static struct hdd_wondertap_context *g_wt_ctx;
+
+/*
+ * soft_init=1 (default for Ace2 debug): allocate handle only, do NOT open
+ * MONITOR/PASSTHRU adapter. Avoids mon-session hard-reset while Soft-MAC
+ * + nl80211 cache path is validated. Set soft_init=0 after mon-session is fixed.
+ */
+static int soft_init = 1;
+module_param(soft_init, int, 0644);
+MODULE_PARM_DESC(soft_init,
+		 "1=stub wondertap init (no mon session); 0=full adapter path");
 
 static inline uint8_t wt_vdev_id(struct hdd_adapter *adapter)
 {
@@ -191,7 +203,10 @@ static int wt_stop_intf(struct hdd_context *hdd_ctx, struct hdd_adapter *adapter
 	wlan_hdd_netif_queue_control(adapter,
 				     WLAN_STOP_ALL_NETIF_QUEUE_N_CARRIER,
 				     WLAN_CONTROL_PATH);
-	ASSERT_RTNL();
+	if (!rtnl_is_locked()) {
+		hdd_err("wt_stop_intf requires RTNL");
+		return -EPERM;
+	}
 	dev_close(adapter->dev);
 
 	status = qdf_event_reset(&g_wt_ctx->wondertap_vdev_event);
@@ -294,7 +309,31 @@ static int wlan_hdd_wondertap_init(void **handle,
 	if (!hdd_ctx || !params || !handle)
 		return -EINVAL;
 
-	ASSERT_RTNL();
+	/* Prefer soft fail over ASSERT_RTNL() — PANIC_ON_BUG turns BUG into reboot */
+	if (!rtnl_is_locked()) {
+		hdd_err("wondertap_init requires RTNL");
+		return -EPERM;
+	}
+
+	/* Soft path: no mon/passthru adapter — safe on Ace2 until session path is green */
+	if (soft_init) {
+		if (g_wt_ctx)
+			return -EBUSY;
+		wt_ctx = qdf_mem_malloc(sizeof(*wt_ctx));
+		if (!wt_ctx)
+			return -ENOMEM;
+		wt_ctx->hdd_ctx = hdd_ctx;
+		wt_ctx->wt_adapter = NULL;
+		get_random_bytes(&magic, sizeof(magic));
+		if (!magic)
+			magic = 0x574f4e44; /* 'WOND' */
+		wt_ctx->magic = magic;
+		g_wt_ctx = wt_ctx;
+		*handle = (void *)(uintptr_t)magic;
+		hdd_info("wondertap soft_init OK handle=%p", *handle);
+		hdd_exit();
+		return 0;
+	}
 
 	errno = osif_vdev_sync_create_and_trans(hdd_ctx->parent_dev, &vdev_sync);
 	if (errno)
@@ -345,6 +384,7 @@ static int wlan_hdd_wondertap_init(void **handle,
 
 	adapter = wt_create_intf(hdd_ctx, params);
 	if (IS_ERR_OR_NULL(adapter)) {
+		hdd_err("wt_create_intf failed");
 		errno = -EIO;
 		goto fail_create;
 	}
@@ -352,16 +392,21 @@ static int wlan_hdd_wondertap_init(void **handle,
 	osif_vdev_sync_register(adapter->dev, vdev_sync);
 
 	errno = wt_start_intf(hdd_ctx, adapter, params);
-	if (errno)
+	if (errno) {
+		hdd_err("wt_start_intf failed %d", errno);
 		goto fail_start;
+	}
 
 	wt_ctx->hdd_ctx = hdd_ctx;
 	wt_ctx->wt_adapter = adapter;
 	get_random_bytes(&magic, sizeof(magic));
+	if (!magic)
+		magic = 0x574f4e44;
 	wt_ctx->magic = magic;
 	*handle = (void *)(uintptr_t)wt_ctx->magic;
 
 	osif_vdev_sync_trans_stop(vdev_sync);
+	hdd_info("wondertap full_init OK adapter=%s", adapter->dev->name);
 	hdd_exit();
 	return 0;
 
@@ -398,9 +443,20 @@ static void wlan_hdd_wondertap_deinit(void *handle,
 	if (!g_wt_ctx || handle != (void *)(uintptr_t)g_wt_ctx->magic)
 		return;
 
-	ASSERT_RTNL();
+	if (!rtnl_is_locked()) {
+		hdd_err("wondertap_deinit requires RTNL");
+		return;
+	}
 	hdd_ctx = g_wt_ctx->hdd_ctx;
 	wt_adapter = g_wt_ctx->wt_adapter;
+
+	/* soft_init never opened an adapter */
+	if (!wt_adapter) {
+		qdf_mem_free(g_wt_ctx);
+		g_wt_ctx = NULL;
+		hdd_exit();
+		return;
+	}
 
 	errno = osif_vdev_sync_trans_start_wait(wt_adapter->dev, &vdev_sync);
 	if (errno)
@@ -485,9 +541,24 @@ static int wlan_hdd_wondertap_set_tx_rate_mask(void *handle,
 static int wlan_hdd_wondertap_get_capabilities(void *handle,
 					       struct wondertap_capability *features)
 {
+	struct hdd_context *hdd_ctx = cds_get_context(QDF_MODULE_ID_HDD);
+
+	(void)handle;
 	if (!features)
 		return -EINVAL;
+
 	qdf_mem_zero(features, sizeof(*features));
+	/* version must stay 0 for current wonder Soft-MAC */
+	features->version = 0;
+	features->bits.dynamic_freq = 1;
+	features->bits.dynamic_fixed_tx_rate = 1;
+	features->bits.frame_type_filter = 1;
+	features->bits.custom_mgmt_retry_limit = 1;
+	features->bits.custom_data_retry_limit = 1;
+	if (hdd_ctx && hdd_ctx->psoc &&
+	    policy_mgr_is_hw_dbs_capable(hdd_ctx->psoc))
+		features->bits.sta_coexist = 1;
+
 	return 0;
 }
 
