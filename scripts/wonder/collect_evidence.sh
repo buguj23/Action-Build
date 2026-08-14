@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Stage-1 Wonder evidence collector for Ace 2 Pro cloud builds.
-# Invoked from Build Kernel OnePlus.yml on branch wonder-ace2-pro-cloud.
+# Stage-1/4 Wonder evidence collector for Ace 2 Pro cloud builds.
+# Invoked optionally; Build Kernel OnePlus.yml also has an inline collector.
 set -euo pipefail
 
 RUN_ID="${GITHUB_RUN_ID:-local}"
@@ -10,7 +10,8 @@ REF_NAME="${GITHUB_REF_NAME:-wonder-ace2-pro-cloud}"
 SHA="${GITHUB_SHA:-unknown}"
 FILE_INPUT="${FILE:-oneplus_ace2_pro_b}"
 
-mkdir -p cloud-results/artifacts "cloud-results/runs/${RUN_ID}/artifacts"
+mkdir -p cloud-results/artifacts "cloud-results/runs/${RUN_ID}/artifacts" \
+  cloud-results/deploy-staging
 RUN_DIR="cloud-results/runs/${RUN_ID}"
 
 {
@@ -23,22 +24,24 @@ RUN_DIR="cloud-results/runs/${RUN_ID}"
   echo "- Input: ${FILE_INPUT}"
   echo "- Public Kalama GKI build: true"
   echo "- CNSS + kiwi_v2 + Wonder external module gate: required"
-  echo "- Passthrough data path: not enabled in this baseline build"
+  echo "- Passthrough data path: stage-3 ENABLED (wlan_hdd_wondertap gate)"
+  echo "- Runtime bind path: stage-4 software vendor-wlan-wonder + wonder pdev (no DTBO)"
   echo "- Device-tree build and changes: none"
-  echo "- Boot/flashable package: none"
+  echo "- Boot/flashable package: none (staging pack only; not flash-authorized)"
   echo "- DTBO: none"
   echo
   echo "## Source commits"
   if [ -f cloud-results/apply.log ]; then
-    grep -E 'commit check:|expected=' cloud-results/apply.log | sed 's/^/- /' || true
+    grep -E 'commit check:|expected=|stage-4|stage-3' cloud-results/apply.log | sed 's/^/- /' || true
   elif [ -f cloud-results/apply-tail.txt ]; then
-    grep -E 'commit check:|expected=' cloud-results/apply-tail.txt | sed 's/^/- /' || true
+    grep -E 'commit check:|expected=|stage-4|stage-3' cloud-results/apply-tail.txt | sed 's/^/- /' || true
   fi
   echo
   echo "## Authoritative modules"
 } > cloud-results/latest.md
 
 FAIL=0
+KIWI_STRIP_BYTES=0
 
 record_module() {
   local src="$1"
@@ -71,16 +74,27 @@ record_module() {
       echo '```'
     fi
     local stripbin stripped sbytes ssha
-    stripbin="$(command -v llvm-strip || command -v strip || true)"
+    stripbin="$(command -v llvm-strip || command -v aarch64-linux-gnu-strip || command -v strip || true)"
     if [ -n "$stripbin" ]; then
       stripped="cloud-results/artifacts/${delivery_name}.stripped"
       cp -a "$src" "$stripped"
-      if "$stripbin" --strip-debug "$stripped" 2>/dev/null; then
+      # Prefer strip-unneeded then fall back to strip-debug (keep .modinfo/__versions)
+      if "$stripbin" --strip-unneeded "$stripped" 2>/dev/null || \
+         "$stripbin" --strip-debug "$stripped" 2>/dev/null; then
         sbytes=$(stat -c '%s' "$stripped")
         ssha=$(sha256sum "$stripped" | awk '{print $1}')
         echo "- stripped_size_bytes: ${sbytes}"
         echo "- stripped_sha256: ${ssha}"
-        echo "- note: stripped copy is evidence-only; not for flash until ABI gate passes"
+        if [ "$delivery_name" = "qca_cld3_kiwi_v2.ko" ] || [ "$delivery_name" = "kiwi_v2.ko" ]; then
+          KIWI_STRIP_BYTES=$sbytes
+        fi
+        # Keep stripped as deploy candidate if modinfo still works
+        if command -v modinfo >/dev/null 2>&1 && modinfo "$stripped" >/dev/null 2>&1; then
+          echo "- stripped_modinfo: OK"
+          cp -a "$stripped" "cloud-results/deploy-staging/${delivery_name}"
+        else
+          echo "- stripped_modinfo: FAIL (kept evidence-only)"
+        fi
       else
         rm -f "$stripped"
         echo "- stripped: skip (strip failed)"
@@ -111,6 +125,10 @@ KIWI_SRC=$(pick_first \
 WONDER_SRC=$(pick_first \
   kernel_workspace/kernel_platform/out/vendor/oplus/kernel/wifi/wonder/wonder.ko \
   cloud-results/artifacts/wonder.ko || true)
+IMAGE_SRC=$(pick_first \
+  kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist/Image \
+  kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/gki_kernel/dist/Image \
+  kernel_workspace/kernel_platform/out/Final-Image-Find/Image || true)
 
 if [ -n "${CNSS_SRC:-}" ]; then record_module "$CNSS_SRC" cnss2.ko || true
 else echo "- MISSING cnss2.ko" | tee -a cloud-results/latest.md; FAIL=1; fi
@@ -141,6 +159,72 @@ else echo "- MISSING wonder.ko" | tee -a cloud-results/latest.md; FAIL=1; fi
   fi
   if [ -f cloud-results/build.log ] && grep -q 'wonder/wondertap\.o' cloud-results/build.log; then
     echo "- wonder/wondertap.o: PRESENT (Soft-MAC side only)"
+  fi
+  echo
+  echo "## Stage-4 no-DT bind markers (apply.log)"
+  if [ -f cloud-results/apply.log ]; then
+    grep -E 'stage-4|software vendor-wlan-wonder|wonder_main|no-DT' cloud-results/apply.log | tail -n 30 | sed 's/^/- /' || echo "- (no stage4 markers)"
+  else
+    echo "- apply.log missing"
+  fi
+  echo
+  echo "## Same-run Image"
+  if [ -n "${IMAGE_SRC:-}" ]; then
+    ibytes=$(stat -c '%s' "$IMAGE_SRC")
+    isha=$(sha256sum "$IMAGE_SRC" | awk '{print $1}')
+    echo "- path: $IMAGE_SRC"
+    echo "- size_bytes: $ibytes"
+    echo "- sha256: $isha"
+    cp -a "$IMAGE_SRC" cloud-results/artifacts/Image
+    cp -a "$IMAGE_SRC" cloud-results/deploy-staging/Image
+    cp -a "$IMAGE_SRC" "$RUN_DIR/artifacts/Image"
+  else
+    echo "- Image: MISSING"
+    FAIL=1
+  fi
+  echo
+  echo "## Deploy staging package (NOT flash-authorized)"
+  echo "- Device target: oneplus_ace2_pro_b"
+  echo "- DTBO: none"
+  echo "- Passthrough: compile-enabled (runtime not yet proven on device)"
+  echo "- Bind path: software (no DTBO)"
+  echo "- Flash authorized: NO — phone staged test gates not passed"
+  {
+    echo "Device target: oneplus_ace2_pro_b"
+    echo "DTBO: none"
+    echo "Passthrough: compile-enabled"
+    echo "Bind: stage4 software vendor-wlan-wonder + wonder pdev"
+    echo "Flash authorized: NO"
+    echo "Run: ${RUN_ID}"
+    echo "Checkout: ${SHA}"
+    echo "Load order: cnss2.ko -> qca_cld3_kiwi_v2.ko -> wonder.ko"
+    echo "Rollback: restore boot/init_boot from device_backups + reboot"
+  } > cloud-results/deploy-staging/MANIFEST.txt
+  cat > cloud-results/deploy-staging/LOAD_ORDER.txt <<'EOF'
+# Staging load order (Wi-Fi off first). Not flash-authorized.
+# 1) insmod cnss2.ko
+# 2) insmod qca_cld3_kiwi_v2.ko   # or kiwi_v2.ko delivery name
+# 3) insmod wonder.ko
+# Expect dmesg:
+#   software vendor-wlan-wonder pdev registered
+#   wonder: software pdev 'wonder' registered
+#   Wonder probe/bind master registered OK
+#   vendor wondertap ops component registered / Binding
+#   wonder0 (or equivalent) after ops connect
+EOF
+  if [ -d cloud-results/deploy-staging ]; then
+    tar -C cloud-results -czf "cloud-results/ace2-pro-wonder-deploy-staging-${RUN_ID}.tar.gz" deploy-staging || true
+    if [ -f "cloud-results/ace2-pro-wonder-deploy-staging-${RUN_ID}.tar.gz" ]; then
+      echo "- tarball: cloud-results/ace2-pro-wonder-deploy-staging-${RUN_ID}.tar.gz ($(stat -c '%s' "cloud-results/ace2-pro-wonder-deploy-staging-${RUN_ID}.tar.gz") bytes)"
+    fi
+  fi
+  if [ "${KIWI_STRIP_BYTES}" -gt 0 ] 2>/dev/null; then
+    echo "- kiwi stripped size: ${KIWI_STRIP_BYTES}"
+    if [ "${KIWI_STRIP_BYTES}" -gt 120000000 ]; then
+      echo "- WARNING: stripped kiwi still >120MB; may not fit vendor_dlkm"
+    else
+      echo "- kiwi stripped size gate: PASS (<=120MB heuristic)"
+    fi
   fi
   echo
   echo "## Located outputs (supplemental find)"
@@ -193,8 +277,9 @@ fi
 for f in latest.md sync-tail.txt apply-tail.txt build-tail.txt errors.txt; do
   cp -a "cloud-results/$f" "$RUN_DIR/$f"
 done
+cp -a cloud-results/deploy-staging "$RUN_DIR/" 2>/dev/null || true
 
 if [ "$FAIL" -ne 0 ]; then
-  echo "Evidence gate failed: one or more authoritative modules missing"
+  echo "Evidence gate failed: one or more authoritative modules/Image missing"
   exit 1
 fi

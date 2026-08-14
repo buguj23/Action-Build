@@ -394,6 +394,206 @@ grep -q 'wlan_hdd_wondertap_register_ops' \
   "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_power.c"
 echo "stage-3 preflight OK: sources + includes + configs present"
 
-echo "Ace 2 Pro Wonder + Kiwi Wondertap stage-3 applied."
+echo "=== stage-4: no-DT software provider/bind path ==="
+# Replace Wonder main.c with Ace2 software-bind implementation
+if [[ -f "$script_dir/files/wonder_main.c" ]]; then
+  cp -a "$script_dir/files/wonder_main.c" \
+    "$vendor_root/vendor/oplus/kernel/wifi/wonder/main.c"
+  echo "installed stage4 wonder main.c (software pdev + name match)"
+else
+  echo "ERROR: scripts/wonder/files/wonder_main.c missing" >&2
+  exit 24
+fi
+grep -q 'stage4 software/DT' \
+  "$vendor_root/vendor/oplus/kernel/wifi/wonder/main.c"
+grep -q 'WONDER_PROVIDER_PDEV_NAME' \
+  "$vendor_root/vendor/oplus/kernel/wifi/wonder/main.c"
+grep -q 'platform_device_register_simple' \
+  "$vendor_root/vendor/oplus/kernel/wifi/wonder/main.c"
+
+# Patch cnss2 foundation wonder path: software vendor-wlan-wonder + id_table probe
+export VENDOR_ROOT="$vendor_root"
+python3 <<'PY4'
+from pathlib import Path
+import os, re
+p = Path(os.environ["VENDOR_ROOT"]) / "vendor/qcom/opensource/wlan/platform/cnss2/main.c"
+t = p.read_text()
+if "cnss_ensure_software_wonder_pdev" in t:
+    print("cnss stage4 already present")
+else:
+    # Insert software pdev helper before cnss_set_vendor_wonder_priv_data
+    old_set = """int cnss_set_vendor_wonder_priv_data(const void *priv_data)
+{
+	wonder_priv_data = priv_data;
+
+	if (!wonder_plat_dev) {
+		cnss_pr_info("vendor wonder platform device not available\\n");
+		return 0;
+	}
+
+	if (wonder_priv_data)
+		return cnss_add_vendor_wonder_component();
+
+	cnss_del_vendor_wonder_component();
+	return 0;
+}"""
+    new_set = """/* Stage-4: create software pdev when DT lacks qcom,cnss-vendor-wlan-wonder */
+static struct platform_device *wonder_sw_pdev;
+
+static int cnss_ensure_software_wonder_pdev(void)
+{
+	if (wonder_plat_dev || wonder_sw_pdev)
+		return 0;
+
+	wonder_sw_pdev = platform_device_register_simple(
+		"vendor-wlan-wonder", PLATFORM_DEVID_NONE, NULL, 0);
+	if (IS_ERR(wonder_sw_pdev)) {
+		int ret = PTR_ERR(wonder_sw_pdev);
+
+		wonder_sw_pdev = NULL;
+		cnss_pr_err("software vendor-wlan-wonder register failed %d\\n",
+			    ret);
+		return ret;
+	}
+	cnss_pr_info("software vendor-wlan-wonder pdev registered (no-DT)\\n");
+	return 0;
+}
+
+static bool cnss_is_wonder_vendor_pdev(struct platform_device *plat_dev)
+{
+	const struct platform_device_id *id;
+	const struct of_device_id *of_id;
+
+	id = platform_get_device_id(plat_dev);
+	if (id && id->driver_data == WONDER_VENDOR_DEVICE_ID)
+		return true;
+
+	of_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
+	if (of_id && of_id->data) {
+		id = of_id->data;
+		if (id->driver_data == WONDER_VENDOR_DEVICE_ID)
+			return true;
+	}
+	return false;
+}
+
+int cnss_set_vendor_wonder_priv_data(const void *priv_data)
+{
+	int ret;
+
+	wonder_priv_data = priv_data;
+
+	if (!wonder_plat_dev) {
+		ret = cnss_ensure_software_wonder_pdev();
+		if (ret)
+			return ret;
+		/* register_simple probes synchronously on same thread */
+		if (!wonder_plat_dev) {
+			cnss_pr_info("vendor wonder pdev pending probe\\n");
+			return 0;
+		}
+	}
+
+	if (wonder_priv_data)
+		return cnss_add_vendor_wonder_component();
+
+	cnss_del_vendor_wonder_component();
+	return 0;
+}"""
+    if old_set not in t:
+        raise SystemExit("cnss_set_vendor_wonder_priv_data block not found for stage4")
+    t = t.replace(old_set, new_set, 1)
+
+    # Probe: prefer id_table / software wonder before hard of_match fail
+    old_probe = """	of_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
+	if (!of_id || !of_id->data) {
+		cnss_pr_err("Failed to find of match device!\\n");
+		ret = -ENODEV;
+		goto out;
+	}
+
+	device_id = of_id->data;
+	if (device_id->driver_data == WONDER_VENDOR_DEVICE_ID)
+		return cnss_vendor_wonder_dev_probe(plat_dev);
+
+	if (cnss_get_plat_priv(plat_dev)) {"""
+    new_probe = """	/* Stage-4: software / id_table wonder pdev has no of_node */
+	if (cnss_is_wonder_vendor_pdev(plat_dev))
+		return cnss_vendor_wonder_dev_probe(plat_dev);
+
+	of_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
+	if (!of_id || !of_id->data) {
+		cnss_pr_err("Failed to find of match device!\\n");
+		ret = -ENODEV;
+		goto out;
+	}
+
+	device_id = of_id->data;
+
+	if (cnss_get_plat_priv(plat_dev)) {"""
+    if old_probe not in t:
+        raise SystemExit("cnss_probe wonder early block not found for stage4")
+    t = t.replace(old_probe, new_probe, 1)
+
+    old_rm = """	of_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
+	if (!of_id || !of_id->data) {
+		cnss_pr_err("cnss remove failed to find of match device!\\n");
+		return -ENODEV;
+	}
+
+	device_id = of_id->data;
+	if (device_id->driver_data == WONDER_VENDOR_DEVICE_ID) {
+		cnss_vendor_wonder_dev_remove();
+		return 0;
+	}
+
+	plat_priv = platform_get_drvdata(plat_dev);"""
+    new_rm = """	if (cnss_is_wonder_vendor_pdev(plat_dev)) {
+		cnss_vendor_wonder_dev_remove();
+		return 0;
+	}
+
+	of_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
+	if (!of_id || !of_id->data) {
+		cnss_pr_err("cnss remove failed to find of match device!\\n");
+		return -ENODEV;
+	}
+
+	device_id = of_id->data;
+	plat_priv = platform_get_drvdata(plat_dev);"""
+    if old_rm not in t:
+        raise SystemExit("cnss_remove wonder block not found for stage4")
+    t = t.replace(old_rm, new_rm, 1)
+
+    # Log on component add
+    t = t.replace(
+        "\twonder_component_added = true;\n\treturn 0;\n}\n\nstatic void cnss_del_vendor_wonder_component",
+        "\twonder_component_added = true;\n\tcnss_pr_info(\"vendor wondertap ops component registered\\n\");\n\treturn 0;\n}\n\nstatic void cnss_del_vendor_wonder_component",
+        1,
+    )
+    p.write_text(t)
+    print("patched cnss2/main.c for stage4 software wonder pdev")
+
+# verify
+t2 = p.read_text()
+for s in [
+    "cnss_ensure_software_wonder_pdev",
+    "cnss_is_wonder_vendor_pdev",
+    "software vendor-wlan-wonder",
+    "vendor wondertap ops component registered",
+]:
+    if s not in t2:
+        raise SystemExit(f"missing after patch: {s}")
+print("cnss stage4 verify OK")
+PY4
+
+grep -q 'cnss_ensure_software_wonder_pdev' \
+  "$vendor_root/vendor/qcom/opensource/wlan/platform/cnss2/main.c"
+grep -q 'cnss_is_wonder_vendor_pdev' \
+  "$vendor_root/vendor/qcom/opensource/wlan/platform/cnss2/main.c"
+echo "stage-4 preflight OK: no-DT wonder main + cnss software provider"
+
+
+echo "Ace 2 Pro Wonder stage-3+4 applied (passthrough compile + no-DT bind)."
 echo "No device-tree file was changed."
-echo "Passthrough compile path: ENABLED in kiwi_v2_defconfig (cloud compile validation next)."
+echo "Passthrough: ENABLED. Runtime bind: software vendor-wlan-wonder + wonder pdev."

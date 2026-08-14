@@ -1622,11 +1622,13 @@ jobs:
             echo "- Input: oneplus_ace2_pro_b"
             echo "- Public Kalama GKI build: true"
             echo "- CNSS + kiwi_v2 + Wonder external module gate: required"
-            echo "- Passthrough data path: stage-3 ENABLED in kiwi_v2_defconfig (await wlan_hdd_wondertap.o gate)"
+            echo "- Passthrough data path: stage-3 ENABLED (wlan_hdd_wondertap gate)"
+            echo "- Runtime bind path: stage-4 software vendor-wlan-wonder + wonder pdev (no DTBO)"
             echo "- Sync step outcome: ${{ steps.sync_sources.outcome }}"
             echo "- Build step outcome: ${{ steps.wonder_build.outcome }}"
             echo "- Device-tree build and changes: none"
-            echo "- Boot/flashable package: none"
+            echo "- Boot/flashable package: none (deploy-staging only; NOT flash-authorized)"
+            echo "- DTBO: none"
             echo
             echo "## Source commits"
             for source_dir in \
@@ -1724,18 +1726,72 @@ jobs:
           done
           cp -a cloud-results/artifacts/. "$RUN_DIR/artifacts/" 2>/dev/null || true
 
-          # strip evidence (optional, non-fatal)
+          # strip + same-run deploy-staging (NOT flash-authorized)
+          {
+            echo
+            echo "## Stage-4 apply markers"
+            if [ -f cloud-results/apply.log ]; then
+              grep -E 'stage-4|software vendor-wlan-wonder|wonder_main|no-DT|stage-3 preflight' cloud-results/apply.log | tail -n 40 | sed 's/^/- /' || true
+            fi
+          } >> cloud-results/latest.md
+
+          mkdir -p cloud-results/deploy-staging
+          IMAGE_CAND=$(find kernel_workspace/kernel_platform/out -type f -name Image 2>/dev/null | head -n 1 || true)
+          if [ -n "$IMAGE_CAND" ] && [ -f "$IMAGE_CAND" ]; then
+            cp -a "$IMAGE_CAND" cloud-results/artifacts/Image
+            cp -a "$IMAGE_CAND" cloud-results/deploy-staging/Image
+            echo "- same-run Image: $IMAGE_CAND ($(stat -c '%s' "$IMAGE_CAND") bytes) sha=$(sha256sum "$IMAGE_CAND" | awk '{print $1}')" >> cloud-results/latest.md
+          else
+            echo "- same-run Image: MISSING" >> cloud-results/latest.md
+          fi
+
+          {
+            echo "Device target: oneplus_ace2_pro_b"
+            echo "DTBO: none"
+            echo "Passthrough: compile-enabled (runtime not proven)"
+            echo "Bind: stage4 software vendor-wlan-wonder + wonder pdev"
+            echo "Flash authorized: NO"
+            echo "Run: ${{ github.run_id }}"
+            echo "Load order: cnss2.ko -> qca_cld3_kiwi_v2.ko -> wonder.ko"
+            echo "Rollback: device_backups boot/init_boot + reboot"
+          } > cloud-results/deploy-staging/MANIFEST.txt
+
+          echo "## Strip / deploy-staging" >> cloud-results/latest.md
           if command -v llvm-strip >/dev/null 2>&1 || command -v strip >/dev/null 2>&1; then
-            STRIPBIN=$(command -v llvm-strip || command -v strip)
+            STRIPBIN=$(command -v llvm-strip || command -v aarch64-linux-gnu-strip || command -v strip)
             for m in cloud-results/artifacts/cnss2.ko cloud-results/artifacts/qca_cld3_kiwi_v2.ko cloud-results/artifacts/wonder.ko cloud-results/artifacts/kiwi_v2.ko; do
               [ -f "$m" ] || continue
               cp -a "$m" "${m}.stripped"
-              "$STRIPBIN" --strip-debug "${m}.stripped" 2>/dev/null || rm -f "${m}.stripped"
-              if [ -f "${m}.stripped" ]; then
+              if "$STRIPBIN" --strip-unneeded "${m}.stripped" 2>/dev/null ||                  "$STRIPBIN" --strip-debug "${m}.stripped" 2>/dev/null; then
                 echo "- strip $(basename "$m"): $(stat -c '%s' "$m") -> $(stat -c '%s' "${m}.stripped") sha=$(sha256sum "${m}.stripped" | awk '{print $1}')" >> cloud-results/latest.md
+                if modinfo "${m}.stripped" >/dev/null 2>&1; then
+                  cp -a "${m}.stripped" "cloud-results/deploy-staging/$(basename "$m")"
+                  echo "  - deploy-staging copy: OK (modinfo intact)" >> cloud-results/latest.md
+                else
+                  echo "  - deploy-staging copy: SKIP (modinfo broken after strip)" >> cloud-results/latest.md
+                fi
+              else
+                rm -f "${m}.stripped"
+                echo "- strip $(basename "$m"): failed" >> cloud-results/latest.md
               fi
             done
+          else
+            echo "- strip tool: missing" >> cloud-results/latest.md
           fi
+
+          # Prefer stripped modules in staging; fall back to unstripped if strip skipped
+          for base in cnss2.ko qca_cld3_kiwi_v2.ko wonder.ko; do
+            if [ ! -f "cloud-results/deploy-staging/$base" ] && [ -f "cloud-results/artifacts/$base" ]; then
+              cp -a "cloud-results/artifacts/$base" "cloud-results/deploy-staging/$base"
+            fi
+          done
+
+          tar -C cloud-results -czf "cloud-results/ace2-pro-wonder-deploy-staging-${{ github.run_id }}.tar.gz" deploy-staging || true
+          if [ -f "cloud-results/ace2-pro-wonder-deploy-staging-${{ github.run_id }}.tar.gz" ]; then
+            echo "- deploy-staging tarball: $(stat -c '%s' "cloud-results/ace2-pro-wonder-deploy-staging-${{ github.run_id }}.tar.gz") bytes" >> cloud-results/latest.md
+          fi
+          cp -a cloud-results/deploy-staging "$RUN_DIR/" 2>/dev/null || true
+          cp -a cloud-results/latest.md "$RUN_DIR/latest.md" 2>/dev/null || true
 
       - name: Upload Wonder compile evidence
         if: always() && github.ref_name == 'wonder-ace2-pro-cloud'
