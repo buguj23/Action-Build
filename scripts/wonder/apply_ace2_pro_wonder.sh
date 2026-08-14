@@ -118,6 +118,16 @@ cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/s
   "$vendor_root/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/i_qdf_wondertap.h"
 cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/wondertap.h" \
   "$vendor_root/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/wondertap.h"
+for f in \
+  vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c \
+  vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h \
+  vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_wondertap.h \
+  vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/i_qdf_wondertap.h \
+  vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/wondertap.h
+ do
+  test -s "$vendor_root/$f"
+  ls -l "$vendor_root/$f"
+ done
 
 echo "=== stage-3: enable PASSTHRU/WONDER in Ace2 Pro kiwi tree ==="
 python3 - <<'PY'
@@ -256,13 +266,14 @@ else:
 p = root / "vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_driver_ops.c"
 t = p.read_text()
 if "wlan_hdd_wondertap.h" not in t:
-    # insert include after a stable include
-    for key in ['#include "cdp_txrx_cmn.h"\n', '#include "wlan_ipa_ucfg_api.h"\n']:
-        if key in t:
-            t = t.replace(key, key + '#include "wlan_hdd_wondertap.h"\n', 1)
-            break
-    else:
+    import re as _re
+    m = _re.search(r'#include\s+"[^"]+"', t)
+    if not m:
         raise SystemExit("cannot insert wondertap include in driver_ops.c")
+    pos = m.end()
+    t = t[:pos] + '\n#include "wlan_hdd_wondertap.h"' + t[pos:]
+if '#include "wlan_hdd_wondertap.h"' not in t:
+    raise SystemExit("driver_ops.c missing wondertap include")
 if "wlan_hdd_wondertap_register_ops" not in t:
     needle = "\toplus_register_oplus_wfd_wlan_ops_qcom();\n#endif\n\n\thdd_soc_load_unlock(dev);"
     repl = "\toplus_register_oplus_wfd_wlan_ops_qcom();\n#endif\n\twlan_hdd_wondertap_register_ops(dev);\n\n\thdd_soc_load_unlock(dev);"
@@ -299,30 +310,52 @@ print("patched driver_ops.c")
 # --- power.c ---
 p = root / "vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_power.c"
 t = p.read_text()
-if "wlan_hdd_wondertap.h" not in t:
-    t = t.replace('#include "wlan_hdd_power.h"\n', '#include "wlan_hdd_power.h"\n#include "wlan_hdd_wondertap.h"\n', 1)
-if "wlan_hdd_wondertap_unregister_ops" not in t.split("hdd_wlan_shutdown")[1][:2000] if "hdd_wlan_shutdown" in t else True:
-    # before stop_modules in shutdown
-    if "hdd_wlan_stop_modules(hdd_ctx, false);" in t and "wondertap_unregister" not in t:
-        t = t.replace(
-            "hdd_wlan_stop_modules(hdd_ctx, false);",
-            "wlan_hdd_wondertap_unregister_ops(hdd_ctx->parent_dev, true);\n\thdd_wlan_stop_modules(hdd_ctx, false);",
-            1,
-        )
-if "wlan_hdd_wondertap_register_ops" not in t:
-    # after start_modules success path in re_init - before return SUCCESS near end
-    # insert after hdd_wlan_start_modules call block is complex; insert before "WLAN host driver reinitiation completed"
+
+def ensure_include(src: str, header: str) -> str:
+    needle = f'#include "{header}"'
+    if needle in src:
+        return src
+    # Prefer after any existing wlan_hdd_*.h include
+    import re
+    m = re.search(r'#include\s+"wlan_hdd_[^"]+\.h"', src)
+    if m:
+        pos = m.end()
+        return src[:pos] + f"\n#include \"{header}\"" + src[pos:]
+    # Fallback: after first #include block line
+    m = re.search(r'(#include\s+[<"][^>"]+[>"].*\n)', src)
+    if m:
+        pos = m.end()
+        return src[:pos] + f'#include "{header}"\n' + src[pos:]
+    raise SystemExit(f"cannot insert include {header} into {p}")
+
+t = ensure_include(t, "wlan_hdd_wondertap.h")
+
+if "wlan_hdd_wondertap_unregister_ops" not in t:
+    if "hdd_wlan_stop_modules(hdd_ctx, false);" not in t:
+        raise SystemExit("power.c missing hdd_wlan_stop_modules for unregister insert")
+    t = t.replace(
+        "hdd_wlan_stop_modules(hdd_ctx, false);",
+        "wlan_hdd_wondertap_unregister_ops(hdd_ctx->parent_dev, true);\n\thdd_wlan_stop_modules(hdd_ctx, false);",
+        1,
+    )
+
+if "wlan_hdd_wondertap_register_ops(hdd_ctx->parent_dev)" not in t:
     marker = 'hdd_info("WLAN host driver reinitiation completed!");'
-    if marker in t:
-        t = t.replace(
-            marker,
-            "wlan_hdd_wondertap_register_ops(hdd_ctx->parent_dev);\n\t" + marker,
-            1,
-        )
-    else:
-        print("WARN: re_init register marker missing")
+    if marker not in t:
+        raise SystemExit("power.c missing re_init completion marker")
+    t = t.replace(
+        marker,
+        "wlan_hdd_wondertap_register_ops(hdd_ctx->parent_dev);\n\t" + marker,
+        1,
+    )
+
+if '#include "wlan_hdd_wondertap.h"' not in t:
+    raise SystemExit("power.c still missing wondertap include after patch")
+if "wlan_hdd_wondertap_register_ops" not in t or "wlan_hdd_wondertap_unregister_ops" not in t:
+    raise SystemExit("power.c missing wondertap call sites after patch")
+
 p.write_text(t)
-print("patched power.c")
+print("patched power.c (include+calls verified)")
 
 print("stage-3 tree edits done")
 PY
@@ -336,10 +369,18 @@ fi
 
 # Sanity: wondertap sources present and configs enabled
 test -f "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c"
+test -f "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h"
 grep -q 'CONFIG_DRIVER_PASSTHRU_MODE := y' \
   "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/configs/kiwi_v2_defconfig"
 grep -q 'wlan_hdd_wondertap.o' \
   "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/Kbuild"
+grep -q 'wlan_hdd_wondertap.h' \
+  "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_power.c"
+grep -q 'wlan_hdd_wondertap.h' \
+  "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_driver_ops.c"
+grep -q 'wlan_hdd_wondertap_register_ops' \
+  "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_power.c"
+echo "stage-3 preflight OK: sources + includes + configs present"
 
 echo "Ace 2 Pro Wonder + Kiwi Wondertap stage-3 applied."
 echo "No device-tree file was changed."
