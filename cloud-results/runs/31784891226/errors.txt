@@ -1,0 +1,2 @@
+clang-14: error: unable to execute command: Executable "ld" doesn't exist!
+clang-14: error: linker command failed with exit code 1 (use -v to see invocation)
