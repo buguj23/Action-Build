@@ -74,13 +74,21 @@ record_module() {
       echo '```'
     fi
     local stripbin stripped sbytes ssha
-    stripbin="$(command -v llvm-strip || command -v aarch64-linux-gnu-strip || command -v strip || true)"
+    stripbin=""
+    for cand in       "$(command -v llvm-strip || true)"       /usr/lib/llvm-*/bin/llvm-strip       "$(command -v aarch64-linux-gnu-strip || true)"
+    do
+      for c in $cand; do
+        [ -x "$c" ] || continue
+        stripbin="$c"
+        break 2
+      done
+    done
     if [ -n "$stripbin" ]; then
       stripped="cloud-results/artifacts/${delivery_name}.stripped"
       cp -a "$src" "$stripped"
-      # Prefer strip-unneeded then fall back to strip-debug (keep .modinfo/__versions)
-      if "$stripbin" --strip-unneeded "$stripped" 2>/dev/null || \
-         "$stripbin" --strip-debug "$stripped" 2>/dev/null; then
+      # Prefer strip-debug first (safer for .ko), then unneeded
+      if "$stripbin" --strip-debug "$stripped" 2>/dev/null; then
+        "$stripbin" --strip-unneeded "$stripped" 2>/dev/null || true
         sbytes=$(stat -c '%s' "$stripped")
         ssha=$(sha256sum "$stripped" | awk '{print $1}')
         echo "- stripped_size_bytes: ${sbytes}"

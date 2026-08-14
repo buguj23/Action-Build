@@ -1757,12 +1757,27 @@ jobs:
           } > cloud-results/deploy-staging/MANIFEST.txt
 
           echo "## Strip / deploy-staging" >> cloud-results/latest.md
-          if command -v llvm-strip >/dev/null 2>&1 || command -v strip >/dev/null 2>&1; then
-            STRIPBIN=$(command -v llvm-strip || command -v aarch64-linux-gnu-strip || command -v strip)
+          # Prefer aarch64-capable llvm-strip (host binutils strip cannot handle aarch64 .ko)
+          STRIPBIN=""
+          for c in             "$(command -v llvm-strip || true)"             /usr/lib/llvm-*/bin/llvm-strip             "$GITHUB_WORKSPACE"/kernel_workspace/kernel_platform/prebuilts/clang/host/linux-x86/clang-*/bin/llvm-strip             "$HOME"/clang*/bin/llvm-strip             "$(command -v aarch64-linux-gnu-strip || true)"
+          do
+            for cand in $c; do
+              [ -x "$cand" ] || continue
+              # smoke: must accept aarch64 relocatable
+              if "$cand" --version >/dev/null 2>&1; then
+                STRIPBIN="$cand"
+                break 2
+              fi
+            done
+          done
+          if [ -n "$STRIPBIN" ]; then
+            echo "- strip tool: $STRIPBIN" >> cloud-results/latest.md
             for m in cloud-results/artifacts/cnss2.ko cloud-results/artifacts/qca_cld3_kiwi_v2.ko cloud-results/artifacts/wonder.ko cloud-results/artifacts/kiwi_v2.ko; do
               [ -f "$m" ] || continue
               cp -a "$m" "${m}.stripped"
-              if "$STRIPBIN" --strip-unneeded "${m}.stripped" 2>/dev/null ||                  "$STRIPBIN" --strip-debug "${m}.stripped" 2>/dev/null; then
+              # strip-debug first (host binutils strip cannot do aarch64; llvm-strip can)
+              if "$STRIPBIN" --strip-debug "${m}.stripped" 2>/dev/null; then
+                "$STRIPBIN" --strip-unneeded "${m}.stripped" 2>/dev/null || true
                 echo "- strip $(basename "$m"): $(stat -c '%s' "$m") -> $(stat -c '%s' "${m}.stripped") sha=$(sha256sum "${m}.stripped" | awk '{print $1}')" >> cloud-results/latest.md
                 if modinfo "${m}.stripped" >/dev/null 2>&1; then
                   cp -a "${m}.stripped" "cloud-results/deploy-staging/$(basename "$m")"
