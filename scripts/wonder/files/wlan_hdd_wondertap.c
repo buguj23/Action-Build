@@ -268,7 +268,7 @@ static int wt_start_intf(struct hdd_context *hdd_ctx, struct hdd_adapter *adapte
 	wlan_hdd_netif_queue_control(adapter,
 				     WLAN_START_ALL_NETIF_QUEUE_N_CARRIER,
 				     WLAN_CONTROL_PATH);
-	dev_open(adapter->dev);
+	dev_open(adapter->dev, NULL);
 
 	return 0;
 
@@ -474,8 +474,11 @@ static int wlan_hdd_wondertap_set_fixed_tx_rate(void *handle,
 	return errno;
 }
 
-static int wlan_hdd_wondertap_set_tx_rate_mask(void *handle, const void *params)
+static int wlan_hdd_wondertap_set_tx_rate_mask(void *handle,
+					       const struct wondertap_tx_rate_mask_params *params)
 {
+	(void)handle;
+	(void)params;
 	return -EOPNOTSUPP;
 }
 
