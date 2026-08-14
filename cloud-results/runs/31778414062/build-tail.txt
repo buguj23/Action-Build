@@ -1,0 +1,1200 @@
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/str_error.o
+  HDRINST usr/include/linux/const.h
+  HDRINST usr/include/linux/hdlcdrv.h
+  HDRINST usr/include/linux/minix_fs.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/netlink.o
+  HOSTCC  scripts/sorttable
+  HDRINST usr/include/linux/uhid.h
+  HDRINST usr/include/linux/adfs_fs.h
+  HDRINST usr/include/linux/netfilter/nfnetlink_compat.h
+  HDRINST usr/include/linux/netfilter/xt_NFQUEUE.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/bpf_prog_linfo.o
+  HDRINST usr/include/linux/netfilter/xt_devgroup.h
+  HDRINST usr/include/linux/netfilter/ipset/ip_set_bitmap.h
+  HDRINST usr/include/linux/netfilter/ipset/ip_set_list.h
+  HDRINST usr/include/linux/netfilter/ipset/ip_set_hash.h
+  HOSTCC  scripts/asn1_compiler
+  HDRINST usr/include/linux/netfilter/ipset/ip_set.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/libbpf_probes.o
+  HDRINST usr/include/linux/netfilter/xt_limit.h
+  HDRINST usr/include/linux/netfilter/xt_owner.h
+  HDRINST usr/include/linux/netfilter/xt_quota.h
+  HOSTCC  scripts/sign-file
+  HDRINST usr/include/linux/netfilter/xt_LED.h
+  HDRINST usr/include/linux/netfilter/xt_length.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/xsk.o
+  HDRINST usr/include/linux/netfilter/xt_nfacct.h
+  HDRINST usr/include/linux/netfilter/nfnetlink_queue.h
+  HDRINST usr/include/linux/netfilter/xt_pkttype.h
+  HDRINST usr/include/linux/netfilter/nfnetlink_acct.h
+  HDRINST usr/include/linux/netfilter/xt_dccp.h
+  HDRINST usr/include/linux/netfilter/xt_l2tp.h
+  HDRINST usr/include/linux/netfilter/nf_tables_compat.h
+  HOSTCC  scripts/extract-cert
+  HDRINST usr/include/linux/netfilter/xt_realm.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/hashmap.o
+  HDRINST usr/include/linux/netfilter/xt_dscp.h
+  HDRINST usr/include/linux/netfilter/xt_state.h
+  HDRINST usr/include/linux/netfilter/xt_tcpudp.h
+  HDRINST usr/include/linux/netfilter/xt_u32.h
+  HDRINST usr/include/linux/netfilter/xt_ipcomp.h
+  HDRINST usr/include/linux/netfilter/xt_CONNMARK.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/btf_dump.o
+  HDRINST usr/include/linux/netfilter/nf_conntrack_sctp.h
+  HDRINST usr/include/linux/netfilter/xt_comment.h
+  HDRINST usr/include/linux/netfilter/xt_multiport.h
+  HDRINST usr/include/linux/netfilter/xt_TEE.h
+  HDRINST usr/include/linux/netfilter/xt_string.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/ringbuf.o
+  GEN     arch/arm64/include/generated/asm/cpucaps.h
+  HDRINST usr/include/linux/netfilter/xt_helper.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/strset.o
+  HDRINST usr/include/linux/netfilter/xt_NFLOG.h
+  HDRINST usr/include/linux/netfilter/xt_HMARK.h
+  HDRINST usr/include/linux/netfilter/nf_tables.h
+  HDRINST usr/include/linux/netfilter/xt_rpfilter.h
+  HDRINST usr/include/linux/netfilter/xt_TCPMSS.h
+  HDRINST usr/include/linux/netfilter/xt_connmark.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/linker.o
+  HDRINST usr/include/linux/netfilter/xt_ecn.h
+  CC      scripts/mod/empty.o
+  HDRINST usr/include/linux/netfilter/xt_hashlimit.h
+  HDRINST usr/include/linux/netfilter/nf_conntrack_common.h
+  HOSTCC  scripts/mod/mk_elfconfig
+  HDRINST usr/include/linux/netfilter/xt_set.h
+  HDRINST usr/include/linux/netfilter/xt_tcpmss.h
+  HDRINST usr/include/linux/netfilter/xt_rateest.h
+  HDRINST usr/include/linux/netfilter/xt_addrtype.h
+  CC      scripts/mod/devicetable-offsets.s
+  HDRINST usr/include/linux/netfilter/nf_conntrack_ftp.h
+  HDRINST usr/include/linux/netfilter/nfnetlink_conntrack.h
+  MKELF   scripts/mod/elfconfig.h
+  HOSTCC  scripts/mod/modpost.o
+  HDRINST usr/include/linux/netfilter/xt_MARK.h
+  HDRINST usr/include/linux/netfilter/xt_SYNPROXY.h
+  HDRINST usr/include/linux/netfilter/xt_sctp.h
+  HDRINST usr/include/linux/netfilter/xt_cluster.h
+  HDRINST usr/include/linux/netfilter/xt_mark.h
+  HDRINST usr/include/linux/netfilter/nfnetlink.h
+  HDRINST usr/include/linux/netfilter/xt_bpf.h
+  HDRINST usr/include/linux/netfilter/xt_TCPOPTSTRIP.h
+  UPD     scripts/mod/devicetable-offsets.h
+  HDRINST usr/include/linux/netfilter/xt_physdev.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/gen_loader.o
+  HDRINST usr/include/linux/netfilter/nf_conntrack_tcp.h
+  HDRINST usr/include/linux/netfilter/xt_LOG.h
+  HDRINST usr/include/linux/netfilter/xt_iprange.h
+  HDRINST usr/include/linux/netfilter/nfnetlink_cthelper.h
+  HDRINST usr/include/linux/netfilter/nfnetlink_hook.h
+  HDRINST usr/include/linux/netfilter/xt_TPROXY.h
+  HDRINST usr/include/linux/netfilter/xt_time.h
+  HDRINST usr/include/linux/netfilter/xt_esp.h
+  HDRINST usr/include/linux/netfilter/nf_log.h
+  HDRINST usr/include/linux/netfilter/xt_cgroup.h
+  HDRINST usr/include/linux/netfilter/nfnetlink_osf.h
+  HDRINST usr/include/linux/netfilter/x_tables.h
+  HDRINST usr/include/linux/netfilter/xt_CHECKSUM.h
+  HDRINST usr/include/linux/netfilter/nf_conntrack_tuple_common.h
+  HDRINST usr/include/linux/netfilter/xt_conntrack.h
+  HDRINST usr/include/linux/netfilter/xt_cpu.h
+  HDRINST usr/include/linux/netfilter/xt_DSCP.h
+  HDRINST usr/include/linux/netfilter/xt_CONNSECMARK.h
+  HDRINST usr/include/linux/netfilter/xt_ipvs.h
+  HDRINST usr/include/linux/netfilter/xt_mac.h
+  HOSTCC  scripts/mod/sumversion.o
+  HDRINST usr/include/linux/netfilter/nfnetlink_log.h
+  HDRINST usr/include/linux/netfilter/xt_connlabel.h
+  HDRINST usr/include/linux/netfilter/xt_IDLETIMER.h
+  CC      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/relo_core.o
+  HDRINST usr/include/linux/netfilter/xt_connlimit.h
+  HDRINST usr/include/linux/netfilter/xt_SECMARK.h
+  HDRINST usr/include/linux/netfilter/nf_nat.h
+  HDRINST usr/include/linux/netfilter/xt_CT.h
+  HDRINST usr/include/linux/netfilter/xt_socket.h
+  HOSTCC  scripts/mod/file2alias.o
+  HDRINST usr/include/linux/netfilter/xt_recent.h
+  HDRINST usr/include/linux/netfilter/xt_connbytes.h
+  HDRINST usr/include/linux/netfilter/nf_synproxy.h
+  HDRINST usr/include/linux/netfilter/xt_RATEEST.h
+  HDRINST usr/include/linux/netfilter/xt_osf.h
+  HDRINST usr/include/linux/netfilter/xt_policy.h
+  HDRINST usr/include/linux/netfilter/xt_AUDIT.h
+  HDRINST usr/include/linux/netfilter/xt_statistic.h
+  HDRINST usr/include/linux/netfilter/nfnetlink_cttimeout.h
+  HDRINST usr/include/linux/netfilter/xt_CLASSIFY.h
+  HDRINST usr/include/linux/nfs4_mount.h
+  HDRINST usr/include/linux/cgroupstats.h
+  HDRINST usr/include/linux/irqnr.h
+  HDRINST usr/include/linux/tty.h
+  HDRINST usr/include/linux/scc.h
+  HDRINST usr/include/linux/udmabuf.h
+  HDRINST usr/include/linux/if_arcnet.h
+  HDRINST usr/include/linux/serial_reg.h
+  HDRINST usr/include/linux/uuid.h
+  HDRINST usr/include/linux/nfs_idmap.h
+  HDRINST usr/include/linux/if_bridge.h
+  LD      /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/staticobjs/libbpf-in.o
+  HDRINST usr/include/linux/dccp.h
+  HDRINST usr/include/linux/am437x-vpfe.h
+  HDRINST usr/include/linux/usb/tmc.h
+  HDRINST usr/include/linux/usb/raw_gadget.h
+  LINK    /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/tools/bpf/resolve_btfids/libbpf/libbpf.a
+  HDRINST usr/include/linux/usb/f_accessory.h
+  LINK     resolve_btfids
+  HDRINST usr/include/linux/usb/cdc.h
+  HDRINST usr/include/linux/usb/gadgetfs.h
+  HDRINST usr/include/linux/usb/functionfs.h
+  HDRINST usr/include/linux/usb/video.h
+  HDRINST usr/include/linux/usb/g_uvc.h
+  HDRINST usr/include/linux/usb/charger.h
+  HDRINST usr/include/linux/usb/ch11.h
+  HDRINST usr/include/linux/usb/g_printer.h
+  HDRINST usr/include/linux/usb/audio.h
+  HDRINST usr/include/linux/usb/usb_ctrl_qti.h
+  HDRINST usr/include/linux/usb/cdc-wdm.h
+  HDRINST usr/include/linux/usb/midi.h
+  HDRINST usr/include/linux/usb/ch9.h
+  HDRINST usr/include/linux/vmcore.h
+  HDRINST usr/include/linux/kernel.h
+  HDRINST usr/include/linux/membarrier.h
+  HDRINST usr/include/linux/netfilter_arp/arpt_mangle.h
+  HDRINST usr/include/linux/netfilter_arp/arp_tables.h
+  HDRINST usr/include/linux/rpl_iptunnel.h
+  HDRINST usr/include/linux/batman_adv.h
+  HOSTLD  scripts/mod/modpost
+  HDRINST usr/include/linux/ppdev.h
+  HDRINST usr/include/linux/xfrm.h
+  HDRINST usr/include/linux/atmlec.h
+  HDRINST usr/include/linux/slatecom_interface.h
+  HDRINST usr/include/linux/joystick.h
+  HDRINST usr/include/linux/soundcard.h
+  HDRINST usr/include/linux/ip6_tunnel.h
+  CC      kernel/bounds.s
+  UPD     include/generated/timeconst.h
+  CALL    /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/scripts/atomic/check-atomics.sh
+  HDRINST usr/include/linux/mroute.h
+  HDRINST usr/include/linux/atm_tcp.h
+  HDRINST usr/include/linux/fcntl.h
+  HDRINST usr/include/linux/vfio_ccw.h
+  HDRINST usr/include/linux/dlm_plock.h
+  HDRINST usr/include/linux/virtio_vsock.h
+  HDRINST usr/include/linux/netdevice.h
+  HDRINST usr/include/linux/msm_ipa.h
+  HDRINST usr/include/linux/vboxguest.h
+  HDRINST usr/include/linux/lwtunnel.h
+  HDRINST usr/include/linux/errno.h
+  HDRINST usr/include/linux/fdreg.h
+  HDRINST usr/include/linux/meye.h
+  HDRINST usr/include/linux/ipv6.h
+  UPD     include/generated/bounds.h
+  HDRINST usr/include/linux/if_x25.h
+  CC      arch/arm64/kernel/asm-offsets.s
+  HDRINST usr/include/linux/ethtool_netlink.h
+  HDRINST usr/include/linux/sctp.h
+  HDRINST usr/include/linux/input-event-codes.h
+  HDRINST usr/include/linux/if_bonding.h
+  HDRINST usr/include/linux/atmclip.h
+  HDRINST usr/include/linux/atmbr2684.h
+  HDRINST usr/include/linux/wait.h
+  HDRINST usr/include/linux/byteorder/big_endian.h
+  HDRINST usr/include/linux/byteorder/little_endian.h
+  HDRINST usr/include/linux/ila.h
+  HDRINST usr/include/linux/qnxtypes.h
+  HDRINST usr/include/linux/v4l2-dv-timings.h
+  HDRINST usr/include/linux/nvram.h
+  HDRINST usr/include/linux/qemu_fw_cfg.h
+  HDRINST usr/include/linux/pfkeyv2.h
+  HDRINST usr/include/linux/ipa_qmi_service_v01.h
+  HDRINST usr/include/linux/rseq.h
+  HDRINST usr/include/linux/udp.h
+  HDRINST usr/include/linux/synclink.h
+  HDRINST usr/include/linux/serial.h
+  HDRINST usr/include/linux/smc.h
+  HDRINST usr/include/linux/omap3isp.h
+  HDRINST usr/include/linux/magic.h
+  HDRINST usr/include/linux/mmc/ioctl.h
+  HDRINST usr/include/linux/gen_stats.h
+  HDRINST usr/include/linux/cdrom.h
+  HDRINST usr/include/linux/netfilter_ipv4/ipt_CLUSTERIP.h
+  HDRINST usr/include/linux/netfilter_ipv4/ipt_ECN.h
+  HDRINST usr/include/linux/netfilter_ipv4/ipt_ttl.h
+  HDRINST usr/include/linux/netfilter_ipv4/ipt_REJECT.h
+  HDRINST usr/include/linux/netfilter_ipv4/ip_tables.h
+  HDRINST usr/include/linux/netfilter_ipv4/ipt_ah.h
+  HDRINST usr/include/linux/netfilter_ipv4/ipt_ecn.h
+  HDRINST usr/include/linux/netfilter_ipv4/ipt_LOG.h
+  HDRINST usr/include/linux/netfilter_ipv4/ipt_TTL.h
+  HDRINST usr/include/linux/uleds.h
+  HDRINST usr/include/linux/gunyah.h
+  HDRINST usr/include/linux/devlink.h
+  HDRINST usr/include/linux/securebits.h
+  HDRINST usr/include/linux/qnx4_fs.h
+  HDRINST usr/include/linux/kfd_ioctl.h
+  HDRINST usr/include/linux/kvm_para.h
+  HDRINST usr/include/linux/auto_fs.h
+  HDRINST usr/include/linux/vtpm_proxy.h
+  HDRINST usr/include/linux/phonet.h
+  HDRINST usr/include/linux/ipmi_bmc.h
+  HDRINST usr/include/linux/netlink.h
+  HDRINST usr/include/linux/ioam6_genl.h
+  HDRINST usr/include/linux/msm_ion.h
+  HDRINST usr/include/linux/landlock.h
+  HDRINST usr/include/linux/udf_fs_i.h
+  HDRINST usr/include/linux/tls.h
+  HDRINST usr/include/linux/mqueue.h
+  HDRINST usr/include/linux/virtio_ids.h
+  HDRINST usr/include/linux/fsi.h
+  HDRINST usr/include/linux/ethtool.h
+  HDRINST usr/include/linux/x25.h
+  HDRINST usr/include/linux/virtio_fs.h
+  HDRINST usr/include/linux/capi.h
+  HDRINST usr/include/linux/hw_breakpoint.h
+  HDRINST usr/include/linux/in_route.h
+  HDRINST usr/include/linux/vt.h
+  HDRINST usr/include/linux/termios.h
+  HDRINST usr/include/linux/cryptouser.h
+  HDRINST usr/include/linux/xdp_diag.h
+  HDRINST usr/include/linux/hiddev.h
+  HDRINST usr/include/linux/sysctl.h
+  HDRINST usr/include/linux/fscrypt.h
+  HDRINST usr/include/linux/virtio_blk.h
+  HDRINST usr/include/linux/psp-sev.h
+  HDRINST usr/include/linux/reiserfs_xattr.h
+  HDRINST usr/include/linux/if_ether.h
+  HDRINST usr/include/linux/in.h
+  HDRINST usr/include/linux/nsfs.h
+  HDRINST usr/include/linux/if_addrlabel.h
+  HDRINST usr/include/linux/auxvec.h
+  HDRINST usr/include/linux/mptcp.h
+  HDRINST usr/include/linux/if.h
+  HDRINST usr/include/linux/rtnetlink.h
+  HDRINST usr/include/linux/fanotify.h
+  HDRINST usr/include/linux/netfilter_arp.h
+  HDRINST usr/include/linux/mctp.h
+  HDRINST usr/include/linux/qbg-profile.h
+  HDRINST usr/include/linux/if_pppox.h
+  HDRINST usr/include/linux/coff.h
+  HDRINST usr/include/linux/signalfd.h
+  HDRINST usr/include/linux/virtio_bt.h
+  HDRINST usr/include/linux/atm_eni.h
+  HDRINST usr/include/linux/incrementalfs.h
+  HDRINST usr/include/linux/ip_vs.h
+  HDRINST usr/include/linux/posix_acl.h
+  HDRINST usr/include/linux/packet_diag.h
+  HDRINST usr/include/linux/ivtv.h
+  HDRINST usr/include/linux/blktrace_api.h
+  HDRINST usr/include/linux/wireless.h
+  HDRINST usr/include/linux/serio.h
+  HDRINST usr/include/linux/iio/buffer.h
+  HDRINST usr/include/linux/iio/events.h
+  HDRINST usr/include/linux/iio/types.h
+  HDRINST usr/include/linux/if_tun.h
+  HDRINST usr/include/linux/ion.h
+  HDRINST usr/include/linux/sockios.h
+  HDRINST usr/include/linux/apm_bios.h
+  HDRINST usr/include/linux/uvcvideo.h
+  HDRINST usr/include/linux/dlmconstants.h
+  HDRINST usr/include/linux/pci.h
+  HDRINST usr/include/linux/mdio.h
+  HDRINST usr/include/linux/qg.h
+  HDRINST usr/include/linux/hpet.h
+  HDRINST usr/include/linux/sock_diag.h
+  HDRINST usr/include/linux/smiapp.h
+  HDRINST usr/include/linux/auto_fs4.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_HL.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6_tables.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_mh.h
+  UPD     include/generated/asm-offsets.h
+  CALL    /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/scripts/checksyscalls.sh
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_opts.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_rt.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_LOG.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_frag.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_ipv6header.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_NPT.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_srh.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_hl.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_ah.h
+  HDRINST usr/include/linux/netfilter_ipv6/ip6t_REJECT.h
+  HDRINST usr/include/linux/virtio_types.h
+  HDRINST usr/include/linux/atmsap.h
+  HDRINST usr/include/linux/ioctl.h
+  HDRINST usr/include/linux/coda.h
+  HDRINST usr/include/linux/if_infiniband.h
+  HDRINST usr/include/linux/in6.h
+  LDS     arch/arm64/kernel/vdso/vdso.lds
+  HDRINST usr/include/linux/keyboard.h
+  CC      arch/arm64/kernel/vdso/vgettimeofday.o
+  HDRINST usr/include/linux/nfs_mount.h
+  HDRINST usr/include/linux/qbg.h
+  AS      arch/arm64/kernel/vdso/note.o
+  HDRINST usr/include/linux/hsi/hsi_char.h
+  HDRINST usr/include/linux/hsi/cs-protocol.h
+  HDRINST usr/include/linux/net.h
+  AS      arch/arm64/kernel/vdso/sigreturn.o
+  HDRINST usr/include/linux/inotify.h
+  HDRINST usr/include/linux/vduse.h
+  HDRINST usr/include/linux/cciss_ioctl.h
+  HDRINST usr/include/linux/ioam6.h
+  HDRINST usr/include/linux/v4l2-controls.h
+  HDRINST usr/include/linux/msm_npu.h
+  HDRINST usr/include/linux/virtio_snd.h
+  HDRINST usr/include/linux/tiocl.h
+  HDRINST usr/include/linux/rpl.h
+  HDRINST usr/include/linux/nfsacl.h
+  HDRINST usr/include/linux/adb.h
+  HDRINST usr/include/linux/major.h
+  LD      arch/arm64/kernel/vdso/vdso.so.dbg
+  HDRINST usr/include/linux/nitro_enclaves.h
+  VDSOSYM include/generated/vdso-offsets.h
+  OBJCOPY arch/arm64/kernel/vdso/vdso.so
+  HDRINST usr/include/linux/netfilter_bridge.h
+  HDRINST usr/include/linux/memfd.h
+  HDRINST usr/include/linux/if_macsec.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_arpreply.h
+  HDRINST usr/include/linux/netfilter_bridge/ebtables.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_log.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_mark_t.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_pkttype.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_nat.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_ip.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_nflog.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_redirect.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_802_3.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_arp.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_mark_m.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_limit.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_among.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_vlan.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_ip6.h
+  HDRINST usr/include/linux/netfilter_bridge/ebt_stp.h
+  HDRINST usr/include/linux/mempolicy.h
+  HDRINST usr/include/linux/btrfs_tree.h
+  HDRINST usr/include/linux/reiserfs_fs.h
+  HDRINST usr/include/linux/virtio_config.h
+  HDRINST usr/include/linux/ipv6_route.h
+  HDRINST usr/include/linux/virtio_9p.h
+  HDRINST usr/include/linux/virtio_scmi.h
+  HDRINST usr/include/linux/vfio_zdev.h
+  HDRINST usr/include/linux/blkpg.h
+  HDRINST usr/include/linux/ncsi.h
+  HDRINST usr/include/linux/kexec.h
+  HDRINST usr/include/linux/if_plip.h
+  HDRINST usr/include/linux/auto_dev-ioctl.h
+  HDRINST usr/include/linux/affs_hardblocks.h
+  HDRINST usr/include/linux/cyclades.h
+  HDRINST usr/include/linux/usbdevice_fs.h
+  HDRINST usr/include/linux/veth.h
+  HDRINST usr/include/linux/vsockmon.h
+  HDRINST usr/include/linux/atmmpc.h
+  LDS     arch/arm64/kernel/vdso32/vdso.lds
+  CC32    arch/arm64/kernel/vdso32/note.o
+  HDRINST usr/include/linux/openat2.h
+  CC32    arch/arm64/kernel/vdso32/vgettimeofday.o
+  HOSTCC  arch/arm64/kernel/vdso32/../../../arm/vdso/vdsomunge
+  HDRINST usr/include/linux/pps.h
+  HDRINST usr/include/linux/taskstats.h
+  HDRINST usr/include/linux/loop.h
+  HDRINST usr/include/linux/zorro.h
+  HDRINST usr/include/linux/if_link.h
+  HDRINST usr/include/linux/hdreg.h
+  HDRINST usr/include/linux/misc/bcm_vk.h
+  HDRINST usr/include/linux/spi/spi.h
+  HDRINST usr/include/linux/spi/spidev.h
+  HDRINST usr/include/linux/pkt_cls.h
+  HDRINST usr/include/linux/cec.h
+  HDRINST usr/include/linux/nubus.h
+  HDRINST usr/include/linux/cciss_defs.h
+  HDRINST usr/include/linux/tc_act/tc_ctinfo.h
+  HDRINST usr/include/linux/tc_act/tc_vlan.h
+  HDRINST usr/include/linux/tc_act/tc_sample.h
+  HDRINST usr/include/linux/tc_act/tc_skbmod.h
+  HDRINST usr/include/linux/tc_act/tc_gate.h
+  HDRINST usr/include/linux/tc_act/tc_gact.h
+  HDRINST usr/include/linux/tc_act/tc_mirred.h
+  HDRINST usr/include/linux/tc_act/tc_bpf.h
+  HDRINST usr/include/linux/tc_act/tc_csum.h
+  HDRINST usr/include/linux/tc_act/tc_pedit.h
+  LD32    arch/arm64/kernel/vdso32/vdso.so.raw
+  HDRINST usr/include/linux/tc_act/tc_defact.h
+  HDRINST usr/include/linux/tc_act/tc_ct.h
+  HDRINST usr/include/linux/tc_act/tc_ife.h
+  MUNGE   arch/arm64/kernel/vdso32/vdso.so.dbg
+  HDRINST usr/include/linux/tc_act/tc_nat.h
+  HDRINST usr/include/linux/tc_act/tc_connmark.h
+  VDSOSYM include/generated/vdso32-offsets.h
+  OBJCOPY arch/arm64/kernel/vdso32/vdso.so
+  HDRINST usr/include/linux/tc_act/tc_mpls.h
+  HDRINST usr/include/linux/tc_act/tc_tunnel_key.h
+  HDRINST usr/include/linux/tc_act/tc_ipt.h
+  HDRINST usr/include/linux/tc_act/tc_skbedit.h
+  HDRINST usr/include/linux/sched.h
+  HDRINST usr/include/linux/rpmsg_types.h
+  HDRINST usr/include/linux/errqueue.h
+  HDRINST usr/include/linux/virtio_i2c.h
+  HDRINST usr/include/linux/virtio_ring.h
+  HDRINST usr/include/linux/nbd-netlink.h
+  HDRINST usr/include/linux/zorro_ids.h
+  HDRINST usr/include/linux/dm-log-userspace.h
+  HDRINST usr/include/linux/if_addr.h
+  HDRINST usr/include/linux/ipmi_msgdefs.h
+  HDRINST usr/include/linux/power_state.h
+  HDRINST usr/include/linux/ipc.h
+  HDRINST usr/include/linux/if_packet.h
+  HDRINST usr/include/linux/cramfs_fs.h
+  HDRINST usr/include/linux/nfs2.h
+  HDRINST usr/include/linux/pcitest.h
+  HDRINST usr/include/linux/sunrpc/debug.h
+  HDRINST usr/include/linux/fsverity.h
+  HDRINST usr/include/linux/gtp.h
+  HDRINST usr/include/linux/libc-compat.h
+  HDRINST usr/include/linux/mman.h
+  HDRINST usr/include/linux/if_alg.h
+  HDRINST usr/include/linux/qg-profile.h
+  HDRINST usr/include/linux/ptrace.h
+  HDRINST usr/include/linux/nfsd/debug.h
+  HDRINST usr/include/linux/nfsd/stats.h
+  HDRINST usr/include/linux/nfsd/export.h
+  HDRINST usr/include/linux/nfsd/cld.h
+  HDRINST usr/include/linux/nfsd/nfsfh.h
+  HDRINST usr/include/linux/virtio_rng.h
+  HDRINST usr/include/linux/filter.h
+  HDRINST usr/include/linux/fadvise.h
+  HDRINST usr/include/linux/ioam6_iptunnel.h
+  HDRINST usr/include/linux/fsl_hypervisor.h
+  HDRINST usr/include/linux/atmsvc.h
+  HDRINST usr/include/linux/nfs3.h
+  HDRINST usr/include/linux/if_ltalk.h
+  HDRINST usr/include/linux/jffs2.h
+  HDRINST usr/include/linux/atmarp.h
+  HDRINST usr/include/linux/selinux_netlink.h
+  HDRINST usr/include/linux/signal.h
+  HDRINST usr/include/linux/dvb/dmx.h
+  HDRINST usr/include/linux/dvb/net.h
+  HDRINST usr/include/linux/dvb/video.h
+  HDRINST usr/include/linux/dvb/osd.h
+  HDRINST usr/include/linux/dvb/frontend.h
+  HDRINST usr/include/linux/dvb/audio.h
+  HDRINST usr/include/linux/dvb/version.h
+  HDRINST usr/include/linux/dvb/ca.h
+  HDRINST usr/include/linux/android_fuse.h
+  HDRINST usr/include/linux/tcp.h
+  HDRINST usr/include/linux/spss_utils.h
+  HDRINST usr/include/linux/elf.h
+  HDRINST usr/include/linux/falloc.h
+  HDRINST usr/include/linux/virtio_pcidev.h
+  HDRINST usr/include/linux/sync_file.h
+  HDRINST usr/include/linux/time.h
+  HDRINST usr/include/linux/io_uring.h
+  HDRINST usr/include/linux/elf-fdpic.h
+  HDRINST usr/include/linux/dlm.h
+  HDRINST usr/include/linux/timex.h
+  HDRINST usr/include/linux/igmp.h
+  HDRINST usr/include/linux/netfilter.h
+  HDRINST usr/include/linux/gameport.h
+  HDRINST usr/include/linux/sonypi.h
+  HDRINST usr/include/linux/um_timetravel.h
+  HDRINST usr/include/linux/seccomp.h
+  HDRINST usr/include/linux/ipmi.h
+  HDRINST usr/include/linux/tipc_config.h
+  HDRINST usr/include/linux/seg6_iptunnel.h
+  HDRINST usr/include/linux/wireguard.h
+  HDRINST usr/include/linux/fsmap.h
+  HDRINST usr/include/linux/nilfs2_api.h
+  HDRINST usr/include/linux/fpga-dfl.h
+  HDRINST usr/include/linux/bfs_fs.h
+  HDRINST usr/include/linux/dns_resolver.h
+  HDRINST usr/include/linux/rfkill.h
+  HDRINST usr/include/linux/virtio_pmem.h
+  HDRINST usr/include/linux/hash_info.h
+  HDRINST usr/include/linux/un.h
+  HDRINST usr/include/linux/keyctl.h
+  HDRINST usr/include/linux/unix_diag.h
+  HDRINST usr/include/linux/kcm.h
+  HDRINST usr/include/linux/rxrpc.h
+  HDRINST usr/include/linux/rds.h
+  HDRINST usr/include/linux/snmp.h
+  HDRINST usr/include/linux/net_dropmon.h
+  HDRINST usr/include/linux/virtio_input.h
+  HDRINST usr/include/linux/nexthop.h
+  HDRINST usr/include/linux/gpio.h
+  HDRINST usr/include/linux/ndctl.h
+  HDRINST usr/include/linux/pg.h
+  HDRINST usr/include/linux/coresight-stm.h
+  HDRINST usr/include/linux/media-bus-format.h
+  HDRINST usr/include/linux/btf.h
+  HDRINST usr/include/linux/cycx_cfm.h
+  HDRINST usr/include/linux/pr.h
+  HDRINST usr/include/linux/ivtvfb.h
+  HDRINST usr/include/linux/ioprio.h
+  HDRINST usr/include/linux/reboot.h
+  HDRINST usr/include/linux/stat.h
+  HDRINST usr/include/linux/blkzoned.h
+  HDRINST usr/include/linux/rose.h
+  HDRINST usr/include/linux/ptp_clock.h
+  HDRINST usr/include/linux/thermal.h
+  HDRINST usr/include/linux/atm_idt77105.h
+  HDRINST usr/include/linux/switchtec_ioctl.h
+  HDRINST usr/include/linux/nfs.h
+  HDRINST usr/include/linux/if_arp.h
+  HDRINST usr/include/linux/cuda.h
+  HDRINST usr/include/linux/iommu.h
+  HDRINST usr/include/linux/virtio_pci.h
+  HDRINST usr/include/linux/utsname.h
+  HDRINST usr/include/linux/if_xdp.h
+  HDRINST usr/include/linux/dlm_device.h
+  HDRINST usr/include/linux/atm_nicstar.h
+  HDRINST usr/include/linux/atmioc.h
+  HDRINST usr/include/linux/mem-buf.h
+  HDRINST usr/include/linux/isdn/capicmd.h
+  HDRINST usr/include/linux/kdev_t.h
+  HDRINST usr/include/linux/poll.h
+  HDRINST usr/include/linux/smc_diag.h
+  HDRINST usr/include/linux/kvm.h
+  HDRINST usr/include/linux/ip.h
+  HDRINST usr/include/linux/rmnet_ipa_fd_ioctl.h
+  HDRINST usr/include/linux/cifs/cifs_mount.h
+  HDRINST usr/include/linux/cifs/cifs_netlink.h
+  HDRINST usr/include/linux/tty_flags.h
+  HDRINST usr/include/linux/uinput.h
+  HDRINST usr/include/linux/cfm_bridge.h
+  HDRINST usr/include/linux/capability.h
+  HDRINST usr/include/linux/uio.h
+  HDRINST usr/include/linux/v4l2-mediabus.h
+  HDRINST usr/include/linux/aspeed-p2a-ctrl.h
+  HDRINST usr/include/linux/dqblk_xfs.h
+  HDRINST usr/include/linux/times.h
+  HDRINST usr/include/linux/route.h
+  HDRINST usr/include/linux/msm_eth.h
+  HDRINST usr/include/linux/virtio_crypto.h
+  HDRINST usr/include/linux/nilfs2_ondisk.h
+  HDRINST usr/include/linux/firewire-constants.h
+  HDRINST usr/include/linux/userfaultfd.h
+  HDRINST usr/include/linux/erspan.h
+  HDRINST usr/include/linux/radeonfb.h
+  HDRINST usr/include/linux/i2c.h
+  HDRINST usr/include/linux/elf-em.h
+  HDRINST usr/include/linux/hgsl.h
+  HDRINST usr/include/linux/fiemap.h
+  HDRINST usr/include/linux/hdlc.h
+  HDRINST usr/include/linux/seg6.h
+  HDRINST usr/include/linux/tc_ematch/tc_em_text.h
+  HDRINST usr/include/linux/tc_ematch/tc_em_cmp.h
+  HDRINST usr/include/linux/tc_ematch/tc_em_ipt.h
+  HDRINST usr/include/linux/tc_ematch/tc_em_meta.h
+  HDRINST usr/include/linux/tc_ematch/tc_em_nbyte.h
+  HDRINST usr/include/linux/eavb_shared.h
+  HDRINST usr/include/linux/kernelcapi.h
+  HDRINST usr/include/linux/string.h
+  HDRINST usr/include/linux/virtio_mmio.h
+  HDRINST usr/include/linux/vbox_vmmdev_types.h
+  HDRINST usr/include/linux/if_team.h
+  HDRINST usr/include/linux/prctl.h
+  HDRINST usr/include/linux/unistd.h
+  HDRINST usr/include/linux/perf_event.h
+  HDRINST usr/include/linux/module.h
+  HDRINST usr/include/linux/sonet.h
+  HDRINST usr/include/linux/romfs_fs.h
+  HDRINST usr/include/linux/rkisp1-config.h
+  HDRINST usr/include/linux/netrom.h
+  HDRINST usr/include/linux/cm4000_cs.h
+  HDRINST usr/include/linux/ax25.h
+  HDRINST usr/include/linux/random.h
+  HDRINST usr/include/linux/chio.h
+  HDRINST usr/include/linux/qbt_handler.h
+  HDRINST usr/include/linux/genetlink.h
+  HDRINST usr/include/linux/ppp_defs.h
+  HDRINST usr/include/linux/quota.h
+  HDRINST usr/include/linux/pktcdvd.h
+  HDRINST usr/include/linux/seg6_hmac.h
+  HDRINST usr/include/linux/virtio_iommu.h
+  HDRINST usr/include/linux/toshiba.h
+  HDRINST usr/include/linux/shm.h
+  HDRINST usr/include/linux/patchkey.h
+  HDRINST usr/include/linux/xattr.h
+  HDRINST usr/include/linux/cxl_mem.h
+  HDRINST usr/include/linux/gfs2_ondisk.h
+  HDRINST usr/include/linux/suspend_ioctls.h
+  HDRINST usr/include/linux/atm_he.h
+  HDRINST usr/include/linux/ipsec.h
+  HDRINST usr/include/linux/eventpoll.h
+  HDRINST usr/include/linux/dcbnl.h
+  HDRINST usr/include/linux/msg.h
+  HDRINST usr/include/linux/i8k.h
+  HDRINST usr/include/linux/if_slip.h
+  HDRINST usr/include/linux/nbd.h
+  HDRINST usr/include/linux/msm_sysstats.h
+  HDRINST usr/include/linux/llc.h
+  HDRINST usr/include/linux/atmppp.h
+  HDRINST usr/include/linux/rio_mport_cdev.h
+  HDRINST usr/include/linux/isst_if.h
+  HDRINST usr/include/linux/swab.h
+  HDRINST usr/include/linux/sem.h
+  HDRINST usr/include/linux/kcmp.h
+  HDRINST usr/include/linux/edd.h
+  HDRINST usr/include/linux/futex.h
+  HDRINST usr/include/linux/aspeed-lpc-ctrl.h
+  HDRINST usr/include/linux/virtio_balloon.h
+  HDRINST usr/include/linux/bt-bmc.h
+  HDRINST usr/include/linux/msm_geni_serial.h
+  HDRINST usr/include/linux/virtio_gpio.h
+  HDRINST usr/include/linux/userio.h
+  HDRINST usr/include/linux/bpfilter.h
+  HDRINST usr/include/linux/sched/types.h
+  HDRINST usr/include/linux/dlm_netlink.h
+  HDRINST usr/include/linux/msm_dsps.h
+  HDRINST usr/include/linux/if_fc.h
+  HDRINST usr/include/linux/vfio.h
+  HDRINST usr/include/linux/ppp-ioctl.h
+  HDRINST usr/include/linux/sound.h
+  HDRINST usr/include/linux/dm-user.h
+  HDRINST usr/include/linux/videodev2.h
+  HDRINST usr/include/linux/pmu.h
+  HDRINST usr/include/linux/tcp_metrics.h
+  HDRINST usr/include/linux/tipc_netlink.h
+  HDRINST usr/include/linux/sysinfo.h
+  HDRINST usr/include/linux/lp.h
+  HDRINST usr/include/linux/mii.h
+  HDRINST usr/include/linux/media.h
+  HDRINST usr/include/linux/nfs_fs.h
+  HDRINST usr/include/linux/rpmsg.h
+  HDRINST usr/include/linux/ife.h
+  HDRINST usr/include/linux/phantom.h
+  HDRINST usr/include/linux/stm.h
+  HDRINST usr/include/linux/virtio_gpu.h
+  HDRINST usr/include/linux/surface_aggregator/dtx.h
+  HDRINST usr/include/linux/surface_aggregator/cdev.h
+  HDRINST usr/include/linux/habmmid.h
+  HDRINST usr/include/linux/android/binderfs.h
+  HDRINST usr/include/linux/android/binder.h
+  HDRINST usr/include/linux/can/vxcan.h
+  HDRINST usr/include/linux/can/error.h
+  HDRINST usr/include/linux/can/netlink.h
+  HDRINST usr/include/linux/can/bcm.h
+  HDRINST usr/include/linux/can/isotp.h
+  HDRINST usr/include/linux/can/raw.h
+  HDRINST usr/include/linux/can/j1939.h
+  HDRINST usr/include/linux/can/gw.h
+  HDRINST usr/include/linux/hdlc/ioctl.h
+  HDRINST usr/include/linux/msm_rmnet.h
+  HDRINST usr/include/linux/esoc_ctrl.h
+  HDRINST usr/include/linux/idxd.h
+  HDRINST usr/include/linux/hidraw.h
+  HDRINST usr/include/linux/time_types.h
+  HDRINST usr/include/linux/vhost.h
+  HDRINST usr/include/linux/psample.h
+  HDRINST usr/include/linux/input.h
+  HDRINST usr/include/linux/atm_zatm.h
+  HDRINST usr/include/linux/tipc_sockets_diag.h
+  HDRINST usr/include/linux/atm.h
+  HDRINST usr/include/linux/virtio_mem.h
+  HDRINST usr/include/linux/spcom.h
+  HDRINST usr/include/linux/nfs4.h
+  HDRINST usr/include/linux/qseecom.h
+  HDRINST usr/include/linux/msm_ion_ids.h
+  HDRINST usr/include/linux/mtio.h
+  HDRINST usr/include/linux/if_tunnel.h
+  HDRINST usr/include/linux/pkt_sched.h
+  HDRINST usr/include/linux/kernel-page-flags.h
+  HDRINST usr/include/linux/if_cablemodem.h
+  HDRINST usr/include/linux/hsr_netlink.h
+  HDRINST usr/include/linux/msdos_fs.h
+  HDRINST usr/include/linux/nvme_ioctl.h
+  HDRINST usr/include/linux/psci.h
+  HDRINST usr/include/linux/parport.h
+  HDRINST usr/include/linux/mrp_bridge.h
+  HDRINST usr/include/linux/fd.h
+  HDRINST usr/include/linux/oom.h
+  HDRINST usr/include/linux/ultrasound.h
+  HDRINST usr/include/linux/if_fddi.h
+  HDRINST usr/include/linux/omapfb.h
+  HDRINST usr/include/linux/acrn.h
+  HDRINST usr/include/linux/if_eql.h
+  HDRINST usr/include/linux/bcm933xx_hcs.h
+  HDRINST usr/include/linux/fsl_mc.h
+  HDRINST usr/include/linux/fou.h
+  HDRINST usr/include/linux/types.h
+  HDRINST usr/include/linux/f2fs.h
+  HDRINST usr/include/linux/serial_core.h
+  HDRINST usr/include/linux/aio_abi.h
+  HDRINST usr/include/linux/limits.h
+  HDRINST usr/include/linux/utime.h
+  HDRINST usr/include/linux/lirc.h
+  HDRINST usr/include/linux/efs_fs_sb.h
+  HDRINST usr/include/linux/v4l2-subdev.h
+  HDRINST usr/include/linux/seg6_local.h
+  HDRINST usr/include/linux/resource.h
+  HDRINST usr/include/linux/bpf.h
+  HDRINST usr/include/linux/ccs.h
+  HDRINST usr/include/linux/scif_ioctl.h
+  HDRINST usr/include/linux/firewire-cdev.h
+  HDRINST usr/include/linux/icmp.h
+  HDRINST usr/include/linux/if_phonet.h
+  HDRINST usr/include/linux/i2c-dev.h
+  HDRINST usr/include/linux/rtc.h
+  HDRINST usr/include/linux/posix_types.h
+  HDRINST usr/include/linux/virtio_scsi.h
+  HDRINST usr/include/linux/matroxfb.h
+  HDRINST usr/include/linux/xilinx-v4l2-controls.h
+  HDRINST usr/include/linux/mpls.h
+  HDRINST usr/include/linux/tee.h
+  HDRINST usr/include/linux/v4l2-common.h
+  HDRINST usr/include/linux/arm_sdei.h
+  HDRINST usr/include/linux/dma-heap.h
+  HDRINST usr/include/linux/btrfs.h
+  HDRINST usr/include/linux/arcfb.h
+  HDRINST usr/include/linux/iso_fs.h
+  HDRINST usr/include/linux/atmapi.h
+  HDRINST usr/include/linux/fs.h
+  HDRINST usr/include/linux/mount.h
+  HDRINST usr/include/linux/inet_diag.h
+  HDRINST usr/include/linux/if_vlan.h
+  HDRINST usr/include/linux/cn_proc.h
+  HDRINST usr/include/linux/mpls_iptunnel.h
+  HDRINST usr/include/linux/max2175.h
+  HDRINST usr/include/linux/netfilter_ipv6.h
+  HDRINST usr/include/linux/close_range.h
+  HDRINST usr/include/linux/watch_queue.h
+  HDRINST usr/include/linux/usbip.h
+  HDRINST usr/include/linux/wwan.h
+  HDRINST usr/include/linux/tipc.h
+  HDRINST usr/include/linux/kd.h
+  HDRINST usr/include/linux/icmpv6.h
+  HDRINST usr/include/linux/mmtimer.h
+  HDRINST usr/include/linux/net_namespace.h
+  HDRINST usr/include/linux/qti_virtio_mem.h
+  HDRINST usr/include/linux/if_ppp.h
+  HDRINST usr/include/linux/netconf.h
+  HDRINST usr/include/linux/bpf_perf_event.h
+  HDRINST usr/include/linux/nl80211-vnd-intel.h
+  HDRINST usr/include/linux/param.h
+  HDRINST usr/include/linux/vdpa.h
+  HDRINST usr/include/linux/bpf_common.h
+  HDRINST usr/include/linux/mhi.h
+  HDRINST usr/include/linux/atalk.h
+  HDRINST usr/include/linux/cec-funcs.h
+  HDRINST usr/include/linux/wmi.h
+  HDRINST usr/include/media/synx.h
+  HDRINST usr/include/misc/pvpanic.h
+  HDRINST usr/include/misc/ocxl.h
+  HDRINST usr/include/misc/fastrpc.h
+  HDRINST usr/include/misc/adsp_sleepmon.h
+  HDRINST usr/include/misc/uacce/hisi_qm.h
+  HDRINST usr/include/misc/uacce/uacce.h
+  HDRINST usr/include/misc/xilinx_sdfec.h
+  HDRINST usr/include/misc/habanalabs.h
+  HDRINST usr/include/misc/cxl.h
+  HDRINST usr/include/mtd/mtd-user.h
+  HDRINST usr/include/mtd/inftl-user.h
+  HDRINST usr/include/mtd/mtd-abi.h
+  HDRINST usr/include/mtd/nftl-user.h
+  HDRINST usr/include/mtd/ubi-user.h
+  HDRINST usr/include/rdma/cxgb4-abi.h
+  HDRINST usr/include/rdma/bnxt_re-abi.h
+  HDRINST usr/include/rdma/ocrdma-abi.h
+  HDRINST usr/include/rdma/vmw_pvrdma-abi.h
+  HDRINST usr/include/rdma/qedr-abi.h
+  HDRINST usr/include/rdma/mlx5_user_ioctl_cmds.h
+  HDRINST usr/include/rdma/rdma_user_rxe.h
+  HDRINST usr/include/rdma/mlx5_user_ioctl_verbs.h
+  HDRINST usr/include/rdma/ib_user_ioctl_cmds.h
+  HDRINST usr/include/rdma/mlx5-abi.h
+  HDRINST usr/include/rdma/rdma_user_ioctl_cmds.h
+  HDRINST usr/include/rdma/ib_user_mad.h
+  HDRINST usr/include/rdma/rdma_user_cm.h
+  HDRINST usr/include/rdma/rvt-abi.h
+  HDRINST usr/include/rdma/irdma-abi.h
+  HDRINST usr/include/rdma/hfi/hfi1_ioctl.h
+  HDRINST usr/include/rdma/hfi/hfi1_user.h
+  HDRINST usr/include/rdma/efa-abi.h
+  HDRINST usr/include/rdma/hns-abi.h
+  HDRINST usr/include/rdma/ib_user_sa.h
+  HDRINST usr/include/rdma/mthca-abi.h
+  HDRINST usr/include/rdma/mlx4-abi.h
+  HDRINST usr/include/rdma/ib_user_ioctl_verbs.h
+  HDRINST usr/include/rdma/ib_user_verbs.h
+  HDRINST usr/include/rdma/rdma_user_ioctl.h
+  HDRINST usr/include/rdma/siw-abi.h
+  HDRINST usr/include/rdma/rdma_netlink.h
+  HDRINST usr/include/scsi/scsi_netlink_fc.h
+  HDRINST usr/include/scsi/scsi_bsg_fc.h
+  HDRINST usr/include/scsi/cxlflash_ioctl.h
+  HDRINST usr/include/scsi/fc/fc_ns.h
+  HDRINST usr/include/scsi/fc/fc_gs.h
+  HDRINST usr/include/scsi/fc/fc_els.h
+  HDRINST usr/include/scsi/fc/fc_fs.h
+  HDRINST usr/include/scsi/scsi_bsg_ufs.h
+  HDRINST usr/include/scsi/scsi_netlink.h
+  HDRINST usr/include/sound/asequencer.h
+  HDRINST usr/include/sound/compress_params.h
+  HDRINST usr/include/sound/hdsp.h
+  HDRINST usr/include/sound/asoc.h
+  HDRINST usr/include/sound/emu10k1.h
+  HDRINST usr/include/sound/asound_fm.h
+  HDRINST usr/include/sound/sb16_csp.h
+  HDRINST usr/include/sound/sfnt_info.h
+  HDRINST usr/include/sound/hdspm.h
+  HDRINST usr/include/sound/compress_offload.h
+  HDRINST usr/include/sound/snd_sst_tokens.h
+  HDRINST usr/include/sound/usb_stream.h
+  HDRINST usr/include/sound/sof/fw.h
+  HDRINST usr/include/sound/sof/header.h
+  HDRINST usr/include/sound/sof/tokens.h
+  HDRINST usr/include/sound/sof/abi.h
+  HDRINST usr/include/sound/asound.h
+  HDRINST usr/include/sound/firewire.h
+  HDRINST usr/include/sound/skl-tplg-interface.h
+  HDRINST usr/include/sound/tlv.h
+  HDRINST usr/include/video/uvesafb.h
+  HDRINST usr/include/video/edid.h
+  HDRINST usr/include/video/sisfb.h
+  HDRINST usr/include/xen/gntdev.h
+  HDRINST usr/include/xen/gntalloc.h
+  HDRINST usr/include/xen/privcmd.h
+  HDRINST usr/include/xen/evtchn.h
+  HDRINST usr/include/linux/version.h
+  HDRINST usr/include/asm/setup.h
+  HDRINST usr/include/asm/fcntl.h
+  HDRINST usr/include/asm/auxvec.h
+  HDRINST usr/include/asm/sigcontext.h
+  HDRINST usr/include/asm/mman.h
+  HDRINST usr/include/asm/ptrace.h
+  HDRINST usr/include/asm/signal.h
+  HDRINST usr/include/asm/bitsperlong.h
+  HDRINST usr/include/asm/kvm.h
+  HDRINST usr/include/asm/unistd.h
+  HDRINST usr/include/asm/statfs.h
+  HDRINST usr/include/asm/byteorder.h
+  HDRINST usr/include/asm/sve_context.h
+  HDRINST usr/include/asm/perf_regs.h
+  HDRINST usr/include/asm/hwcap.h
+  HDRINST usr/include/asm/posix_types.h
+  HDRINST usr/include/asm/ucontext.h
+  HDRINST usr/include/asm/bpf_perf_event.h
+  HDRINST usr/include/asm/param.h
+  HDRINST usr/include/asm/socket.h
+  HDRINST usr/include/asm/errno.h
+  HDRINST usr/include/asm/kvm_para.h
+  HDRINST usr/include/asm/msgbuf.h
+  HDRINST usr/include/asm/ioctls.h
+  HDRINST usr/include/asm/termios.h
+  HDRINST usr/include/asm/sockios.h
+  HDRINST usr/include/asm/sembuf.h
+  HDRINST usr/include/asm/ioctl.h
+  HDRINST usr/include/asm/siginfo.h
+  HDRINST usr/include/asm/stat.h
+  HDRINST usr/include/asm/poll.h
+  HDRINST usr/include/asm/ipcbuf.h
+  HDRINST usr/include/asm/swab.h
+  HDRINST usr/include/asm/shmbuf.h
+  HDRINST usr/include/asm/types.h
+  HDRINST usr/include/asm/termbits.h
+  HDRINST usr/include/asm/resource.h
+  LDS     scripts/module.lds
+make[1]: Leaving directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel'
+make: Leaving directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel'
+========================================================
+ Building external modules and installing them into staging directory
++ '[' -n '' ']'
++ '[' -n '' ']'
++ mkdir -p /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0
++ make -C ../vendor/qcom/opensource/wlan/qcacld-3.0 M=../../vendor/qcom/opensource/wlan/qcacld-3.0 KERNEL_SRC=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/./msm-kernel O=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel LLVM=1 DEPMOD=depmod DTC=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/build/kernel/build-tools/path/linux-x86/dtc MODNAME=kiwi_v2 DEVNAME=kiwi_v2 WLAN_PROFILE=kiwi_v2 DYNAMIC_SINGLE_CHIP=kiwi_v2 BOARD_PLATFORM=kalama CONFIG_ARCH_KALAMA=y CONFIG_QCA_CLD_WLAN=m CONFIG_CNSS_OUT_OF_TREE=y CONFIG_CNSS2=m CONFIG_CNSS_GENL=m CONFIG_CNSS_UTILS=m CONFIG_WCNSS_MEM_PRE_ALLOC=m KBUILD_EXTRA_SYMBOLS=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/vendor/qcom/opensource/wlan/platform/Module.symvers KBUILD_MIXED_TREE=/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/msm-kernel-kalama-gki/dist
+make: Entering directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/vendor/qcom/opensource/wlan/qcacld-3.0'
+make -C /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/./msm-kernel M=../../vendor/qcom/opensource/wlan/qcacld-3.0 modules WLAN_ROOT=/home/runner/work/Action-Build/Action-Build/kernel_workspace/vendor/qcom/opensource/wlan/qcacld-3.0 MODNAME?=wlan CONFIG_QCA_WIFI_ISOC=0 CONFIG_QCA_WIFI_2_0=1 CONFIG_QCA_CLD_WLAN=m  
+make[1]: Entering directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel'
+make[2]: Entering directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel'
+fatal: ambiguous argument 'de57127e~..HEAD': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+fatal: ambiguous argument 'de57127e~..HEAD': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_assoc.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_cfg.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_cfg80211.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_data_stall_detection.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_driver_ops.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_ftm.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_hostapd.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_ioctl.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_main.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_object_manager.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_oemdata.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_p2p.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_power.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_regulatory.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_scan.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_softap_tx_rx.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sta_info.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_stats.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_trace.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_tx_rx.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wmm.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wowl.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_oplus_smartmcc.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wext.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_hostapd_wext.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_dcs.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_debugfs.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_debugfs_llstat.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_debugfs_mibstat.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_debugfs_csr.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_debugfs_offload.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_debugfs_roam.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_debugfs_config.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_debugfs_unit_test.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_debugfs_coex.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_spectralscan.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_memdump.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_fips.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_green_ap.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_apf.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_lpass.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_napi.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_ipa.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_nan.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_nan_datapath.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_tdls.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_tsf.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_disa.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_subnet_detect.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_he.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_eht.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_twt.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_rx_monitor.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_nud_tracking.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_packet_filter.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_rssi_monitor.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_bss_transition.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_station_info.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_tx_power.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_ota_test.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_active_tos.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sar_limits.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_concurrency_matrix.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sap_cond_chan_switch.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_p2p_listen_offload.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_channel.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_fw_mode_config.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_reassoc.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_sta_info.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_crash_inject.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_mem_stats.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_unit_test.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_modify_acl.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_connect_info.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_scan_disable.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_dcm.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_wow_ito.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_wowl_add_ptrn.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_wowl_del_ptrn.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_tx_stbc.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_scan_config.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_monitor_mode_channel.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_range_ext.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_radar.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_rts_cts.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_he_bss_color.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_txrx_fw_stats.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_txrx_stats.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_dp_trace.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_stats.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_tdls_peers.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_temperature.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_thermal_cfg.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_wlan_dbg.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_txrx_fw_st_rst.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_gtx_bw_mask.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_ipa.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_dl_modes.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_policy_mgr.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_dp_aggregation.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_wifi_features.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_bmiss.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_get_freq_for_pwr.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_txrx_stats_console.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_add_timestamp.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_dp_traffic_end_indication.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_dp_tx_delay_stats.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_sysfs_eht_rate.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_fw_state.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_bcn_recv.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_thermal.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_hang_event.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_cfr.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_gpio.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_medium_assess.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_cm_connect.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_cm_disconnect.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_avoid_freq_ext.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_mlo.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_mdns_offload.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_connectivity_logging.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_mcc_quota.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_peer_txq_flush.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wifi_pos_pasn.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/os_if/sync/src/osif_sync.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/os_if/sync/src/osif_driver_sync.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/os_if/sync/src/osif_psoc_sync.o
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/os_if/sync/src/osif_vdev_sync.o
+/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:271:23: error: too few arguments to function call, expected 2, have 1
+        dev_open(adapter->dev);
+        ~~~~~~~~             ^
+/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/include/linux/netdevice.h:3028:5: note: 'dev_open' declared here
+int dev_open(struct net_device *dev, struct netlink_ext_ack *extack);
+    ^
+/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:497:22: error: incompatible function pointer types initializing 'int (*)(void *, const struct wondertap_tx_rate_mask_params *)' with an expression of type 'int (void *, const void *)' [-Werror,-Wincompatible-function-pointer-types]
+        .set_tx_rate_mask = wlan_hdd_wondertap_set_tx_rate_mask,
+                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2 errors generated.
+/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+  CC [M]  ../../vendor/qcom/opensource/wlan/qcacld-3.0/components/dsc/src/__wlan_dsc.o
+make[3]: *** [/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/scripts/Makefile.build:295: ../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.o] Error 1
+make[3]: *** Waiting for unfinished jobs....
+make[2]: *** [/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/Makefile:2009: ../../vendor/qcom/opensource/wlan/qcacld-3.0] Error 2
+make[2]: Leaving directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/out/kiwi-v2-module/msm-kernel'
+make[1]: *** [Makefile:239: __sub-make] Error 2
+make[1]: Leaving directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel'
+make: *** [Makefile:34: all] Error 2
+make: Leaving directory '/home/runner/work/Action-Build/Action-Build/kernel_workspace/vendor/qcom/opensource/wlan/qcacld-3.0'
+++ _reject_err_trap
+++ local ec=2
+++ trap - ERR
+++ local REJ_FILES
++++ find . -name '*.rej'
+++ REJ_FILES=
+++ '[' -n '' ']'
+++ trap _reject_err_trap ERR
