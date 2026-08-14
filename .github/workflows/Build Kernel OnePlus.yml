@@ -1611,8 +1611,8 @@ jobs:
       - name: Collect Wonder compile evidence
         if: always() && github.ref_name == 'wonder-ace2-pro-cloud'
         run: |
-          set +e
-          mkdir -p cloud-results/artifacts
+          set -euo pipefail
+          mkdir -p cloud-results/artifacts "cloud-results/runs/${{ github.run_id }}"
           {
             echo "# Ace 2 Pro Wonder cloud build"
             echo
@@ -1640,7 +1640,7 @@ jobs:
             echo
             echo "## Located outputs"
             find kernel_workspace -type f \
-              \( -name 'Image' -o -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
+              \( -name 'Image' -o -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'kiwi_v2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
               -printf '%p %s bytes\n' 2>/dev/null | sort
           } > cloud-results/latest.md
 
@@ -1656,8 +1656,19 @@ jobs:
           fi
           if [ -f cloud-results/build.log ]; then
             tail -n 1200 cloud-results/build.log > cloud-results/build-tail.txt
-            grep -Ei '(^|[[:space:]])(error:|fatal:|undefined reference|undefined symbol|modpost:|no rule to make target|failed)' \
-              cloud-results/build.log | tail -n 300 > cloud-results/errors.txt || true
+            {
+              echo "# filtered errors (shallow git fatals excluded)"
+              grep -Ein '(^|[[:space:]])(error:|fatal:|undefined reference|undefined symbol|modpost:|no rule to make target|failed)' \
+                cloud-results/build.log \
+                | grep -Ev 'ambiguous argument|de57127e~' \
+                | tail -n 300 || true
+              echo
+              echo "# diagnostics"
+              if [ -d kernel_workspace/.git ] && ! git -C kernel_workspace rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+                echo "diagnostic skipped: shallow history (no HEAD~1)"
+              fi
+              grep -n 'arithmetic expression: expecting primary' cloud-results/build.log | head -n 15 || true
+            } > cloud-results/errors.txt || true
           else
             echo "Build step did not create build.log." > cloud-results/build-tail.txt
             cp cloud-results/build-tail.txt cloud-results/errors.txt
@@ -1669,10 +1680,31 @@ jobs:
             cp -a "$artifact" "$target"
           done < <(
             find kernel_workspace -type f \
-              \( -name 'Image' -o -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
+              \( -name 'Image' -o -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'kiwi_v2.ko' -o -name 'qca_cld3*.ko' -o -name 'Module.symvers' -o -name 'modules.order' \) \
               -print0 2>/dev/null
           )
 
+          # Explicit kiwi_v2.ko capture (original name + delivery alias)
+          KIWI_ORIG="kernel_workspace/kernel_platform/out/vendor/qcom/opensource/wlan/qcacld-3.0/kiwi_v2.ko"
+          if [ -f "$KIWI_ORIG" ]; then
+            cp -a "$KIWI_ORIG" cloud-results/artifacts/kiwi_v2.ko
+            cp -a "$KIWI_ORIG" cloud-results/artifacts/qca_cld3_kiwi_v2.ko
+            echo "- explicit kiwi_v2.ko: $(stat -c '%s' "$KIWI_ORIG") bytes sha256=$(sha256sum "$KIWI_ORIG" | awk '{print $1}')" >> cloud-results/latest.md
+          else
+            echo "- explicit kiwi_v2.ko: MISSING at $KIWI_ORIG" >> cloud-results/latest.md
+          fi
+          {
+            echo
+            echo "## Wondertap compile gate"
+            if [ -f cloud-results/build.log ] && grep -q 'wlan_hdd_wondertap\.o' cloud-results/build.log; then
+              echo "- wlan_hdd_wondertap.o: PRESENT"
+            else
+              echo "- wlan_hdd_wondertap.o: ABSENT (Kiwi passthrough NOT compiled)"
+            fi
+            if [ -f cloud-results/build.log ] && grep -q 'wonder/wondertap\.o' cloud-results/build.log; then
+              echo "- wonder/wondertap.o: PRESENT (Soft-MAC only)"
+            fi
+          } >> cloud-results/latest.md
           {
             echo
             echo "## Module metadata"
@@ -1681,8 +1713,29 @@ jobs:
               echo "### $module"
               modinfo "$module" 2>&1 || true
             done < <(find kernel_workspace -type f \
-              \( -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'qca_cld3*.ko' \) -print0 2>/dev/null)
+              \( -name 'wonder.ko' -o -name 'cnss2.ko' -o -name 'kiwi_v2.ko' -o -name 'qca_cld3*.ko' \) -print0 2>/dev/null)
           } >> cloud-results/latest.md
+
+          # run-specific evidence mirror
+          RUN_DIR="cloud-results/runs/${{ github.run_id }}"
+          mkdir -p "$RUN_DIR/artifacts"
+          for f in latest.md sync-tail.txt apply-tail.txt build-tail.txt errors.txt; do
+            [ -f "cloud-results/$f" ] && cp -a "cloud-results/$f" "$RUN_DIR/$f" || true
+          done
+          cp -a cloud-results/artifacts/. "$RUN_DIR/artifacts/" 2>/dev/null || true
+
+          # strip evidence (optional, non-fatal)
+          if command -v llvm-strip >/dev/null 2>&1 || command -v strip >/dev/null 2>&1; then
+            STRIPBIN=$(command -v llvm-strip || command -v strip)
+            for m in cloud-results/artifacts/cnss2.ko cloud-results/artifacts/qca_cld3_kiwi_v2.ko cloud-results/artifacts/wonder.ko cloud-results/artifacts/kiwi_v2.ko; do
+              [ -f "$m" ] || continue
+              cp -a "$m" "${m}.stripped"
+              "$STRIPBIN" --strip-debug "${m}.stripped" 2>/dev/null || rm -f "${m}.stripped"
+              if [ -f "${m}.stripped" ]; then
+                echo "- strip $(basename "$m"): $(stat -c '%s' "$m") -> $(stat -c '%s' "${m}.stripped") sha=$(sha256sum "${m}.stripped" | awk '{print $1}')" >> cloud-results/latest.md
+              fi
+            done
+          fi
 
       - name: Upload Wonder compile evidence
         if: always() && github.ref_name == 'wonder-ace2-pro-cloud'
