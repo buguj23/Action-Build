@@ -1,0 +1,21 @@
+# filtered errors (shallow git fatals excluded)
+14369:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:271:23: error: too few arguments to function call, expected 2, have 1
+14375:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:497:22: error: incompatible function pointer types initializing 'int (*)(void *, const struct wondertap_tx_rate_mask_params *)' with an expression of type 'int (void *, const void *)' [-Werror,-Wincompatible-function-pointer-types]
+
+# diagnostics
+diagnostic skipped: shallow history (no HEAD~1)
+14108:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14109:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14111:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14113:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14115:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14117:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14119:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14121:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14123:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14125:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14127:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14129:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14131:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14133:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14135:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
