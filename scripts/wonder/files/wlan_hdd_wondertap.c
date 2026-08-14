@@ -5,6 +5,8 @@
  */
 #include <wlan_hdd_wondertap.h>
 #include <wlan_hdd_main.h>
+#include <wlan_hdd_tx_rx.h>
+#include <wlan_hdd_rx_monitor.h>
 #include <osif_psoc_sync.h>
 #include <osif_vdev_sync.h>
 #include <wlan_hdd_power.h>
@@ -16,7 +18,9 @@
 #include "cds_api.h"
 #include "sme_api.h"
 #include "wlan_policy_mgr_api.h"
+#include "wlan_mlme_ucfg_api.h"
 #include "wlan_hdd_regulatory.h"
+#include <qdf_status.h>
 #include <linux/random.h>
 #include <linux/netdevice.h>
 #include <linux/module.h>
@@ -81,51 +85,23 @@ static QDF_STATUS
 wt_set_channel(struct hdd_context *hdd_ctx, struct hdd_adapter *adapter,
 	       const struct wondertap_set_freq_params *params)
 {
-	struct channel_change_req req = {0};
-	struct ch_params ch_params = {0};
 	enum phy_ch_width ch_width;
-	QDF_STATUS status;
 	int ret;
 
+	(void)hdd_ctx;
+	/*
+	 * Ace2 monitor channel path completes on adapter->qdf_monitor_mode_vdev_up_event
+	 * via hdd_sme_monitor_mode_callback — NOT g_wt_ctx->wondertap_vdev_event
+	 * (passthrough callback). Reuse the stock helper.
+	 */
 	ch_width = wt_bw_to_phy(params->bandwidth);
-	ret = hdd_validate_channel_and_bandwidth(adapter, params->freq, ch_width);
+	ret = wlan_hdd_set_mon_chan(adapter, params->freq, ch_width);
 	if (ret) {
-		hdd_err("Invalid freq:%u bw:%d", params->freq, ch_width);
-		return QDF_STATUS_E_INVAL;
+		hdd_err("wlan_hdd_set_mon_chan freq=%u bw=%d failed %d",
+			params->freq, ch_width, ret);
+		return qdf_status_from_os_return(ret);
 	}
-
-	req.vdev_id = wt_vdev_id(adapter);
-	req.target_chan_freq = params->freq;
-	req.ch_width = ch_width;
-
-	ch_params.ch_width = req.ch_width;
-	wlan_reg_set_channel_params_for_pwrmode(hdd_ctx->pdev,
-						req.target_chan_freq, 0,
-						&ch_params,
-						REG_CURRENT_PWR_MODE);
-	req.sec_ch_offset = ch_params.sec_ch_offset;
-	req.center_freq_seg0 = ch_params.center_freq_seg0;
-	req.center_freq_seg1 = ch_params.center_freq_seg1;
-
-	sme_fill_channel_change_request(hdd_ctx->mac_handle, &req,
-					eCSR_DOT11_MODE_11ax);
-
-	status = qdf_event_reset(&g_wt_ctx->wondertap_vdev_event);
-	if (QDF_IS_STATUS_ERROR(status))
-		return status;
-
-	status = sme_send_channel_change_req(hdd_ctx->mac_handle, &req);
-	if (QDF_IS_STATUS_ERROR(status)) {
-		hdd_err("channel change request failed");
-		return status;
-	}
-
-	status = qdf_wait_for_event_completion(&g_wt_ctx->wondertap_vdev_event,
-					       WLAN_WONDERTAP_VDEV_OP_TIMEOUT_MS);
-	if (QDF_IS_STATUS_ERROR(status))
-		hdd_err("wondertap channel wait failed:%d", status);
-
-	return status;
+	return QDF_STATUS_SUCCESS;
 }
 
 static int
@@ -185,11 +161,12 @@ wt_create_intf(struct hdd_context *hdd_ctx,
 	struct hdd_adapter_create_param create_params = {0};
 	uint8_t mac_addr[QDF_MAC_ADDR_SIZE];
 
+	create_params.num_sessions = 1;
 	qdf_mem_copy(mac_addr, params->mac_addr, QDF_MAC_ADDR_SIZE);
 
 	/*
-	 * Ace2 HDD has no MLO deflink path. Prefer PASSTHRU opmode if the
-	 * open path accepts it; fall back to MONITOR for session creation.
+	 * Ace2: use QDF_MONITOR_MODE (native mon session + set_mon_chan).
+	 * Donor SM8850 uses QDF_PASSTHRU_MODE + PE session — not available here.
 	 */
 	return hdd_open_adapter(hdd_ctx, QDF_MONITOR_MODE, "wondertap%d",
 				mac_addr, NET_NAME_UNKNOWN, true,
@@ -241,6 +218,11 @@ static int wt_start_intf(struct hdd_context *hdd_ctx, struct hdd_adapter *adapte
 	QDF_STATUS status;
 	int ret;
 
+	/*
+	 * Mirror Ace2 STA+MON open path (hdd_mon_open):
+	 *   start_adapter → set_mon_rx_cb (peer + mon session) →
+	 *   set_mon_chan (waits monitor_mode_vdev_up_event) → enable_monitor_mode
+	 */
 	ret = hdd_start_adapter(adapter);
 	if (ret) {
 		hdd_err("start adapter failed %d", ret);
@@ -248,23 +230,28 @@ static int wt_start_intf(struct hdd_context *hdd_ctx, struct hdd_adapter *adapte
 	}
 	set_bit(DEVICE_IFACE_OPENED, &adapter->event_flags);
 
-	if (!policy_mgr_allow_concurrency(hdd_ctx->psoc,
-					  PM_STA_MODE,
-					  params->channel.freq,
-					  wt_bw_to_hw(params->channel.bandwidth),
-					  0)) {
-		hdd_err("concurrency reject");
+	/* STA+MON concurrency: native path checks mlme flag, not PM_STA_MODE */
+	if (hdd_get_conparam() != QDF_GLOBAL_MONITOR_MODE &&
+	    !ucfg_mlme_is_sta_mon_conc_supported(hdd_ctx->psoc) &&
+	    hdd_get_adapter(hdd_ctx, QDF_STA_MODE)) {
+		hdd_err("STA+MON concurrency not supported");
 		ret = -EPERM;
 		goto stop_adapter;
 	}
 
-	status = sme_create_mon_session(hdd_ctx->mac_handle,
-					adapter->mac_addr.bytes,
-					wt_vdev_id(adapter));
-	if (QDF_IS_STATUS_ERROR(status)) {
-		hdd_err("mon session create failed:%d", status);
-		ret = qdf_status_to_os_return(status);
+	/* mon txrx ops + cdp peer + sme_create_mon_session */
+	ret = hdd_set_mon_rx_cb(adapter->dev);
+	if (ret) {
+		hdd_err("hdd_set_mon_rx_cb failed %d", ret);
 		goto stop_adapter;
+	}
+
+	/* wait mon vdev up if still in progress after session create */
+	status = hdd_monitor_mode_vdev_status(adapter);
+	if (QDF_IS_STATUS_ERROR(status)) {
+		hdd_err("monitor mode vdev status %d", status);
+		ret = qdf_status_to_os_return(status);
+		goto delete_session;
 	}
 
 	status = wt_set_channel(hdd_ctx, adapter, &params->channel);
@@ -275,7 +262,13 @@ static int wt_start_intf(struct hdd_context *hdd_ctx, struct hdd_adapter *adapte
 
 	ret = wt_set_fixed_tx_rate(adapter, &params->tx_rate);
 	if (ret)
+		hdd_err("fixed tx rate failed %d (continue)", ret);
+
+	ret = hdd_enable_monitor_mode(adapter->dev);
+	if (ret) {
+		hdd_err("hdd_enable_monitor_mode failed %d", ret);
 		goto delete_session;
+	}
 
 	policy_mgr_incr_active_session(hdd_ctx->psoc, QDF_MONITOR_MODE,
 				       wt_vdev_id(adapter));
@@ -285,6 +278,8 @@ static int wt_start_intf(struct hdd_context *hdd_ctx, struct hdd_adapter *adapte
 				     WLAN_CONTROL_PATH);
 	dev_open(adapter->dev, NULL);
 
+	hdd_info("wt_start_intf OK vdev=%u freq=%u",
+		 wt_vdev_id(adapter), params->channel.freq);
 	return 0;
 
 delete_session:
