@@ -593,7 +593,106 @@ grep -q 'cnss_is_wonder_vendor_pdev' \
   "$vendor_root/vendor/qcom/opensource/wlan/platform/cnss2/main.c"
 echo "stage-4 preflight OK: no-DT wonder main + cnss software provider"
 
+echo "=== stage-5: cnss of_match fallback + wonder HAS_RATE_CONTROL + LOCALVERSION ==="
+export VENDOR_ROOT="$vendor_root"
+python3 <<'PY5'
+from pathlib import Path
+import os, re
+root = Path(os.environ["VENDOR_ROOT"])
 
-echo "Ace 2 Pro Wonder stage-3+4 applied (passthrough compile + no-DT bind)."
+# --- cnss2 main.c: of_match fallback when of_match_device returns NULL/data ---
+p = root / "vendor/qcom/opensource/wlan/platform/cnss2/main.c"
+t = p.read_text()
+old = """\tof_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
+\tif (!of_id || !of_id->data) {
+\t\tcnss_pr_err("Failed to find of match device!\\n");
+\t\tret = -ENODEV;
+\t\tgoto out;
+\t}
+
+\tdevice_id = of_id->data;
+\tif (device_id->driver_data == WONDER_VENDOR_DEVICE_ID)
+\t\treturn cnss_vendor_wonder_dev_probe(plat_dev);
+"""
+# Also handle stage4 is_wonder path variant
+old2 = """\tif (cnss_is_wonder_vendor_pdev(plat_dev))
+\t\treturn cnss_vendor_wonder_dev_probe(plat_dev);
+
+\tof_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
+\tif (!of_id || !of_id->data) {
+\t\tcnss_pr_err("Failed to find of match device!\\n");
+\t\tret = -ENODEV;
+\t\tgoto out;
+\t}
+
+\tdevice_id = of_id->data;
+"""
+new = """\tif (cnss_is_wonder_vendor_pdev(plat_dev))
+\t\treturn cnss_vendor_wonder_dev_probe(plat_dev);
+
+\tof_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
+\tif (of_id && of_id->data) {
+\t\tdevice_id = of_id->data;
+\t} else if (plat_dev->dev.of_node &&
+\t\t   of_device_is_compatible(plat_dev->dev.of_node,
+\t\t\t\t\t  "qcom,cnss-qca-converged")) {
+\t\t/* Some GKI boots leave of_match_device empty; compatible is valid */
+\t\tcnss_pr_info("cnss probe: of_match fallback qcom,cnss-qca-converged\\n");
+\t\tdevice_id = &cnss_platform_id_table[7]; /* qcaconv */
+\t} else if (platform_get_device_id(plat_dev)) {
+\t\tdevice_id = platform_get_device_id(plat_dev);
+\t} else {
+\t\tcnss_pr_err("Failed to find of match device! of_node=%p\\n",
+\t\t\t    plat_dev->dev.of_node);
+\t\tret = -ENODEV;
+\t\tgoto out;
+\t}
+"""
+if old2 in t:
+    t = t.replace(old2, new, 1)
+    print('patched cnss probe (stage4 variant)')
+elif old in t:
+    # ensure is_wonder function exists; if not, only use old replace without is_wonder call
+    new_no_is = new.replace("\tif (cnss_is_wonder_vendor_pdev(plat_dev))\n\t\treturn cnss_vendor_wonder_dev_probe(plat_dev);\n\n", "")
+    t = t.replace(old, new_no_is, 1)
+    print('patched cnss probe (foundation variant)')
+else:
+    if 'of_match fallback qcom,cnss-qca-converged' in t:
+        print('cnss fallback already present')
+    else:
+        raise SystemExit('cnss probe block not found')
+p.write_text(t)
+
+# --- wonder mac80211.c: HAS_RATE_CONTROL (no minstrel on device) ---
+p = root / "vendor/oplus/kernel/wifi/wonder/mac80211.c"
+t = p.read_text()
+if 'HAS_RATE_CONTROL' not in t:
+    needle = "\tieee80211_hw_set(hw, SIGNAL_DBM);\n"
+    if needle not in t:
+        raise SystemExit('mac80211 hw_set marker missing')
+    t = t.replace(
+        needle,
+        "\tieee80211_hw_set(hw, SIGNAL_DBM);\n"
+        "\t/* Device mac80211 may lack minstrel; driver owns RC */\n"
+        "\tieee80211_hw_set(hw, HAS_RATE_CONTROL);\n",
+        1,
+    )
+    p.write_text(t)
+    print('patched wonder HAS_RATE_CONTROL')
+else:
+    print('HAS_RATE_CONTROL already present')
+
+print('stage-5 tree edits done')
+PY5
+
+grep -q 'of_match fallback qcom,cnss-qca-converged' \
+  "$vendor_root/vendor/qcom/opensource/wlan/platform/cnss2/main.c"
+grep -q 'HAS_RATE_CONTROL' \
+  "$vendor_root/vendor/oplus/kernel/wifi/wonder/mac80211.c"
+echo "stage-5 preflight OK"
+
+
+
+echo "Ace 2 Pro Wonder stage-3+4+5 applied (cnss fallback + HAS_RATE_CONTROL)."
 echo "No device-tree file was changed."
 echo "Passthrough: ENABLED. Runtime bind: software vendor-wlan-wonder + wonder pdev."

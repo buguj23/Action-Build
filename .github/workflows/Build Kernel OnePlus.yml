@@ -1777,7 +1777,7 @@ jobs:
               cp -a "$m" "${m}.stripped"
               # strip-debug first (host binutils strip cannot do aarch64; llvm-strip can)
               if "$STRIPBIN" --strip-debug "${m}.stripped" 2>/dev/null; then
-                "$STRIPBIN" --strip-unneeded "${m}.stripped" 2>/dev/null || true
+                # Do NOT strip-unneeded: removes of_device_id .data RELA and breaks cnss probe
                 echo "- strip $(basename "$m"): $(stat -c '%s' "$m") -> $(stat -c '%s' "${m}.stripped") sha=$(sha256sum "${m}.stripped" | awk '{print $1}')" >> cloud-results/latest.md
                 if modinfo "${m}.stripped" >/dev/null 2>&1; then
                   cp -a "${m}.stripped" "cloud-results/deploy-staging/$(basename "$m")"
