@@ -107,10 +107,22 @@ git -C "$vendor_root" apply \
   "$script_dir/ace2-pro-wonder-linux-5.15.patch"
 
 echo "=== stage-3: import Kiwi Wondertap provider sources from donor ==="
-cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c" \
-  "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c"
-cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h" \
-  "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h"
+# Prefer Ace2-compatible provider implementation shipped with Action-Build
+if [[ -f "$script_dir/files/wlan_hdd_wondertap.c" ]]; then
+  echo "using Ace2-compatible wlan_hdd_wondertap.c from scripts/wonder/files"
+  cp -a "$script_dir/files/wlan_hdd_wondertap.c" \
+    "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c"
+else
+  cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c" \
+    "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c"
+fi
+if [[ -f "$script_dir/files/wlan_hdd_wondertap.h" ]]; then
+  cp -a "$script_dir/files/wlan_hdd_wondertap.h" \
+    "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h"
+else
+  cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h" \
+    "$vendor_root/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h"
+fi
 cp -a "$donor_checkout/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_wondertap.h" \
   "$vendor_root/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_wondertap.h"
 mkdir -p "$vendor_root/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src"
