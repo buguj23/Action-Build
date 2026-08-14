@@ -1,0 +1,21 @@
+# filtered errors (shallow git fatals excluded)
+14138::1959:2: error: implicit declaration of function 'wlan_hdd_wondertap_unregister_ops' [-Werror,-Wimplicit-function-declaration]
+14142:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_power.c:2204:2: error: implicit declaration of function 'wlan_hdd_wondertap_register_ops' [-Werror,-Wimplicit-function-declaration]
+
+# diagnostics
+diagnostic skipped: shallow history (no HEAD~1)
+14108:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14109:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14111:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14113:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14115:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14117:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14119:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14121:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14123:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14125:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14127:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14129:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14131:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14133:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14135:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
