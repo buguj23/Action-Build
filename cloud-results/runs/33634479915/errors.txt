@@ -1,0 +1,20 @@
+# filtered errors (shallow git fatals excluded)
+14370:/home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel/../../vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c:68:1: error: unused function 'wt_bw_to_hw' [-Werror,-Wunused-function]
+
+# diagnostics
+diagnostic skipped: shallow history (no HEAD~1)
+14109:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14110:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14112:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14114:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14116:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14118:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14120:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14122:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14124:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14126:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14128:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14130:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14132:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14134:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
+14136:/bin/sh: 1: arithmetic expression: expecting primary: " (  << 16 ) + (  << 8 ) +  "
