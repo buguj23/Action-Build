@@ -161,7 +161,13 @@ wt_create_intf(struct hdd_context *hdd_ctx,
 	struct hdd_adapter_create_param create_params = {0};
 	uint8_t mac_addr[QDF_MAC_ADDR_SIZE];
 
-	create_params.num_sessions = 1;
+	/*
+	 * Ace2 5.15 hdd_adapter_create_param has no num_sessions
+	 * (that bitfield exists only on SM8850 MLO). Zero-init is enough;
+	 * assigning num_sessions=1 fails the kiwi build:
+	 *   error: no member named 'num_sessions' in 'struct hdd_adapter_create_param'
+	 *   (run 31813486373 / 31813514135)
+	 */
 	qdf_mem_copy(mac_addr, params->mac_addr, QDF_MAC_ADDR_SIZE);
 
 	/*
