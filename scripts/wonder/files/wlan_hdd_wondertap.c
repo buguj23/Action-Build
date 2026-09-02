@@ -64,23 +64,6 @@ wt_bw_to_phy(enum wondertap_rate_bw bw)
 	}
 }
 
-static enum hw_mode_bandwidth
-wt_bw_to_hw(enum wondertap_rate_bw bw)
-{
-	switch (bw) {
-	case WONDERTAP_RATE_BW_20:
-		return HW_MODE_20_MHZ;
-	case WONDERTAP_RATE_BW_40:
-		return HW_MODE_40_MHZ;
-	case WONDERTAP_RATE_BW_80:
-		return HW_MODE_80_MHZ;
-	case WONDERTAP_RATE_BW_160:
-		return HW_MODE_160_MHZ;
-	default:
-		return HW_MODE_20_MHZ;
-	}
-}
-
 static QDF_STATUS
 wt_set_channel(struct hdd_context *hdd_ctx, struct hdd_adapter *adapter,
 	       const struct wondertap_set_freq_params *params)
