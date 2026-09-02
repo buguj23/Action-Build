@@ -1,0 +1,70 @@
+From: Action-build Wonder cloud port
+Subject: [PATCH] wonder: bind RX to wondertap0 and fix kiwi protocol 0
+
+qcacld kiwi monitor delivers radiotap skbs with skb->protocol == 0
+(not ETH_P_802_2). wonder_rx_monitor_handler then RX_HANDLER_PASS and
+the core drops them on wondertap0 (rx_dropped == rx_packets).
+
+Prefer PDEV_NAME (wondertap0) after vendor init, accept it_version==0
+radiotap, and set skb->protocol=ETH_P_802_2 plus PACKET_OTHERHOST so
+netif_receive_skb(wonder0) is not dropped the same way.
+
+No device-tree or kiwi data-path source is changed.
+
+diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wifi/wonder/mac80211.c
+--- a/vendor/oplus/kernel/wifi/wonder/mac80211.c
++++ b/vendor/oplus/kernel/wifi/wonder/mac80211.c
+@@ -152,6 +152,8 @@
+ 	struct sk_buff **pskb)
+ {
+ 	struct sk_buff *skb = *pskb;
++	struct ieee80211_radiotap_header *radhdr;
++	u16 rt_len;
+ 
+ 	/*
+ 	 *  It's expected the mac_header and protocol values will be filled in vendor's driver.
+@@ -164,6 +166,24 @@
+ 	} else if (0 && skb->protocol == htons(ETH_P_802_3)) {
+ 		return wonder_rx_8023_frame(wonder, skb);
+ 	}
++	/*
++	 * Ace2 kiwi HDD monitor delivers radiotap with skb->protocol == 0
++	 * (never calls eth_type_trans). Linux then RX_HANDLER_PASS + drops
++	 * on ptype 0x0000, so wondertap0 rx_dropped == rx_packets.
++	 * Accept a well-formed radiotap header and fill protocol/pkt_type
++	 * so netif_receive_skb(wonder0) is not dropped the same way.
++	 */
++	if (skb->len >= sizeof(*radhdr)) {
++		radhdr = (struct ieee80211_radiotap_header *)skb->data;
++		if (radhdr->it_version == 0) {
++			rt_len = le16_to_cpu(radhdr->it_len);
++			if (rt_len >= sizeof(*radhdr) && rt_len <= skb->len) {
++				skb->protocol = htons(ETH_P_802_2);
++				skb->pkt_type = PACKET_OTHERHOST;
++				return wonder_rx_80211_frame(wonder, skb);
++			}
++		}
++	}
+ 	return RX_HANDLER_PASS;
+ }
+ 
+@@ -645,8 +665,18 @@
+ 	 * may be responsible for creating the underlying physical network device.
+ 	 * Therefore, we retrieve the device only after wondertap_init() has
+ 	 * been called.
++	 *
++	 * Ace2: prefer wondertap0 created by vendor init. service.sh historically
++	 * passes physical_name=wlan0, which has no monitor RX.
+ 	 */
+-	ret = wonder_pdev_get(wonder, pdev_name);
++	ret = wonder_pdev_get(wonder, PDEV_NAME);
++	if (!ret) {
++		wonder_info("RX pdev bound to %s (vendor monitor)\n", PDEV_NAME);
++	} else {
++		wonder_info("wondertap0 missing, fallback physical_name=%s\n",
++			    pdev_name);
++		ret = wonder_pdev_get(wonder, pdev_name);
++	}
+ 	if (ret) {
+ 		wonder_error("Failed to get physical device %s\n", pdev_name);
+ 		wondertap_deinit(&wonder->wondertap_data);

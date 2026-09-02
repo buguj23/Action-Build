@@ -106,6 +106,13 @@ echo "applying Wonder Linux 5.15 compatibility patch"
 git -C "$vendor_root" apply \
   "$script_dir/ace2-pro-wonder-linux-5.15.patch"
 
+echo "checking Wonder RX wondertap0 / protocol-0 patch"
+git -C "$vendor_root" apply --check \
+  "$script_dir/ace2-pro-wonder-rx-wondertap0.patch"
+echo "applying Wonder RX wondertap0 / protocol-0 patch"
+git -C "$vendor_root" apply \
+  "$script_dir/ace2-pro-wonder-rx-wondertap0.patch"
+
 echo "=== stage-3: import Kiwi Wondertap provider sources from donor ==="
 # Prefer Ace2-compatible provider implementation shipped with Action-Build
 if [[ -f "$script_dir/files/wlan_hdd_wondertap.c" ]]; then
