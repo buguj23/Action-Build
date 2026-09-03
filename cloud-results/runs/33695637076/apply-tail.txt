@@ -1,0 +1,76 @@
+commit check: /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/common expected=f73647f94c84f5eabcaa00500594e152a29a4d38 actual=f73647f94c84f5eabcaa00500594e152a29a4d38
+commit check: /home/runner/work/Action-Build/Action-Build/kernel_workspace/kernel_platform/msm-kernel expected=30483bd5380464b2fcdec9d5002ba4e4086620a0 actual=30483bd5380464b2fcdec9d5002ba4e4086620a0
+commit check: /home/runner/work/Action-Build/Action-Build/kernel_workspace expected=de57127e10013d7269e791b43b8fce6718896e70 actual=de57127e10013d7269e791b43b8fce6718896e70
+blob check: vendor/qcom/opensource/wlan/platform/cnss2/main.c expected=735041c4af6ec1c27caee583d97ef8da7539a52f actual=735041c4af6ec1c27caee583d97ef8da7539a52f
+blob check: vendor/qcom/opensource/wlan/platform/cnss_utils/cnss_common.h expected=ad3f2290e8032548b66d35c1c4478d6e5583cdf4 actual=ad3f2290e8032548b66d35c1c4478d6e5583cdf4
+blob check: vendor/qcom/opensource/wlan/platform/inc/cnss2.h expected=d1f212df6997f2eaf4764513d10f562da2d1e178 actual=d1f212df6997f2eaf4764513d10f562da2d1e178
+blob check: vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/inc/pld_common.h expected=e8c32cca4acb06170df30bac194186dba9600637 actual=e8c32cca4acb06170df30bac194186dba9600637
+blob check: vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_common.c expected=7a52fe62a4c8c7cb4606896e090ad18d073c83d4 actual=7a52fe62a4c8c7cb4606896e090ad18d073c83d4
+blob check: vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_pcie.h expected=ea940f5cf3f3d707b1256accc31578d913dccadc actual=ea940f5cf3f3d707b1256accc31578d913dccadc
+blob check: kernel_platform/oplus/config/modules.ext.5.15.oplus expected=90ccd3e2bc0a2d3e252dcc47470e39e334837441 actual=90ccd3e2bc0a2d3e252dcc47470e39e334837441
+blob check: kernel_platform/oplus/config/modules.ext.oplus expected=f98da7923140c1820d01b09f42cabda5f5710fd3 actual=f98da7923140c1820d01b09f42cabda5f5710fd3
+checking foundation patch
+applying foundation patch
+cloning fixed Wonder/Wondertap donor 5ab2a689ff87d7d28c511f1762cf41c1b90d965a
+Cloning into '/tmp/tmp.gadd4raeqI'...
+HEAD is now at 5ab2a68 Synchronize code for OnePlus CPH2745_16.0.9.400(EX01) CPH2747_16.0.9.400(EX01) CPH2749_16.0.9.400(EX01) PLK110_16.0.9.400(CN01) Based on QCOM release TAG: kernel/build:AU_LINUX_KERNEL.PLATFORM.5.0.R1.00.00.00.099.064 platform/vendor/nxp/opensource/driver:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.089 platform/vendor/opensource/camera-devicetree:AU_TECHPACK_CAMERA.LA.6.0.R1.00.00.00.000.061 platform/vendor/opensource/camera-kernel:AU_TECHPACK_CAMERA.LA.6.0.R1.00.00.00.000.061 platform/vendor/opensource/dataipa:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.078 platform/vendor/opensource/display-devicetree:AU_TECHPACK_DISPLAY.LA.6.0.R1.00.00.00.000.071 platform/vendor/opensource/display-drivers:AU_TECHPACK_DISPLAY.LA.6.0.R1.00.00.00.000.071 platform/vendor/opensource/eva-devicetree:AU_TECHPACK_CV.LA.3.0.R1.00.00.00.000.034 platform/vendor/opensource/eva-kernel:AU_TECHPACK_CV.LA.3.0.R1.00.00.00.000.034 platform/vendor/opensource/mm-devicetree:AU_TECHPACK_DISPLAY.LA.6.0.R1.00.00.00.000.071 platform/vendor/opensource/mm-drivers:AU_TECHPACK_DISPLAY.LA.6.0.R1.00.00.00.000.071 platform/vendor/opensource/mmrm-devicetree:AU_TECHPACK_VIDEO_HANDSET.LA.1.0.R1.00.00.00.000.061 platform/vendor/opensource/mmrm-driver:AU_TECHPACK_VIDEO_HANDSET.LA.1.0.R1.00.00.00.000.061 platform/vendor/opensource/mmrm-driver-test:AU_TECHPACK_VIDEO_HANDSET.LA.1.0.R2.00.00.00.000.010 platform/vendor/opensource/synx-kernel:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.078 platform/vendor/opensource/video-devicetree:AU_TECHPACK_VIDEO_HANDSET.LA.1.0.R1.00.00.00.000.059 platform/vendor/opensource/video-driver:AU_TECHPACK_VIDEO_HANDSET.LA.1.0.R1.00.00.00.000.047 platform/vendor/proprietary/mm-devicetree:AU_TECHPACK_DISPLAY.LA.6.0.R1.00.00.00.000.071 platform/vendor/qcom-opensource/bt-devicetree:AU_TECHPACK_BTFM.LA.2.0.R1.00.00.00.000.031 platform/vendor/qcom-opensource/bt-kernel:AU_TECHPACK_BTFM.LA.2.0.R1.00.00.00.000.031 platform/vendor/qcom-opensource/data-devicetree:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.078 platform/vendor/qcom-opensource/data-kernel:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.102 platform/vendor/qcom-opensource/devicetree:AU_LINUX_KERNEL.PLATFORM.5.0.R1.00.00.00.099.064 platform/vendor/qcom-opensource/eSE-devicetree:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.078 platform/vendor/qcom-opensource/nfc-devicetree:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.089 platform/vendor/qcom-opensource/synx-devicetree:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.097 platform/vendor/qcom-opensource/wlan/fw-api:AU_TECHPACK_WLAN.LA.2.0.R3.00.00.00.000.037 platform/vendor/qcom-opensource/wlan/platform:AU_TECHPACK_WLAN.LA.2.0.R3.00.00.00.000.037 platform/vendor/qcom-opensource/wlan/qca-wifi-host-cmn:AU_TECHPACK_WLAN.LA.2.0.R3.00.00.00.000.037 platform/vendor/qcom-opensource/wlan/qcacld-3.0:AU_TECHPACK_WLAN.LA.2.0.R3.00.00.00.000.037 platform/vendor/qcom-opensource/wlan/utils/sigma-dut:AU_TECHPACK_WLAN.LA.2.0.R3.00.00.00.000.037 platform/vendor/qcom-opensource/wlan/wlan-devicetree:AU_TECHPACK_WLAN.LA.2.0.R3.00.00.00.000.037 platform/vendor/qcom-proprietary/display-devicetree:AU_TECHPACK_DISPLAY.LA.6.0.R1.00.00.00.000.071 platform/vendor/qcom/opensource/audio-devicetree:AU_TECHPACK_AUDIO_HANDSET.LA.11.0.R1.00.00.00.000.046 platform/vendor/qcom/opensource/audio-kernel-ar:AU_TECHPACK_AUDIO_HANDSET.LA.11.0.R1.00.00.00.000.046 platform/vendor/qcom/opensource/datarmnet:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.078 platform/vendor/qcom/opensource/datarmnet-ext:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.097 platform/vendor/qcom/opensource/dsp-devicetree:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.089 platform/vendor/qcom/opensource/dsp-kernel:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.078 platform/vendor/qcom/opensource/graphics-devicetree:AU_TECHPACK_GRAPHICS.LA.16.0.R1.00.00.00.000.038 platform/vendor/qcom/opensource/graphics-kernel:AU_TECHPACK_GRAPHICS.LA.16.0.R1.00.00.00.000.038 platform/vendor/qcom/opensource/securemsm-kernel:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.078 platform/vendor/qcom/opensource/spu-kernel:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.102 platform/vendor/st/opensource/driver:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.089 platform/vendor/st/opensource/eSE-driver:AU_LINUX_ANDROID_LA.VENDOR.16.2.0.R1.11.00.00.1277.078
+5ab2a689ff87d7d28c511f1762cf41c1b90d965a
+checking Wonder Linux 5.15 compatibility patch
+applying Wonder Linux 5.15 compatibility patch
+checking Wonder RX wondertap0 / protocol-0 patch
+applying Wonder RX wondertap0 / protocol-0 patch
+=== stage-3: import Kiwi Wondertap provider sources from donor ===
+using Ace2-compatible wlan_hdd_wondertap.c from scripts/wonder/files
+-rw-r--r-- 1 runner runner 16202 Sep  2 23:35 /home/runner/work/Action-Build/Action-Build/kernel_workspace/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c
+-rw-r--r-- 1 runner runner 2541 Sep  2 23:35 /home/runner/work/Action-Build/Action-Build/kernel_workspace/vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h
+-rw-r--r-- 1 runner runner 5181 Sep  2 23:38 /home/runner/work/Action-Build/Action-Build/kernel_workspace/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_wondertap.h
+-rw-r--r-- 1 runner runner 4482 Sep  2 23:38 /home/runner/work/Action-Build/Action-Build/kernel_workspace/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/i_qdf_wondertap.h
+-rwxr-xr-x 1 runner runner 15659 Sep  2 23:38 /home/runner/work/Action-Build/Action-Build/kernel_workspace/vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/wondertap.h
+=== stage-3: enable PASSTHRU/WONDER in Ace2 Pro kiwi tree ===
+patched qdf_types.h
+patched qdf_types.c
+patched Kconfig
+patched Kbuild HDD_OBJS
+patched Kbuild ccflags
+patched kiwi_v2_defconfig (PASSTHRU/WONDER/PANIC_ON_BUG)
+patched driver_ops.c
+patched power.c (include+calls verified)
+stage-3 tree edits done
+ M kernel_platform/oplus/config/modules.ext.5.15.oplus
+ M kernel_platform/oplus/config/modules.ext.oplus
+ M vendor/qcom/opensource/wlan/platform/cnss2/main.c
+ M vendor/qcom/opensource/wlan/platform/cnss_utils/cnss_common.h
+ M vendor/qcom/opensource/wlan/platform/inc/cnss2.h
+ M vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_types.h
+ M vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/src/qdf_types.c
+ M vendor/qcom/opensource/wlan/qcacld-3.0/Kbuild
+ M vendor/qcom/opensource/wlan/qcacld-3.0/Kconfig
+ M vendor/qcom/opensource/wlan/qcacld-3.0/configs/kiwi_v2_defconfig
+ M vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_driver_ops.c
+ M vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_power.c
+ M vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/inc/pld_common.h
+ M vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_common.c
+ M vendor/qcom/opensource/wlan/qcacld-3.0/core/pld/src/pld_pcie.h
+?? .repo/
+?? Action-Build/
+?? kernel_platform/build/bazel_common_rules/
+?? kernel_platform/common/
+?? kernel_platform/external/
+?? kernel_platform/msm-kernel/
+?? kernel_platform/prebuilts/
+?? kernel_platform/tools/mkbootimg/
+?? vendor/oplus/kernel/wifi/wonder/
+?? vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/inc/qdf_wondertap.h
+?? vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/i_qdf_wondertap.h
+?? vendor/qcom/opensource/wlan/qca-wifi-host-cmn/qdf/linux/src/wondertap.h
+?? vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/inc/wlan_hdd_wondertap.h
+?? vendor/qcom/opensource/wlan/qcacld-3.0/core/hdd/src/wlan_hdd_wondertap.c
+stage-3 preflight OK: sources + includes + configs present
+=== stage-4: no-DT software provider/bind path ===
+installed stage4 wonder main.c (software pdev + name match)
+patched cnss2/main.c for stage4 software wonder pdev
+cnss stage4 verify OK
+stage-4 preflight OK: no-DT wonder main + cnss software provider
+Ace 2 Pro Wonder stage-3+4 applied (passthrough compile + no-DT bind).
+No device-tree file was changed.
+Passthrough: ENABLED. Runtime bind: software vendor-wlan-wonder + wonder pdev.
