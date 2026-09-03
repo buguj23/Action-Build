@@ -1,20 +1,45 @@
 From: Action-build Wonder cloud port
-Subject: [PATCH] wonder: bind RX to wondertap0 and fix kiwi protocol 0
+Subject: [PATCH] wonder: RC bypass, wondertap0 RX, protocol 0, ANOTHER
 
-qcacld kiwi monitor delivers radiotap skbs with skb->protocol == 0
-(not ETH_P_802_2). wonder_rx_monitor_handler then RX_HANDLER_PASS and
-the core drops them on wondertap0 (rx_dropped == rx_packets).
+Ace2 phone mac80211 has empty ieee80211_default_rc_algo. Set
+HAS_RATE_CONTROL and a no-op set_rts_threshold so register_hw
+does not return -ENOENT / rate.c:978 WARN.
 
-Prefer PDEV_NAME (wondertap0) after vendor init, accept it_version==0
-radiotap, and set skb->protocol=ETH_P_802_2 plus PACKET_OTHERHOST so
-netif_receive_skb(wonder0) is not dropped the same way.
+Kiwi monitor delivers radiotap with protocol 0. Bind pdev to
+wondertap0, force ETH_P_802_2 + PACKET_OTHERHOST, reset mac and
+network headers, and return RX_HANDLER_ANOTHER instead of nested
+netif_receive_skb (avoids packet_rcv underflow / softirq reentry).
 
 No device-tree or kiwi data-path source is changed.
 
 diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wifi/wonder/mac80211.c
 --- a/vendor/oplus/kernel/wifi/wonder/mac80211.c
 +++ b/vendor/oplus/kernel/wifi/wonder/mac80211.c
-@@ -152,6 +152,8 @@
+@@ -119,16 +119,19 @@
+ 	switch (wonder->data_version) {
+ 	case WONDER_DATA_80211:
+ 		ieee80211_rx_ni(wonder->hw, skb);
+-		break;
++		return RX_HANDLER_CONSUMED;
+ 	case WONDER_DATA_80211_RADIOTAP:
+-		netif_receive_skb(skb);
+-		break;
++		/*
++		 * Do not nest netif_receive_skb from wondertap0's rx_handler.
++		 * RX_HANDLER_ANOTHER re-enters __netif_receive_skb_core for
++		 * skb->dev (already set to wonder0).
++		 */
++		return RX_HANDLER_ANOTHER;
+ 	default:
+ 		vdev->stats.rx_dropped++;
+ 		wonder_error("Dropping Not supported data_version %d.\n", wonder->data_version);
+ 		goto drop;
+ 	}
+-	return RX_HANDLER_CONSUMED;
+ drop:
+ 	/* Drop Frames */
+ 	if (vdev) {
+@@ -152,6 +155,8 @@
  	struct sk_buff **pskb)
  {
  	struct sk_buff *skb = *pskb;
@@ -23,32 +48,42 @@ diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wi
  
  	/*
  	 *  It's expected the mac_header and protocol values will be filled in vendor's driver.
-@@ -164,6 +166,24 @@
- 	} else if (0 && skb->protocol == htons(ETH_P_802_3)) {
+@@ -159,12 +164,29 @@
+ 	 *	skb->protocol = htons(ETH_P_802_2);
+ 	 */
+ 	/* LLC */
+-	if (skb->protocol == htons(ETH_P_802_2)) {
+-		return wonder_rx_80211_frame(wonder, skb);
+-	} else if (0 && skb->protocol == htons(ETH_P_802_3)) {
++	if (skb->protocol == htons(ETH_P_802_2))
++		goto deliver;
++	else if (0 && skb->protocol == htons(ETH_P_802_3))
  		return wonder_rx_8023_frame(wonder, skb);
- 	}
+-	}
+-	return RX_HANDLER_PASS;
++
 +	/*
-+	 * Ace2 kiwi HDD monitor delivers radiotap with skb->protocol == 0
-+	 * (never calls eth_type_trans). Linux then RX_HANDLER_PASS + drops
-+	 * on ptype 0x0000, so wondertap0 rx_dropped == rx_packets.
-+	 * Accept a well-formed radiotap header and fill protocol/pkt_type
-+	 * so netif_receive_skb(wonder0) is not dropped the same way.
++	 * Ace2 kiwi HDD monitor: skb->protocol stays 0 (no eth_type_trans).
++	 * Accept a well-formed radiotap header.
 +	 */
-+	if (skb->len >= sizeof(*radhdr)) {
-+		radhdr = (struct ieee80211_radiotap_header *)skb->data;
-+		if (radhdr->it_version == 0) {
-+			rt_len = le16_to_cpu(radhdr->it_len);
-+			if (rt_len >= sizeof(*radhdr) && rt_len <= skb->len) {
-+				skb->protocol = htons(ETH_P_802_2);
-+				skb->pkt_type = PACKET_OTHERHOST;
-+				return wonder_rx_80211_frame(wonder, skb);
-+			}
-+		}
-+	}
- 	return RX_HANDLER_PASS;
++	if (skb->len < sizeof(*radhdr))
++		return RX_HANDLER_PASS;
++	radhdr = (struct ieee80211_radiotap_header *)skb->data;
++	if (radhdr->it_version != 0)
++		return RX_HANDLER_PASS;
++	rt_len = le16_to_cpu(radhdr->it_len);
++	if (rt_len < sizeof(*radhdr) || rt_len > skb->len)
++		return RX_HANDLER_PASS;
++deliver:
++	skb->protocol = htons(ETH_P_802_2);
++	skb->pkt_type = PACKET_OTHERHOST;
++	skb_reset_mac_header(skb);
++	skb_reset_network_header(skb);
++	return wonder_rx_80211_frame(wonder, skb);
  }
  
-@@ -645,8 +665,18 @@
+ static bool wonder_80211_common_filter(struct wonder_data *wonder,
+@@ -645,8 +667,18 @@
  	 * may be responsible for creating the underlying physical network device.
  	 * Therefore, we retrieve the device only after wondertap_init() has
  	 * been called.
@@ -68,3 +103,32 @@ diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wi
  	if (ret) {
  		wonder_error("Failed to get physical device %s\n", pdev_name);
  		wondertap_deinit(&wonder->wondertap_data);
+@@ -957,8 +989,15 @@
+ 	return wonder->iftype == NL80211_IFTYPE_ADHOC;
+ }
+ 
++static void wonder_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++{
++	(void)hw;
++	(void)value;
++}
++
+ static const struct ieee80211_ops wonder_mac80211_ops = {
+ 	.tx                 = wonder_tx,
++	.set_rts_threshold  = wonder_set_rts_threshold,
+ 	.start              = wonder_start,
+ 	.stop               = wonder_stop,
+ 	.config             = wonder_config,
+@@ -1067,6 +1106,12 @@
+ 	hw->queues = 4;
+ 
+ 	/* Set Hardware Capabilities */
++	/*
++	 * Soft-MAC TX rate is decided by kiwi HDD, not minstrel. Ace2 mac80211
++	 * has empty ieee80211_default_rc_algo; skip software RC lookup.
++	 * HAS_RATE_CONTROL also requires ops->set_rts_threshold (rate.c WARN).
++	 */
++	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+ 	ieee80211_hw_set(hw, SUPPORTS_PS);
+ 	ieee80211_hw_set(hw, SINGLE_SCAN_ON_ALL_BANDS);
+ 	ieee80211_hw_set(hw, SIGNAL_DBM);
