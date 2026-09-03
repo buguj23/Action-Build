@@ -107,10 +107,11 @@ diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wi
  	return wonder->iftype == NL80211_IFTYPE_ADHOC;
  }
  
-+static void wonder_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
++static int wonder_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
 +{
 +	(void)hw;
 +	(void)value;
++	return 0;
 +}
 +
  static const struct ieee80211_ops wonder_mac80211_ops = {
