@@ -1,14 +1,12 @@
 From: Action-build Wonder cloud port
 Subject: [PATCH] wonder: RC bypass, wondertap0 RX, protocol 0, ANOTHER
 
-Ace2 phone mac80211 has empty ieee80211_default_rc_algo. Set
-HAS_RATE_CONTROL and a no-op set_rts_threshold so register_hw
-does not return -ENOENT / rate.c:978 WARN.
+Ace2 5.15 set_rts_threshold returns int (not void). HAS_RATE_CONTROL
+plus a no-op int stub skips empty default_rc_algo.
 
 Kiwi monitor delivers radiotap with protocol 0. Bind pdev to
-wondertap0, force ETH_P_802_2 + PACKET_OTHERHOST, reset mac and
-network headers, and return RX_HANDLER_ANOTHER instead of nested
-netif_receive_skb (avoids packet_rcv underflow / softirq reentry).
+wondertap0, force ETH_P_802_2 + PACKET_OTHERHOST, reset mac/network
+headers, return RX_HANDLER_ANOTHER instead of nested netif_receive_skb.
 
 No device-tree or kiwi data-path source is changed.
 
@@ -48,7 +46,7 @@ diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wi
  
  	/*
  	 *  It's expected the mac_header and protocol values will be filled in vendor's driver.
-@@ -159,12 +164,29 @@
+@@ -159,12 +164,25 @@
  	 *	skb->protocol = htons(ETH_P_802_2);
  	 */
  	/* LLC */
@@ -62,10 +60,6 @@ diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wi
 -	}
 -	return RX_HANDLER_PASS;
 +
-+	/*
-+	 * Ace2 kiwi HDD monitor: skb->protocol stays 0 (no eth_type_trans).
-+	 * Accept a well-formed radiotap header.
-+	 */
 +	if (skb->len < sizeof(*radhdr))
 +		return RX_HANDLER_PASS;
 +	radhdr = (struct ieee80211_radiotap_header *)skb->data;
@@ -83,7 +77,7 @@ diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wi
  }
  
  static bool wonder_80211_common_filter(struct wonder_data *wonder,
-@@ -645,8 +667,18 @@
+@@ -645,8 +663,18 @@
  	 * may be responsible for creating the underlying physical network device.
  	 * Therefore, we retrieve the device only after wondertap_init() has
  	 * been called.
@@ -103,7 +97,7 @@ diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wi
  	if (ret) {
  		wonder_error("Failed to get physical device %s\n", pdev_name);
  		wondertap_deinit(&wonder->wondertap_data);
-@@ -957,8 +989,15 @@
+@@ -957,8 +985,16 @@
  	return wonder->iftype == NL80211_IFTYPE_ADHOC;
  }
  
@@ -120,14 +114,14 @@ diff --git a/vendor/oplus/kernel/wifi/wonder/mac80211.c b/vendor/oplus/kernel/wi
  	.start              = wonder_start,
  	.stop               = wonder_stop,
  	.config             = wonder_config,
-@@ -1067,6 +1106,12 @@
+@@ -1067,6 +1103,12 @@
  	hw->queues = 4;
  
  	/* Set Hardware Capabilities */
 +	/*
-+	 * Soft-MAC TX rate is decided by kiwi HDD, not minstrel. Ace2 mac80211
-+	 * has empty ieee80211_default_rc_algo; skip software RC lookup.
-+	 * HAS_RATE_CONTROL also requires ops->set_rts_threshold (rate.c WARN).
++	 * Soft-MAC TX rate is decided by kiwi HDD, not minstrel. Ace2 5.15
++	 * ieee80211_ops.set_rts_threshold returns int. Dummy satisfies
++	 * rate.c WARN_ON when HAS_RATE_CONTROL is set.
 +	 */
 +	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
  	ieee80211_hw_set(hw, SUPPORTS_PS);
