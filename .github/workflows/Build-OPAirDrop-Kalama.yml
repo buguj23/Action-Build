@@ -114,13 +114,9 @@ jobs:
           mkdir -p output-payload
           cd kernel_platform/kernel_platform
           
-          # 修复缺失的 OnePlus 专有驱动配置占位
-          for d in msm-kernel common; do
-              if [ -d "$d/drivers/misc" ]; then
-                  mkdir -p "$d/drivers/misc/tri_state_key"
-                  touch "$d/drivers/misc/tri_state_key/Kconfig"
-              fi
-          done
+          # 彻底移除缺失的 OnePlus 专有驱动 tri_state_key 配置行
+          sed -i '/tri_state_key/d' msm-kernel/drivers/misc/Kconfig || true
+          sed -i '/tri_state_key/d' common/drivers/misc/Kconfig || true
 
           # 定位 Clang 并转为绝对路径加入 PATH
           CLANG_BIN=$(find prebuilts/clang/host/linux-x86 -name "clang" -type f -executable 2>/dev/null | sort -V | tail -n 1 || true)
@@ -138,7 +134,9 @@ jobs:
           # 1. 尝试 Kbuild 直接编译 opairshare_wonder_provider
           echo "=== 1. Building opairshare_wonder_provider via Kbuild ==="
           if [ -d common ]; then
-              make -C common ARCH=arm64 gki_defconfig || true
+              make -C common ARCH=arm64 gki_defconfig \
+                  CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
+                  LLVM=1 LLVM_IAS=1 || true
               make -C common ARCH=arm64 modules_prepare \
                   CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
                   LLVM=1 LLVM_IAS=1 || true
