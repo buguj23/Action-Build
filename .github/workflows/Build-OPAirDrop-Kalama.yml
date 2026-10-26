@@ -59,7 +59,7 @@ jobs:
       - name: Setup Build Environment & Repo
         if: ${{ inputs.BUILD_KERNEL == true }}
         run: |
-          sudo apt-get update && sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf libelf-dev libssl-dev libxml2-utils lz4 zstd python3 python3-pip zip
+          sudo apt-get update && sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf libelf-dev libssl-dev libxml2-utils lz4 zstd python3 python3-pip zip lld llvm
           mkdir -p ~/bin
           curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
           chmod a+x ~/bin/repo
@@ -114,13 +114,30 @@ jobs:
           mkdir -p output-payload
           cd kernel_platform/kernel_platform
           
+          # 修复缺失的 OnePlus 专有驱动配置占位
+          for d in msm-kernel common; do
+              if [ -d "$d/drivers/misc" ]; then
+                  mkdir -p "$d/drivers/misc/tri_state_key"
+                  touch "$d/drivers/misc/tri_state_key/Kconfig"
+              fi
+          done
+
+          # 定位 Clang 并转为绝对路径加入 PATH
+          CLANG_BIN=$(find prebuilts/clang/host/linux-x86 -name "clang" -type f -executable 2>/dev/null | sort -V | tail -n 1 || true)
+          if [ -n "$CLANG_BIN" ]; then
+              CLANG_DIR=$(cd "$(dirname "$CLANG_BIN")" && pwd)
+              export PATH=$CLANG_DIR:$PATH
+              echo "Using compiler dir: $CLANG_DIR"
+          fi
+          BUILD_TOOLS=$(find prebuilts/kernel-build-tools/linux-x86 -name "make" -type f -executable 2>/dev/null | head -n 1 || true)
+          if [ -n "$BUILD_TOOLS" ]; then
+              BUILD_TOOLS_DIR=$(cd "$(dirname "$BUILD_TOOLS")" && pwd)
+              export PATH=$BUILD_TOOLS_DIR:$PATH
+          fi
+
           # 1. 尝试 Kbuild 直接编译 opairshare_wonder_provider
           echo "=== 1. Building opairshare_wonder_provider via Kbuild ==="
-          CLANG_BIN=$(find prebuilts/clang/host/linux-x86 -name "clang" -type f -executable 2>/dev/null | sort -V | tail -n 1 || true)
-          if [ -n "$CLANG_BIN" ] && [ -d common ]; then
-              CLANG_DIR=$(dirname "$CLANG_BIN")
-              export PATH=$CLANG_DIR:$PWD/prebuilts/kernel-build-tools/linux-x86/bin:$PATH
-              echo "Using compiler: $CLANG_BIN"
+          if [ -d common ]; then
               make -C common ARCH=arm64 gki_defconfig || true
               make -C common ARCH=arm64 modules_prepare \
                   CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
@@ -154,10 +171,8 @@ jobs:
         run: |
           mkdir -p output-payload
           # 优先提取构建产物，若未从源码构建则使用 OPAirDrop 仓库中验证过的 prebuilt 模块
-          if [ -d kernel_platform/kernel_platform/bazel-bin ]; then
-              find kernel_platform/kernel_platform/bazel-bin -name "opairshare_wonder_provider.ko" -exec cp {} output-payload/ \; || true
-              find kernel_platform/kernel_platform/bazel-bin -name "wonder.ko" -exec cp {} output-payload/ \; || true
-          fi
+          find kernel_platform -name "opairshare_wonder_provider.ko" -exec cp {} output-payload/ \; || true
+          find kernel_platform -name "wonder.ko" -exec cp {} output-payload/ \; || true
           if [ -d dist-modules ]; then
               find dist-modules -name "qca_cld3_kiwi_v2.ko" -exec cp {} output-payload/ \; || true
           fi
