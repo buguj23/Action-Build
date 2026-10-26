@@ -138,7 +138,11 @@ jobs:
                               new_lines.append(line)
                               continue
                           rel = m.group(2)
-                          if os.path.exists(os.path.join(root_dir, rel)) or os.path.exists(os.path.join(dirpath, rel)):
+                          host = os.path.join(root_dir, rel)
+                          local = os.path.join(dirpath, rel)
+                          if os.path.exists(host) or os.path.exists(local):
+                              if "tri_state_key" in rel or "aw8697" in rel:
+                                  print(f"kept {line.strip()} host={os.path.exists(host)}:{host} local={os.path.exists(local)}:{local}")
                               new_lines.append(line)
                               continue
                           print(f"Commenting absent source: {line.strip()} in {kpath}")
@@ -196,13 +200,16 @@ jobs:
                       CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
                       LLVM=1 LLVM_IAS=1
               fi
-              # RMX3820 /proc/config.gz 是 STRONG + PER_TASK。GKI defconfig 没开
-              # STACKPROTECTOR，clang 会引用全局 __stack_chk_guard，真机只导出 __stack_chk_fail。
-              "$KSRC/scripts/config" --file "$KSRC/.config" \
-                  -e STACKPROTECTOR -e STACKPROTECTOR_STRONG -e STACKPROTECTOR_PER_TASK
+              # scripts/config 在 set -e 下不可用：grep -Eq 没匹配时返回 1，
+              # 脚本在追加新行之前就退出。GKI .config 里没有这三项。
+              printf '%s\n' \
+                  CONFIG_STACKPROTECTOR=y \
+                  CONFIG_STACKPROTECTOR_STRONG=y \
+                  CONFIG_STACKPROTECTOR_PER_TASK=y >> "$KSRC/.config"
+              grep -n 'CONFIG_STACKPROTECTOR' "$KSRC/.config" || true
               make -C "$KSRC" ARCH=arm64 olddefconfig \
                   CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
-                  LLVM=1 LLVM_IAS=1
+                  LLVM=1 LLVM_IAS=1 V=1
               make -C "$KSRC" ARCH=arm64 modules_prepare \
                   CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
                   LLVM=1 LLVM_IAS=1
