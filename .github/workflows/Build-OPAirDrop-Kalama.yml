@@ -194,7 +194,7 @@ jobs:
           def get_build_id(path):
               res = subprocess.run(['readelf', '-n', path], capture_output=True, text=True)
               m = re.search(r'Build ID:\s+([0-9a-fA-F]+)', res.stdout)
-              return m.group(1).lower() if m else ''
+              return '040000001400000003000000474e5500' + m.group(1).lower() if m else ''
 
           id_map = {
               'qca_cld3_kiwi_v2': 'module/payload/kernel/qca_cld3_kiwi_v2.ko',
