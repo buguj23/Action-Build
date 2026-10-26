@@ -114,7 +114,13 @@ jobs:
           mkdir -p output-payload
           cd kernel_platform/kernel_platform
           
-          # 自动清理所有缺失的 Kconfig 引用行（如 tri_state_key, oplus_touchscreen_v2 等）
+          # 明确移除缺失在 Bazel sandbox 外的 OnePlus 专有驱动配置行
+          sed -i '/tri_state_key/d' msm-kernel/drivers/misc/Kconfig || true
+          sed -i '/tri_state_key/d' common/drivers/misc/Kconfig || true
+          sed -i '/oplus_touchscreen/d' msm-kernel/drivers/input/touchscreen/Kconfig || true
+          sed -i '/oplus_touchscreen/d' common/drivers/input/touchscreen/Kconfig || true
+
+          # 自动清理其他缺失的静态 Kconfig 引用行（忽略 $(SRCARCH) 等动态宏变量）
           python3 -c '
           import os, re
           for root_dir in ["msm-kernel", "common"]:
@@ -132,6 +138,9 @@ jobs:
                               m = re.match(r"^\s*source\s+[\"\x27]([^\"\x27]+)[\"\x27]", line)
                               if m:
                                   rel = m.group(1)
+                                  if "$" in rel:
+                                      new_lines.append(line)
+                                      continue
                                   cand1 = os.path.join(root_dir, rel)
                                   cand2 = os.path.join(dirpath, rel)
                                   if not (os.path.exists(cand1) or os.path.exists(cand2)):
@@ -213,6 +222,10 @@ jobs:
           if [ ! -f output-payload/wonder.ko ] && [ -f OPAirDrop/module/payload/kernel/wonder.ko ]; then
               echo "Using verified prebuilt wonder.ko from OPAirDrop repository..."
               cp OPAirDrop/module/payload/kernel/wonder.ko output-payload/
+          fi
+          if [ ! -f output-payload/opairshare_wonder_provider.ko ] && [ -f OPAirDrop/module/payload/kernel/opairshare_wonder_provider.ko ]; then
+              echo "Using prebuilt opairshare_wonder_provider.ko from OPAirDrop repository..."
+              cp OPAirDrop/module/payload/kernel/opairshare_wonder_provider.ko output-payload/
           fi
           ls -la output-payload/
 
