@@ -1,0 +1,184 @@
+name: Build OPAirDrop for Realme GT5 (Kalama SM8550)
+
+on:
+  workflow_dispatch:
+    inputs:
+      OPAIRDROP_REPO:
+        description: 'OPAirDrop source repository'
+        type: string
+        default: 'buguj23/OPAirDrop'
+      OPAIRDROP_BRANCH:
+        description: 'OPAirDrop branch'
+        type: string
+        default: 'kalama-sm8550'
+      CLEAN_BUILD:
+        description: 'Clean cache before build'
+        type: boolean
+        default: false
+
+jobs:
+  build-opairdrop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Maximize Disk Space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 16384
+          temp-reserve-mb: 4096
+          remove-dotnet: 'true'
+          remove-android: 'false'
+          remove-haskell: 'true'
+
+      - name: Setup Git Configuration
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Checkout OPAirDrop Source
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.OPAIRDROP_REPO || 'Weverses/OPAirDrop' }}
+          ref: ${{ inputs.OPAIRDROP_BRANCH || 'main' }}
+          path: 'OPAirDrop'
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Android NDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'ndk;28.2.13676358'
+
+      - name: Setup Build Environment & Repo
+        run: |
+          sudo apt-get update && sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf libelf-dev libssl-dev libxml2-utils lz4 zstd python3 python3-pip zip
+          mkdir -p ~/bin
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+x ~/bin/repo
+          echo "$HOME/bin" >> $GITHUB_PATH
+
+      - name: Sync OnePlus SM8550 Platform Tree
+        run: |
+          mkdir -p kernel_platform && cd kernel_platform
+          repo init -u https://github.com/OnePlusOSS/kernel_manifest -b oneplus/sm8550 -m oneplus_ace2_pro_b.xml --depth=1 --no-clone-bundle --no-tags
+          sed -i -e '/prebuilts\/asuite"/{/ks-kernel\.lnx\.5\.0\.r3-rel/d}' -e '/tools\/tradefederation\/prebuilts"/{/ks-kernel\.lnx\.5\.0\.r3-rel/d}' .repo/manifests/*.xml || true
+          repo sync -c --no-clone-bundle --no-tags -j$(nproc) --force-sync
+
+      - name: Apply OPAirDrop Driver Overlay to Kalama
+        run: |
+          cd kernel_platform
+          # 1. 复制 Wonder 驱动源码
+          mkdir -p vendor/oplus/kernel/wifi/wonder
+          cp -r ../OPAirDrop/kernel/wonder/* vendor/oplus/kernel/wifi/wonder/
+          
+          # 2. 复制独立 Provider 源码
+          mkdir -p opairshare-route-b-provider
+          cp -r ../OPAirDrop/kernel/provider/* opairshare-route-b-provider/
+          # 确保 Provider 目标在 Kalama 树下使用 kalama_perf
+          sed -i 's/sun_perf/kalama_perf/g' opairshare-route-b-provider/BUILD.bazel || true
+          
+          # 3. 为 kalama 启用 wonder 模块构建定义
+          if [ -f vendor/oplus/kernel/wifi/oplus_local_modules.bzl ]; then
+              sed -i 's/"canoe", "sun"/"canoe", "sun", "kalama"/g' vendor/oplus/kernel/wifi/oplus_local_modules.bzl || true
+          fi
+          
+          # 4. 合并 driver 覆盖层至 qcacld-3.0
+          python3 -c "
+          import json, os, shutil
+          with open('../OPAirDrop/kernel/source-map.json') as f:
+              mapping = json.load(f)
+          for src, meta in mapping.items():
+              src_path = os.path.join('../OPAirDrop', src)
+              dst_path = meta['kernel_path']
+              if os.path.exists(src_path) and os.path.exists(os.path.dirname(dst_path)):
+                  shutil.copy2(src_path, dst_path)
+                  print(f'Overlaid: {dst_path}')
+          "
+
+      - name: Fast Bazel Build WLAN Modules (kiwi_v2, wonder, provider)
+        run: |
+          cd kernel_platform
+          # 编译 kiwi_v2 模块
+          ./tools/bazel run --jobs=4 --make_jobs=4 \
+              --//msm-kernel:skip_abi=true --//msm-kernel:skip_abl=true \
+              --config=stamp \
+              //vendor/qcom/opensource/wlan/qcacld-3.0:kalama_perf_kiwi-v2_modules_dist \
+              -- --dist_dir=../dist-modules
+          
+          # 编译 wonder 与 provider 模块
+          ./tools/bazel build \
+              //opairshare-route-b-provider:opairshare_wonder_provider \
+              //vendor/oplus/kernel/wifi:wonder
+          
+          # 收集编译产物 .ko
+          mkdir -p ../output-payload
+          find ../dist-modules -name "qca_cld3_kiwi_v2.ko" -exec cp {} ../output-payload/ \; || cp ../dist-modules/qca_cld3_kiwi_v2.ko ../output-payload/
+          find bazel-bin -name "opairshare_wonder_provider.ko" -exec cp {} ../output-payload/ \;
+          find bazel-bin -name "wonder.ko" -exec cp {} ../output-payload/ \;
+          ls -la ../output-payload/
+
+      - name: Build Native Shims & WebUI
+        run: |
+          cd OPAirDrop
+          # 编译 native 适配助手
+          export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358
+          python3 tools/build-native.py --sdk "$ANDROID_HOME" --ndk "$ANDROID_NDK_HOME"
+          
+          # 编译 WebUI
+          cd webui && npm install && npm run build && cd ..
+
+      - name: Assemble Final KernelSU Module ZIP
+        run: |
+          cd OPAirDrop
+          mkdir -p module/payload/kernel module/payload/native module/webroot
+          cp ../output-payload/*.ko module/payload/kernel/
+          cp -r build/native/* module/payload/native/ || true
+          cp -r webui/dist/* module/webroot/ || true
+          
+          # 更新兼容性检查与驱动模块名
+          sed -i 's/\[ "$board" = sun \]/case "$board" in sun|kalama) ;; *) compatibility_error "sun platform or kalama platform required; found $board"; exit 2;; esac/' module/bin/compatibility.sh || true
+          sed -i 's/qca_cld3_peach_v2/qca_cld3_kiwi_v2/g' module/bin/control.sh || true
+          sed -i 's/qca_cld3_peach_v2/qca_cld3_kiwi_v2/g' module/bin/common.sh || true
+          
+          # 提取并记录模块 Build ID
+          python3 -c "
+          import os, subprocess, re
+
+          def get_build_id(path):
+              res = subprocess.run(['readelf', '-n', path], capture_output=True, text=True)
+              m = re.search(r'Build ID:\s+([0-9a-fA-F]+)', res.stdout)
+              return m.group(1).lower() if m else ''
+
+          id_map = {
+              'qca_cld3_kiwi_v2': 'module/payload/kernel/qca_cld3_kiwi_v2.ko',
+              'wonder': 'module/payload/kernel/wonder.ko',
+              'opairshare_wonder_provider': 'module/payload/kernel/opairshare_wonder_provider.ko',
+          }
+          script_path = 'module/bin/kernel-identity.sh'
+          if os.path.exists(script_path):
+              text = open(script_path).read()
+              for mod, ko in id_map.items():
+                  if os.path.exists(ko):
+                      bid = get_build_id(ko)
+                      if bid:
+                          text = re.sub(f'NOTE_{mod}=.*', f'NOTE_{mod}={bid}', text)
+              open(script_path, 'w').write(text)
+          "
+          
+          # 生成完整 SHA256SUMS
+          cd module
+          find . -type f ! -name "SHA256SUMS" ! -path "./.git*" | sort | while read -r f; do
+              sha256sum "$f" | sed 's| \./| |'
+          done > SHA256SUMS
+          
+          # 打包 ZIP
+          zip -r ../../OPAirDrop-RealmeGT5-SM8550.zip ./*
+
+      - name: Upload Module Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OPAirDrop-RealmeGT5-SM8550
+          path: OPAirDrop-RealmeGT5-SM8550.zip
