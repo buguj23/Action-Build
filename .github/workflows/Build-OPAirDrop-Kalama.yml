@@ -114,9 +114,42 @@ jobs:
           mkdir -p output-payload
           cd kernel_platform/kernel_platform
           
-          # 彻底移除缺失的 OnePlus 专有驱动 tri_state_key 配置行
-          sed -i '/tri_state_key/d' msm-kernel/drivers/misc/Kconfig || true
-          sed -i '/tri_state_key/d' common/drivers/misc/Kconfig || true
+          # 自动清理所有缺失的 Kconfig 引用行（如 tri_state_key, oplus_touchscreen_v2 等）
+          python3 -c '
+          import os, re
+          for root_dir in ["msm-kernel", "common"]:
+              if not os.path.exists(root_dir):
+                  continue
+              for dirpath, _, filenames in os.walk(root_dir):
+                  for f in filenames:
+                      if f == "Kconfig" or f.startswith("Kconfig."):
+                          kpath = os.path.join(dirpath, f)
+                          with open(kpath, "r", errors="ignore") as kf:
+                              lines = kf.readlines()
+                          new_lines = []
+                          modified = False
+                          for line in lines:
+                              m = re.match(r"^\s*source\s+[\"\x27]([^\"\x27]+)[\"\x27]", line)
+                              if m:
+                                  rel = m.group(1)
+                                  cand1 = os.path.join(root_dir, rel)
+                                  cand2 = os.path.join(dirpath, rel)
+                                  if not (os.path.exists(cand1) or os.path.exists(cand2)):
+                                      print(f"Commenting missing source: {line.strip()} in {kpath}")
+                                      new_lines.append("# " + line)
+                                      modified = True
+                                      continue
+                              new_lines.append(line)
+                          if modified:
+                              with open(kpath, "w") as kf:
+                                  kf.writelines(new_lines)
+          '
+
+          # 拷贝预置的真实内核符号版本表 Module.symvers，确保 modpost 生成完整的 __versions
+          if [ -f ../../OPAirDrop/kernel/provider/Module.symvers ]; then
+              cp ../../OPAirDrop/kernel/provider/Module.symvers common/Module.symvers || true
+              cp ../../OPAirDrop/kernel/provider/Module.symvers opairshare-route-b-provider/Module.symvers || true
+          fi
 
           # 定位 Clang 并转为绝对路径加入 PATH
           CLANG_BIN=$(find prebuilts/clang/host/linux-x86 -name "clang" -type f -executable 2>/dev/null | sort -V | tail -n 1 || true)
@@ -131,15 +164,30 @@ jobs:
               export PATH=$BUILD_TOOLS_DIR:$PATH
           fi
 
-          # 1. 尝试 Kbuild 直接编译 opairshare_wonder_provider
-          echo "=== 1. Building opairshare_wonder_provider via Kbuild ==="
-          if [ -d common ]; then
+          # 1. 尝试 Bazel 完整构建（具备最精确的 GKI 编译链和 CFI 配置）
+          echo "=== 1. Building via Bazel ==="
+          chmod a+x tools/bazel || true
+          sed -i 's/define_common_kernels(target_configs/define_common_kernels(branch = "android13-5.15", target_configs/' msm-kernel/BUILD.bazel || true
+          sed -i 's/define_common_kernels(target_configs/define_common_kernels(branch = "android13-5.15", target_configs/' common/BUILD.bazel || true
+          
+          ./tools/bazel build \
+              //opairshare-route-b-provider:opairshare_wonder_provider || true
+
+          find bazel-bin -name "opairshare_wonder_provider.ko" -exec cp -f {} ../../output-payload/ \; || true
+
+          # 2. 若 Bazel 未输出 provider 模块，则使用带有 Module.symvers 的 Kbuild 作为备选
+          if [ ! -f ../../output-payload/opairshare_wonder_provider.ko ] && [ -d common ]; then
+              echo "=== 2. Fallback: Building opairshare_wonder_provider via Kbuild ==="
               make -C common ARCH=arm64 gki_defconfig \
                   CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
                   LLVM=1 LLVM_IAS=1 || true
               make -C common ARCH=arm64 modules_prepare \
                   CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
                   LLVM=1 LLVM_IAS=1 || true
+              # 再次确保 Module.symvers 存在
+              if [ -f ../../OPAirDrop/kernel/provider/Module.symvers ]; then
+                  cp ../../OPAirDrop/kernel/provider/Module.symvers common/Module.symvers || true
+              fi
               make -C common M=$PWD/opairshare-route-b-provider ARCH=arm64 \
                   CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
                   LLVM=1 LLVM_IAS=1 modules || true
@@ -148,22 +196,6 @@ jobs:
                   cp opairshare-route-b-provider/opairshare_wonder_provider.ko ../../output-payload/
               fi
           fi
-
-          # 2. 尝试 Bazel 编译
-          echo "=== 2. Building via Bazel ==="
-          chmod a+x tools/bazel || true
-          sed -i 's/define_common_kernels(target_configs/define_common_kernels(branch = "android13-5.15", target_configs/' msm-kernel/BUILD.bazel || true
-          sed -i 's/define_common_kernels(target_configs/define_common_kernels(branch = "android13-5.15", target_configs/' common/BUILD.bazel || true
-          
-          ./tools/bazel build \
-              //opairshare-route-b-provider:opairshare_wonder_provider || true
-
-          ./tools/bazel build \
-              //vendor/oplus/kernel/wifi:wonder || true
-
-          find ../../dist-modules -name "qca_cld3_kiwi_v2.ko" -exec cp {} ../../output-payload/ \; || true
-          find bazel-bin -name "opairshare_wonder_provider.ko" -exec cp {} ../../output-payload/ \; || true
-          find bazel-bin -name "wonder.ko" -exec cp {} ../../output-payload/ \; || true
 
       - name: Prepare Kernel Modules Payload
         run: |
