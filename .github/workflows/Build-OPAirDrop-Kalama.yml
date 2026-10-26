@@ -92,8 +92,8 @@ jobs:
               mapping = json.load(f)
           for src, meta in mapping.items():
               src_path = os.path.join('../OPAirDrop', src)
-              dst_path = meta['kernel_path']
-              if os.path.exists(src_path) and os.path.exists(os.path.dirname(dst_path)):
+              dst_path = meta.get('kernel_path')
+              if dst_path and os.path.exists(src_path) and os.path.exists(os.path.dirname(dst_path)):
                   shutil.copy2(src_path, dst_path)
                   print(f'Overlaid: {dst_path}')
           "
@@ -101,6 +101,7 @@ jobs:
       - name: Fast Bazel Build WLAN Modules (kiwi_v2, wonder, provider)
         run: |
           cd kernel_platform
+          chmod a+x tools/bazel || true
           # 编译 kiwi_v2 模块
           ./tools/bazel run --jobs=4 --make_jobs=4 \
               --//msm-kernel:skip_abi=true --//msm-kernel:skip_abl=true \
@@ -123,8 +124,13 @@ jobs:
       - name: Build Native Shims & WebUI
         run: |
           cd OPAirDrop
-          # 编译 native 适配助手
-          export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358
+          # 动态探测并定位可用 Android NDK
+          if [ -d "$ANDROID_HOME/ndk" ]; then
+              export ANDROID_NDK_HOME=$(find "$ANDROID_HOME/ndk" -maxdepth 1 -mindepth 1 -type d | sort -V | tail -n 1)
+          else
+              export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358
+          fi
+          echo "Using Android NDK: $ANDROID_NDK_HOME"
           python3 tools/build-native.py --sdk "$ANDROID_HOME" --ndk "$ANDROID_NDK_HOME"
           
           # 编译 WebUI
@@ -172,7 +178,8 @@ jobs:
           cd module
           find . -type f ! -name "SHA256SUMS" ! -path "./.git*" | sort | while read -r f; do
               sha256sum "$f" | sed 's| \./| |'
-          done > SHA256SUMS
+          done > /tmp/SHA256SUMS.new
+          mv /tmp/SHA256SUMS.new SHA256SUMS
           
           # 打包 ZIP
           zip -r ../../OPAirDrop-RealmeGT5-SM8550.zip ./*
