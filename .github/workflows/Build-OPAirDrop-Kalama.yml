@@ -113,18 +113,13 @@ jobs:
         run: |
           cd kernel_platform/kernel_platform
           chmod a+x tools/bazel || true
-          # 尝试编译 kiwi_v2 模块
-          ./tools/bazel run --jobs=4 --make_jobs=4 \
-              --//msm-kernel:skip_abi=true --//msm-kernel:skip_abl=true \
-              --config=stamp \
-              //vendor/qcom/opensource/wlan/qcacld-3.0:kalama_perf_kiwi-v2_modules_dist \
-              -- --dist_dir=../../dist-modules || true
-          
-          # 编译 wonder 与 provider 模块
+          # 1. 编译独立 provider 模块
           ./tools/bazel build \
-              //opairshare-route-b-provider:opairshare_wonder_provider \
+              //opairshare-route-b-provider:opairshare_wonder_provider || true
+
+          # 2. 编译 wonder 虚拟网卡模块
+          ./tools/bazel build \
               //vendor/oplus/kernel/wifi:wonder || true
-          
           mkdir -p ../../output-payload
           find ../../dist-modules -name "qca_cld3_kiwi_v2.ko" -exec cp {} ../../output-payload/ \; || true
           find bazel-bin -name "opairshare_wonder_provider.ko" -exec cp {} ../../output-payload/ \; || true
