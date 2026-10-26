@@ -19,6 +19,10 @@ on:
         description: 'Clean cache before build'
         type: boolean
         default: false
+      EXPERIMENT:
+        description: 'full, kbuild-config, kbuild-nostack, kbuild-kcflags, or bazel-force'
+        type: string
+        default: full
 
 jobs:
   build-opairdrop:
@@ -113,6 +117,11 @@ jobs:
         run: |
           mkdir -p output-payload
           cd kernel_platform/kernel_platform
+          EXPERIMENT="${{ inputs.EXPERIMENT }}"
+          echo "Experiment: ${EXPERIMENT}"
+          if [ "$EXPERIMENT" = bazel-force ]; then
+              export FORCE_COMMENT=1
+          fi
           
           # msm-kernel/BUILD.bazel 的 sources glob 只覆盖仓库里真实存在的文件。
           # source 指向 404 的专有 Kconfig 时，Bazel sandbox 里没有它，gki_defconfig 会停。
@@ -140,7 +149,9 @@ jobs:
                           rel = m.group(2)
                           host = os.path.join(root_dir, rel)
                           local = os.path.join(dirpath, rel)
-                          if os.path.exists(host) or os.path.exists(local):
+                          forced = os.environ.get("FORCE_COMMENT") == "1" and any(
+                              n in rel for n in ("tri_state_key", "aw8697_haptic", "synaptics_hbp", "oplus_touchscreen"))
+                          if not forced and (os.path.exists(host) or os.path.exists(local)):
                               if "tri_state_key" in rel or "aw8697" in rel:
                                   print(f"kept {line.strip()} host={os.path.exists(host)}:{host} local={os.path.exists(local)}:{local}")
                               new_lines.append(line)
@@ -172,6 +183,10 @@ jobs:
 
           # 1. Bazel has the GKI CFI toolchain. Its failure must not abort the step:
           #    GitHub Actions runs bash -e, and `cmd || echo` still returns 0.
+          if [ "$EXPERIMENT" = kbuild-config ] || [ "$EXPERIMENT" = kbuild-nostack ] || [ "$EXPERIMENT" = kbuild-kcflags ]; then
+              echo "=== 1. Skipping Bazel ($EXPERIMENT) ==="
+              bazel_rc=1
+          else
           echo "=== 1. Building via Bazel ==="
           set +e
           chmod a+x tools/bazel
@@ -180,6 +195,7 @@ jobs:
           ./tools/bazel build //opairshare-route-b-provider:opairshare_wonder_provider
           bazel_rc=$?
           set -e
+          fi
           if [ "$bazel_rc" -ne 0 ]; then
               echo "Bazel provider build failed (rc=$bazel_rc); trying Kbuild"
           fi
@@ -214,9 +230,14 @@ jobs:
                   CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
                   LLVM=1 LLVM_IAS=1
               cp ../../OPAirDrop/kernel/provider/Module.symvers "$KSRC/Module.symvers"
+              OFFSET=$(awk '$2=="TSK_STACK_CANARY"{print $3}' "$KSRC/include/generated/asm-offsets.h")
+              echo "TSK_STACK_CANARY offset: ${OFFSET}"
+              test -n "$OFFSET"
               make -C "$KSRC" M="$PWD/opairshare-route-b-provider" ARCH=arm64 \
                   CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
-                  LLVM=1 LLVM_IAS=1 modules
+                  LLVM=1 LLVM_IAS=1 \
+                  KCFLAGS="-mstack-protector-guard=sysreg -mstack-protector-guard-reg=sp_el0 -mstack-protector-guard-offset=${OFFSET}" \
+                  modules
               cp opairshare-route-b-provider/opairshare_wonder_provider.ko ../../output-payload/
           fi
           test -f ../../output-payload/opairshare_wonder_provider.ko
