@@ -14,7 +14,7 @@ on:
       BUILD_KERNEL:
         description: 'Rebuild kernel modules from OnePlus tree (default false uses verified prebuilt modules)'
         type: boolean
-        default: false
+        default: true
       CLEAN_BUILD:
         description: 'Clean cache before build'
         type: boolean
@@ -107,20 +107,45 @@ jobs:
           # 5. 在 kernel_platform 内部建立指向 vendor 的软链接以便 Bazel 解析
           ln -sf ../vendor kernel_platform/vendor
 
-      - name: Fast Bazel Build WLAN Modules (kiwi_v2, wonder, provider)
+      - name: Fast Bazel & Kbuild WLAN Modules (kiwi_v2, wonder, provider)
         if: ${{ inputs.BUILD_KERNEL == true }}
         continue-on-error: true
         run: |
+          mkdir -p output-payload
           cd kernel_platform/kernel_platform
+          
+          # 1. 尝试 Kbuild 直接编译 opairshare_wonder_provider
+          echo "=== 1. Building opairshare_wonder_provider via Kbuild ==="
+          CLANG_BIN=$(find prebuilts/clang/host/linux-x86 -name "clang" -type f -executable 2>/dev/null | sort -V | tail -n 1 || true)
+          if [ -n "$CLANG_BIN" ] && [ -d common ]; then
+              CLANG_DIR=$(dirname "$CLANG_BIN")
+              export PATH=$CLANG_DIR:$PWD/prebuilts/kernel-build-tools/linux-x86/bin:$PATH
+              echo "Using compiler: $CLANG_BIN"
+              make -C common ARCH=arm64 gki_defconfig || true
+              make -C common ARCH=arm64 modules_prepare \
+                  CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
+                  LLVM=1 LLVM_IAS=1 || true
+              make -C common M=$PWD/opairshare-route-b-provider ARCH=arm64 \
+                  CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- \
+                  LLVM=1 LLVM_IAS=1 modules || true
+              if [ -f opairshare-route-b-provider/opairshare_wonder_provider.ko ]; then
+                  echo "Kbuild success! Found opairshare_wonder_provider.ko"
+                  cp opairshare-route-b-provider/opairshare_wonder_provider.ko ../../output-payload/
+              fi
+          fi
+
+          # 2. 尝试 Bazel 编译
+          echo "=== 2. Building via Bazel ==="
           chmod a+x tools/bazel || true
-          # 1. 编译独立 provider 模块
+          sed -i 's/define_common_kernels(target_configs/define_common_kernels(branch = "android13-5.15", target_configs/' msm-kernel/BUILD.bazel || true
+          sed -i 's/define_common_kernels(target_configs/define_common_kernels(branch = "android13-5.15", target_configs/' common/BUILD.bazel || true
+          
           ./tools/bazel build \
               //opairshare-route-b-provider:opairshare_wonder_provider || true
 
-          # 2. 编译 wonder 虚拟网卡模块
           ./tools/bazel build \
               //vendor/oplus/kernel/wifi:wonder || true
-          mkdir -p ../../output-payload
+
           find ../../dist-modules -name "qca_cld3_kiwi_v2.ko" -exec cp {} ../../output-payload/ \; || true
           find bazel-bin -name "opairshare_wonder_provider.ko" -exec cp {} ../../output-payload/ \; || true
           find bazel-bin -name "wonder.ko" -exec cp {} ../../output-payload/ \; || true
