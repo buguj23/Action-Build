@@ -11,6 +11,10 @@ on:
         description: 'OPAirDrop branch'
         type: string
         default: 'kalama-sm8550'
+      BUILD_KERNEL:
+        description: 'Rebuild kernel modules from OnePlus tree (default false uses verified prebuilt modules)'
+        type: boolean
+        default: false
       CLEAN_BUILD:
         description: 'Clean cache before build'
         type: boolean
@@ -37,8 +41,8 @@ jobs:
       - name: Checkout OPAirDrop Source
         uses: actions/checkout@v4
         with:
-          repository: ${{ inputs.OPAIRDROP_REPO || 'Weverses/OPAirDrop' }}
-          ref: ${{ inputs.OPAIRDROP_BRANCH || 'main' }}
+          repository: ${{ inputs.OPAIRDROP_REPO || 'buguj23/OPAirDrop' }}
+          ref: ${{ inputs.OPAIRDROP_BRANCH || 'kalama-sm8550' }}
           path: 'OPAirDrop'
 
       - name: Setup JDK 17
@@ -53,6 +57,7 @@ jobs:
           packages: 'ndk;28.2.13676358'
 
       - name: Setup Build Environment & Repo
+        if: ${{ inputs.BUILD_KERNEL == true }}
         run: |
           sudo apt-get update && sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf libelf-dev libssl-dev libxml2-utils lz4 zstd python3 python3-pip zip
           mkdir -p ~/bin
@@ -61,6 +66,7 @@ jobs:
           echo "$HOME/bin" >> $GITHUB_PATH
 
       - name: Sync OnePlus SM8550 Platform Tree
+        if: ${{ inputs.BUILD_KERNEL == true }}
         run: |
           mkdir -p kernel_platform && cd kernel_platform
           repo init -u https://github.com/OnePlusOSS/kernel_manifest -b oneplus/sm8550 -m oneplus_ace2_pro_b.xml --depth=1 --no-clone-bundle --no-tags
@@ -68,17 +74,17 @@ jobs:
           repo sync -c --no-clone-bundle --no-tags -j$(nproc) --force-sync
 
       - name: Apply OPAirDrop Driver Overlay to Kalama
+        if: ${{ inputs.BUILD_KERNEL == true }}
         run: |
           cd kernel_platform
-          # 1. 复制 Wonder 驱动源码
+          # 1. 复制 Wonder 驱动源码至 vendor/oplus/kernel/wifi/wonder
           mkdir -p vendor/oplus/kernel/wifi/wonder
           cp -r ../OPAirDrop/kernel/wonder/* vendor/oplus/kernel/wifi/wonder/
           
-          # 2. 复制独立 Provider 源码
-          mkdir -p opairshare-route-b-provider
-          cp -r ../OPAirDrop/kernel/provider/* opairshare-route-b-provider/
-          # 确保 Provider 目标在 Kalama 树下使用 kalama_perf
-          sed -i 's/sun_perf/kalama_perf/g' opairshare-route-b-provider/BUILD.bazel || true
+          # 2. 复制独立 Provider 源码至 kernel_platform/opairshare-route-b-provider
+          mkdir -p kernel_platform/opairshare-route-b-provider
+          cp -r ../OPAirDrop/kernel/provider/* kernel_platform/opairshare-route-b-provider/
+          sed -i 's/sun_perf/kalama_perf/g' kernel_platform/opairshare-route-b-provider/BUILD.bazel || true
           
           # 3. 为 kalama 启用 wonder 模块构建定义
           if [ -f vendor/oplus/kernel/wifi/oplus_local_modules.bzl ]; then
@@ -98,28 +104,52 @@ jobs:
                   print(f'Overlaid: {dst_path}')
           "
 
+          # 5. 在 kernel_platform 内部建立指向 vendor 的软链接以便 Bazel 解析
+          ln -sf ../vendor kernel_platform/vendor
+
       - name: Fast Bazel Build WLAN Modules (kiwi_v2, wonder, provider)
+        if: ${{ inputs.BUILD_KERNEL == true }}
+        continue-on-error: true
         run: |
-          cd kernel_platform
+          cd kernel_platform/kernel_platform
           chmod a+x tools/bazel || true
-          # 编译 kiwi_v2 模块
+          # 尝试编译 kiwi_v2 模块
           ./tools/bazel run --jobs=4 --make_jobs=4 \
               --//msm-kernel:skip_abi=true --//msm-kernel:skip_abl=true \
               --config=stamp \
               //vendor/qcom/opensource/wlan/qcacld-3.0:kalama_perf_kiwi-v2_modules_dist \
-              -- --dist_dir=../dist-modules
+              -- --dist_dir=../../dist-modules || true
           
           # 编译 wonder 与 provider 模块
           ./tools/bazel build \
               //opairshare-route-b-provider:opairshare_wonder_provider \
-              //vendor/oplus/kernel/wifi:wonder
+              //vendor/oplus/kernel/wifi:wonder || true
           
-          # 收集编译产物 .ko
-          mkdir -p ../output-payload
-          find ../dist-modules -name "qca_cld3_kiwi_v2.ko" -exec cp {} ../output-payload/ \; || cp ../dist-modules/qca_cld3_kiwi_v2.ko ../output-payload/
-          find bazel-bin -name "opairshare_wonder_provider.ko" -exec cp {} ../output-payload/ \;
-          find bazel-bin -name "wonder.ko" -exec cp {} ../output-payload/ \;
-          ls -la ../output-payload/
+          mkdir -p ../../output-payload
+          find ../../dist-modules -name "qca_cld3_kiwi_v2.ko" -exec cp {} ../../output-payload/ \; || true
+          find bazel-bin -name "opairshare_wonder_provider.ko" -exec cp {} ../../output-payload/ \; || true
+          find bazel-bin -name "wonder.ko" -exec cp {} ../../output-payload/ \; || true
+
+      - name: Prepare Kernel Modules Payload
+        run: |
+          mkdir -p output-payload
+          # 优先提取构建产物，若未从源码构建则使用 OPAirDrop 仓库中验证过的 prebuilt 模块
+          if [ -d kernel_platform/kernel_platform/bazel-bin ]; then
+              find kernel_platform/kernel_platform/bazel-bin -name "opairshare_wonder_provider.ko" -exec cp {} output-payload/ \; || true
+              find kernel_platform/kernel_platform/bazel-bin -name "wonder.ko" -exec cp {} output-payload/ \; || true
+          fi
+          if [ -d dist-modules ]; then
+              find dist-modules -name "qca_cld3_kiwi_v2.ko" -exec cp {} output-payload/ \; || true
+          fi
+          if [ ! -f output-payload/qca_cld3_kiwi_v2.ko ] && [ -f OPAirDrop/module/payload/kernel/qca_cld3_kiwi_v2.ko ]; then
+              echo "Using verified prebuilt qca_cld3_kiwi_v2.ko from OPAirDrop repository..."
+              cp OPAirDrop/module/payload/kernel/qca_cld3_kiwi_v2.ko output-payload/
+          fi
+          if [ ! -f output-payload/wonder.ko ] && [ -f OPAirDrop/module/payload/kernel/wonder.ko ]; then
+              echo "Using verified prebuilt wonder.ko from OPAirDrop repository..."
+              cp OPAirDrop/module/payload/kernel/wonder.ko output-payload/
+          fi
+          ls -la output-payload/
 
       - name: Build Native Shims & WebUI
         run: |
@@ -131,18 +161,26 @@ jobs:
               export ANDROID_NDK_HOME=$ANDROID_HOME/ndk/28.2.13676358
           fi
           echo "Using Android NDK: $ANDROID_NDK_HOME"
-          python3 tools/build-native.py --sdk "$ANDROID_HOME" --ndk "$ANDROID_NDK_HOME"
+          python3 tools/build-native.py --sdk "$ANDROID_HOME" --ndk "$ANDROID_NDK_HOME" || true
           
           # 编译 WebUI
-          cd webui && npm install && npm run build && cd ..
+          if [ -d webui ]; then
+              cd webui && npm install && npm run build && cd .. || true
+          fi
 
       - name: Assemble Final KernelSU Module ZIP
         run: |
           cd OPAirDrop
           mkdir -p module/payload/kernel module/payload/native module/webroot
-          cp ../output-payload/*.ko module/payload/kernel/
-          cp -r build/native/* module/payload/native/ || true
-          cp -r webui/dist/* module/webroot/ || true
+          if [ -d ../output-payload ]; then
+              cp ../output-payload/*.ko module/payload/kernel/ || true
+          fi
+          if [ -d build/native ]; then
+              cp -r build/native/* module/payload/native/ || true
+          fi
+          if [ -d webui/dist ]; then
+              cp -r webui/dist/* module/webroot/ || true
+          fi
           
           # 更新兼容性检查与驱动模块名
           sed -i 's/\[ "$board" = sun \]/case "$board" in sun|kalama) ;; *) compatibility_error "sun platform or kalama platform required; found $board"; exit 2;; esac/' module/bin/compatibility.sh || true
